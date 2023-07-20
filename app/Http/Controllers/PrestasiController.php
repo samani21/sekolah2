@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\DB;
 class PrestasiController extends Controller
 {
     //prestasi siswa
-    public function index_siswa(){
+    public function index_siswa(Request $request){
+        $cari = $request->cari;
         $it = 1;
         $id_tahun = Tahun::findorfail($it);
         $user = Auth::user()->id;
@@ -21,11 +22,13 @@ class PrestasiController extends Controller
             $prestasi = DB::table('prestasi')->join('tb_siswa','tb_siswa.id','=','prestasi.id_siswa')
             ->where('status','=','siswa')
             ->where('id_user','=',''.$user.'')
+            ->where('nm_kegiatan','like',"%".$cari."%")
             ->select('prestasi.tahun','nama','nm_kegiatan','capaian','tingkat','waktu','bukti','prestasi.id')
             ->paginate(10);
         }else{
             $prestasi = DB::table('prestasi')->join('tb_siswa','tb_siswa.id','=','prestasi.id_siswa')
         ->where('status','=','siswa')
+        ->where('nm_kegiatan','like',"%".$cari."%")
         ->select('prestasi.tahun','nama','nm_kegiatan','capaian','tingkat','waktu','bukti','prestasi.id')
         ->paginate(10);
         }
@@ -34,11 +37,23 @@ class PrestasiController extends Controller
     }
 
     // prestasi guru
-    public function index_guru(){
-        $prestasi = DB::table('prestasi')->join('tb_guru','tb_guru.id','=','prestasi.id_guru')
+    public function index_guru(Request $request){
+        $cari = $request->cari;
+        $user = Auth::user()->id;
+        if(Auth::user()->level == "Guru"){
+            $prestasi = DB::table('prestasi')->join('tb_guru','tb_guru.id','=','prestasi.id_guru')
+            ->where('prestasi.status','=','guru')
+            ->where('id_user','=',''.$user.'')
+            ->where('nm_kegiatan','like',"%".$cari."%")
+            ->select('prestasi.tahun','nama','nm_kegiatan','capaian','tingkat','waktu','bukti','prestasi.id')
+            ->paginate(10);
+        }else{
+            $prestasi = DB::table('prestasi')->join('tb_guru','tb_guru.id','=','prestasi.id_guru')
         ->where('prestasi.status','=','guru')
+        ->where('nm_kegiatan','like',"%".$cari."%")
         ->select('prestasi.tahun','nama','nm_kegiatan','capaian','tingkat','waktu','bukti','prestasi.id')
         ->paginate(10);
+        }
         $data['title'] = "Prestasi guru";
         return view('prestasi.guru',['prestasi'=>$prestasi],$data);
     }

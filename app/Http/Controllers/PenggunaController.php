@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tahun;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -33,6 +35,41 @@ class PenggunaController extends Controller
             'level' =>$request->level,
         ];
         $edit->update($data);
+        Alert()->success('SuccessAlert','Tambah data Siswa berhasil');
+        return redirect()->route('pengguna/pengguna');
+    }
+
+    public function create(){
+        $id = "1";
+        $tahun = Tahun::find($id);
+        $kelas = DB::table('kelas')->get();
+        $data['title']= "Tambah akun siswa";
+        return view('pengguna/tambah_siswa',$data,['tahun'=>$tahun,'kelas'=>$kelas]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required|unique:users',
+            'password' => 'required',
+            'password_confirm' => 'required|same:password',
+        ]);
+        $user = new User([
+            'name' => $request->name,
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+            'password1' =>" $request->password",
+            'level' =>substr($request->level,0,5),
+            'status' =>$request->status,
+            'kelas' =>substr($request->level,6),
+            'tahun' =>$request->tahun
+        ]);
+        $user->save();
+
+        event(new Registered($user));
+        auth()->login($user);
+
         Alert()->success('SuccessAlert','Tambah data Siswa berhasil');
         return redirect()->route('pengguna/pengguna');
     }

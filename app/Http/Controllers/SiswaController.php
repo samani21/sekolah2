@@ -63,7 +63,7 @@ class SiswaController extends Controller
             'alamat' => $request->alamat,
             'tgl_absen' => "0",
             'nis' => $request->nis,
-            'tahun' => $id_tahun,
+            'tahun' => $id_tahun->tahun,
         ]);
         $siswa->save();
 

@@ -62,11 +62,8 @@
                             {{-- <a href="lupa">Lupa password?</a> --}}
                             <br>
                             <div class="row g-2">
-                                <div class="col-6">
+                                <div class="col-12">
                                     <button class="btn btn-success col-12">LOGIN</button>
-                                </div>
-                                <div class="col-6">
-                                    <a href="register"class="btn btn-primary col-12">REGISTRASI</a>
                                 </div>
                             </div>
                         </form>

@@ -86,6 +86,8 @@ Route::post('updateke/{id}',[SiswaController::class, 'updatekelas'])->name('upda
 Route::get('pengguna/pengguna', [PenggunaController::class,'index'])->name('pengguna/pengguna');//menampilkan data pengguna
 Route::get('pengguna/edit_pengguna/{id}', [PenggunaController::class,'edit_pengguna'])->name('pengguna/edit_pengguna');//edit pengguna
 Route::post('updatepengguna/{id}',[PenggunaController::class, 'update'])->name('updatepengguna');//proses upodate pengguna
+Route::get('pengguna/tambah_akun', [PenggunaController::class,'create'])->name('pengguna/tambah_akun');//tambah akun siswa
+Route::post('pengguna/tambah_akun', [PenggunaController::class,'store'])->name('pengguna.store');//tambah akun siswa
 
 //tahun ajaran
 Route::get('tahun/tahun_ajaran', [TahunController::class,'index'])->name('tahun/tahun');//menampilkan halaman setting tahun ajaran
@@ -106,7 +108,6 @@ Route::post('mapel/tambah_mapel',[MapelController::class, 'store'])->name('mapel
 Route::get('mapel/edit_mapel/{id}',[MapelController::class, 'edit_mapel'])->name('mapel/edit_mapel');//edit datasiswa
 Route::post('updatemapel/{id}',[MapelController::class, 'update'])->name('updatemapel');//proses edit data siswa
 Route::get('mapel/hapus_mapel/{id}',[MapelController::class, 'destroy'])->name('hapus_mapel');//hapus data siswa
-
 
 //absensi
 Route::get('absensi/absen_guru', [AbsenController::class ,'index'])->name('absensi/absen_guru');//menampilkan halaman absensi guru

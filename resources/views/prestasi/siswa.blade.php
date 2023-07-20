@@ -33,9 +33,11 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
                       </div>
                 </form>
             </div>
-            <div class="col-4">
-                <a href="tambah_siswa" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Prestasi</a>
-            </div>
+           @if (Auth::user()->level == "Super_admin" || Auth::user()->level == "Guru" || Auth::user()->level == "Tata_usaha")
+                <div class="col-4">
+                    <a href="tambah_siswa" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Prestasi</a>
+                </div>
+           @endif
         </div>
             <hr>
             <div>

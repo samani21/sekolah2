@@ -220,6 +220,13 @@
                                     <span>Presensi Siswa</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ url('prestasi/guru') }}"
+                                    class="{{ request()->is('prestasi/guru*','prestasi/edit_guru*','prestasi/tambah_guru*')?'active' :'' }}">
+                                    <span class="fa-solid fa-award"></span>
+                                    <span>Prestasi guru</span>
+                                </a>
+                            </li>
                         @endif
                     @endif
                     @if(Auth::user()->level =='Tata_usaha')
