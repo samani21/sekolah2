@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('tempat','50');
             $table->string('agama','10');
             $table->string('jk','10');
+            $table->string('tahun','20');
             $table->timestamps();
         });
     }

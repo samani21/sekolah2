@@ -118,6 +118,20 @@
                             <span>Presensi Siswa</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ url('prestasi/siswa') }}"
+                            class="{{ request()->is('prestasi/siswa*','prestasi/tambah_siswa*','prestasi/edit_siswa*')?'active' :'' }}">
+                            <span class="fa-solid fa-award"></span>
+                            <span>Prestasi Siswa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('prestasi/guru') }}"
+                            class="{{ request()->is('prestasi/guru*','prestasi/edit_guru*','prestasi/tambah_guru*')?'active' :'' }}">
+                            <span class="fa-solid fa-award"></span>
+                            <span>Prestasi guru</span>
+                        </a>
+                    </li>
                     @endif
 
                     @if(Auth::user()->level =='Guru')
@@ -307,6 +321,13 @@
                             class="{{ request()->is('siswa/*')?'active' :'' }}">
                             <span class="fa-solid fa-person"></span>
                             <span>Siswa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('prestasi/siswa') }}"
+                            class="{{ request()->is('prestasi/siswa*','prestasi/tambah_siswa*','prestasi/edit_siswa*')?'active' :'' }}">
+                            <span class="fa-solid fa-award"></span>
+                            <span>Prestasi Siswa</span>
                         </a>
                     </li>
                     @endif

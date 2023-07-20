@@ -12,9 +12,9 @@
                       </div>
                 </form>
             </div>
-            {{-- <div class="col-4">
+            <div class="col-4">
                 <a href="tambah_siswa" class="btn btn-primary"><i class="fa-solid fa-plus"></i>Siswa</a>
-            </div> --}}
+            </div>
             <hr>
             <div>
                 <table class="table table-secondary table-striped" id="no-more-tables">

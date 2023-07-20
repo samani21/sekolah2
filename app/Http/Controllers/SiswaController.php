@@ -26,9 +26,10 @@ class SiswaController extends Controller
 
         if (Auth::user()->kelas == "-"){
             $siswa = DB::table('tb_siswa')->join('users','users.id','=','tb_siswa.id_user')
-            ->select('nik','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis')
+            ->select('nik','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis','tb_siswa.tahun')
         ->where('nama','like',"%".$cari."%")
         ->orWhere('nik','like',"%".$cari."%")
+        ->orWhere('tb_siswa.tahun','like',"%".$cari."%")
         // ->where('id_user','=',''.$id_user.'')
         
         ->paginate(10);
@@ -49,6 +50,8 @@ class SiswaController extends Controller
 
     public function store(Request $request){
         $id = $request->id_user;
+        $it = 1;
+        $id_tahun = Tahun::findorfail($it);
         $siswa = new Siswa([
             'id_user' => $request->id_user,
             'nama' => $request->nama,
@@ -60,6 +63,7 @@ class SiswaController extends Controller
             'alamat' => $request->alamat,
             'tgl_absen' => "0",
             'nis' => $request->nis,
+            'tahun' => $id_tahun,
         ]);
         $siswa->save();
 

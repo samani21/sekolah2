@@ -17,12 +17,13 @@ return new class extends Migration
             $table->id();
             $table->integer('id_siswa');
             $table->integer('id_guru');
-            $table->string('nm_kegiatan');
-            $table->string('capaian');
-            $table->string('tingkat');
-            $table->string('tahun');
-            $table->string('waktu');
-            $table->string('bukti');
+            $table->string('nm_kegiatan','100');
+            $table->string('capaian','20');
+            $table->string('tingkat','60');
+            $table->string('tahun','20');
+            $table->string('waktu','20');
+            $table->string('bukti','50');
+            $table->string('status','20');
             $table->timestamps();
         });
     }

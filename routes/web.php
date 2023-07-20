@@ -8,6 +8,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\PresensiController;
+use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TahunController;
 use Illuminate\Support\Facades\Route;
@@ -123,7 +124,23 @@ Route::get('absensi/lihat_presensi/{id}/{mapel}',[PresensiController::class, 'li
 
 //absesnsi siswa
 Route::get('absensi/absen_siswa', [AbsenController::class ,'index_siswa'])->name('absensi/absen_siswa');//absen siswa
-Route::get('absensi/proses_absen/{id}', [AbsenController::class, 'store'])->name('proses_absen');
+Route::get('absensi/proses_absen/{id}', [AbsenController::class, 'store'])->name('proses_absen');//proses absen siswa
+
+//prestasi siswa
+Route::get('prestasi/siswa',[PrestasiController::class, 'index_siswa'])->name('prestasi/siswa');//data prestasi siswa
+Route::get('prestasi/tambah_siswa',[PrestasiController::class, 'create_siswa'])->name('prestasi/tambah_siswa');//prestasi siswa
+Route::post('prestasi/tambah_siswa',[PrestasiController::class, 'store'])->name('prestasi.store');//proses tambah prestasi siswa
+Route::get('prestasi/edit_siswa/{id}',[PrestasiController::class, 'edit_siswa'])->name('prestasi/edit_siswa');//edit prestasi siswa
+Route::post('updatesiswa/{id}',[PrestasiController::class, 'update'])->name('updatesiswa');//proses edit prestasi siswa
+Route::get('prestasi/hapus/{id}',[PrestasiController::class, 'destroy'])->name('hapus_prestas');//hapus prestas siswa
+
+//prestasi guru
+Route::get('prestasi/guru',[PrestasiController::class, 'index_guru'])->name('prestasi/guru');//data prestasi guru
+Route::get('prestasi/tambah_guru',[PrestasiController::class, 'create_guru'])->name('prestasi/tambah_guru');//prestasi guru
+Route::post('prestasi/tambah_guru',[PrestasiController::class, 'store'])->name('prestasi.store');//proses tambah prestasi guru
+Route::get('prestasi/edit_guru/{id}',[PrestasiController::class, 'edit_guru'])->name('prestasi/edit_guru');//edit prestasi guru
+Route::post('updateguru/{id}',[PrestasiController::class, 'update'])->name('updateguru');//proses edit prestasi guru
+Route::get('prestasi/hapus/{id}',[PrestasiController::class, 'destroy'])->name('hapus_prestas');//hapus prestas guru
 
 //cetak
 Route::get('siswa/cetak', [SiswaController::class, 'cetak_siswa'])->name('siswa/cetak');//cetak siswa
