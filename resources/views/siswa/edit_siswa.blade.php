@@ -3,12 +3,15 @@
 @section('content')
 
     <div class="container">
+        @foreach ($siswa2 as $siswa)
+
         <form action="{{url('updatesiswa',$siswa->id)}}" method="POST">
             @csrf
             <div>
                 <label for="">NIS</label>
                 <input class="form-control" type="text" name="nis" value="{{$siswa->nis}}" placeholder="Masukkan NIK" aria-label="default input example">
             </div>
+            <input type="hidden" name="id_user" value="{{$siswa->id_user}}">
             <div>
                 <label for="">Nik</label>
                 <input class="form-control" type="text" name="nik" value="{{$siswa->nik}}" placeholder="Masukkan NIK" aria-label="default input example">
@@ -16,6 +19,15 @@
             <div>
                 <label for="">Nama</label>
                 <input class="form-control" type="text" name="nama" value="{{$siswa->nama}}" placeholder="Masukkan Nama" aria-label="default input example">
+            </div>
+            <div>
+                <label for="">Kelas</label>
+                <select name="kelas" class="form-control" required>
+                    <option value="{{$siswa->kelas}}">{{$siswa->kelas}}</option>
+                    @foreach ($kelas as $kel)
+                        <option value="{{$kel->nm_kelas}}">{{$kel->nm_kelas}}</option>
+                    @endforeach
+                </select>
             </div>
             <div>
                 <label for="">Tempat Tanggal Lahir</label>
@@ -57,4 +69,6 @@
             <button type="reset" class="btn btn-danger">Reset</button>
         </form>
 	</div>
+                
+    @endforeach
 @endsection

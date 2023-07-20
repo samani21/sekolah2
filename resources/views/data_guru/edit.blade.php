@@ -57,7 +57,7 @@
                 <select class="form-select" name="status1" aria-label="Default select example" required>
                     <option selected value="{{$guru->status}}">{{$guru->status}}</option>
                     <option value="ASN">ASN</option>
-                    <option value="Hnorer">Hnorer</option>
+                    <option value="Honor">Honor</option>
                   </select>
             </div>
             <hr>

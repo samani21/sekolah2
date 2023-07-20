@@ -94,7 +94,7 @@
                                                 <option value="--pilih">--pilih--</option>
                                                 <option value="Guru">Guru</option>
                                                 <option value="Tata_usaha">Tata Usaha</option>
-                                                <option value="Super Admin">Super Admin</option>
+                                                <option value="Super_admin">Super Admin</option>
                                             </select>
                                         </div>
                                     </div>

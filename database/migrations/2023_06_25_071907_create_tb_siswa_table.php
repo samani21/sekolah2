@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('tb_siswa', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_user');
+            $table->string('nis','20');
             $table->string('nama','50');
             $table->string('nik','20');
             $table->string('alamat','100');

@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('absen_siswa', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_user');
             $table->integer('id_presensi');
             $table->string('tgl','20');
             $table->string('jam','20');

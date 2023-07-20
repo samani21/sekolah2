@@ -16,9 +16,10 @@ return new class extends Migration
         Schema::create('absen_guru', function (Blueprint $table) {
             $table->id();
             $table->integer('id_guru');
-            $table->date('tgl');
+            $table->string('tgl','20');
             $table->string('jam_mulai','20');
             $table->string('jam_selesai','20');
+            $table->string('tahun','20');
             $table->timestamps();
         });
     }

@@ -53,13 +53,7 @@
                             <th scope="col">Jam mulai</th>
                             <th scope="col">Jam selesai</th>
                             <th scope="col">Tahun ajaran</th>
-                            @if (Auth::user()->level == "Guru")
-                                @foreach ($absen_guru as $a)
-                                @if ($a->jam_selesai == "-")
-                                <th scope="col">Aksi</th>
-                                @endif
-                                @endforeach
-                            @endif
+                            <th scope="col">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,13 +66,13 @@
                                 <td data-title="Jam mulai" >{{$abs->jam_mulai}}</td>
                                 <td data-title="Jam selesai" >{{$abs->jam_selesai}}</td>
                                 <td data-title="Tahun" >{{$abs->tahun}}</td>
-                                @if (Auth::user()->level == "Guru")
-                               @if ($abs->jam_selesai == "-")
                                 <td data-title="Aksi">
-                                    <a href="/selesai/{{$abs->id}}" class="btn btn-success">Selesai</a>
+                                @if (Auth::user()->level == "Guru" || Auth::user()->level == "Super_admin")
+                                    @if ($abs->jam_selesai == "-")
+                                            <a href="/selesai/{{$abs->id}}" class="btn btn-success">Selesai</a>
+                                    @endif
+                                @endif
                                 </td>
-                               @endif
-                               @endif
                             </tr>
                         @endforeach
                     </tbody>

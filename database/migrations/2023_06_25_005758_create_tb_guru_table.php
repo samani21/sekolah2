@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('tb_guru', function (Blueprint $table) {
             $table->id();
             $table->integer('id_user');
+            $table->string('nip','20');
             $table->string('nama','50');
             $table->string('nik','20');
             $table->string('alamat','100');
@@ -23,6 +24,8 @@ return new class extends Migration
             $table->string('tempat','50');
             $table->string('agama','10');
             $table->string('jk','10');
+            $table->string('status','20');
+            $table->string('tgl_absen','20');
             $table->timestamps();
         });
     }

@@ -76,6 +76,8 @@
                                 class="{{ request()->is('tahun/tahun_ajaran')?'active' :'' }}">Tahun ajaran</a>
                             <a href="{{url('kelas/kelas')}}"
                                 class="{{ request()->is('kelas/kelas')?'active' :'' }}">Kelas</a>
+                            <a href="{{url('mapel/mapel')}}"
+                                class="{{ request()->is('mapel/mapel')?'active' :'' }}">MAPEL</a>
                         </div>
                     </li>
                     <hr>
@@ -100,6 +102,7 @@
                             <span>Guru</span>
                         </a>
                     </li>
+                    @if (Auth::user()->status =='1')
                     <li>
                         <a href="{{ url('absensi/absen_guru?cari='.date('d-m-Y').'') }}"
                             class="{{ request()->is('absensi/absen_guru*')?'active' :'' }}">
@@ -107,6 +110,7 @@
                             <span>Absensi Guru</span>
                         </a>
                     </li>
+                    @endif
                     <li>
                         <a href="{{ url('absensi/presensi?cari='.date('Y-m-d').'') }}"
                             class="{{ request()->is('absensi/presensi*','absensi/lihat_presensi*')?'active' :'' }}">
@@ -117,60 +121,92 @@
                     @endif
 
                     @if(Auth::user()->level =='Guru')
-                    <li>
-                        <a href="{{ url('dashboard/dashboard?tgl='.date('d-m-Y').'&tahun='.date('Y').'') }}"
-                            class="{{ request()->is('dashboard/*')?'active' :'' }}">
-                            <span class="las la-tachometer-alt"></span>
-                            <span>dashboard</span>
-                        </a>
-                    </li>
-                    @if (Auth::user()->status =='0')
-                    <li>
-                         <a href="{{ url('data_guru/tambah_guru') }}"
-                             class="{{ request()->is('profil/*')?'active' :'' }}">
-                             <span class="fa-solid fa-address-card"></span>
-                             <span>Profil</span>
-                         </a>
-                     </li>
-                    @endif
-                    @if (Auth::user()->status =='1')
-                    <li>
-                         <a href="{{ url('profil/profil/'.Auth::user()->id.'') }}"
-                             class="{{ request()->is('profil/*')?'active' :'' }}">
-                             <span class="fa-solid fa-address-card"></span>
-                             <span>Profil</span>
-                         </a>
-                     </li>
-                    @endif
+                        <li>
+                            <a href="{{ url('dashboard/dashboard?tgl='.date('d-m-Y').'&tahun='.date('Y').'') }}"
+                                class="{{ request()->is('dashboard/*')?'active' :'' }}">
+                                <span class="las la-tachometer-alt"></span>
+                                <span>dashboard</span>
+                            </a>
+                        </li>
+                        @if (Auth::user()->status =='0')
+                        <li>
+                            <a href="{{ url('data_guru/tambah_guru') }}"
+                                class="{{ request()->is('profil/*')?'active' :'' }}">
+                                <span class="fa-solid fa-address-card"></span>
+                                <span>Profil</span>
+                            </a>
+                        </li>
+                        @endif
+                        @if (Auth::user()->status =='1')
+                        <li>
+                            <a href="{{ url('profil/profil/'.Auth::user()->id.'') }}"
+                                class="{{ request()->is('profil/*')?'active' :'' }}">
+                                <span class="fa-solid fa-address-card"></span>
+                                <span>Profil</span>
+                            </a>
+                        </li>
+                        @endif
                     <hr>
-                    <li>
-                        <a href="{{ url('siswa/siswa') }}"
-                            class="{{ request()->is('siswa/*')?'active' :'' }}">
-                            <span class="fa-solid fa-person"></span>
-                            <span>Siswa</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('data_guru/guru') }}"
-                            class="{{ request()->is('data_guru/*')?'active' :'' }}">
-                            <span class="fa-solid fa-chalkboard-user"></span>
-                            <span>Guru</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('absensi/absen_guru') }}"
-                            class="{{ request()->is('absensi/absen_guru*')?'active' :'' }}">
-                            <span class="fa-solid fa-clipboard-list"></span>
-                            <span>Absensi</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('absensi/presensi') }}"
-                            class="{{ request()->is('absensi/presensi*')?'active' :'' }}">
-                            <span class="fa-solid fa-clipboard-list"></span>
-                            <span>Presensi Siswa</span>
-                        </a>
-                    </li>
+                        @if (Auth::user()->status =='0')
+                            <li>
+                                <a href="{{ url('data_guru/tambah_guru') }}"
+                                    class="{{ request()->is('profil/*')?'active' :'' }}">
+                                    <span class="fa-solid fa-person"></span>
+                                    <span>Siswa</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('data_guru/tambah_guru') }}"
+                                    class="{{ request()->is('profil/*')?'active' :'' }}">
+                                    <span class="fa-solid fa-chalkboard-user"></span>
+                                    <span>Guru</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('data_guru/tambah_guru') }}"
+                                    class="{{ request()->is('profil/*')?'active' :'' }}">
+                                    <span class="fa-solid fa-clipboard-list"></span>
+                                    <span>Absensi</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('data_guru/tambah_guru') }}"
+                                    class="{{ request()->is('profil/*')?'active' :'' }}">
+                                    <span class="fa-solid fa-clipboard-list"></span>
+                                    <span>Presensi Siswa</span>
+                                </a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->status =='1')
+                            <li>
+                                <a href="{{ url('siswa/siswa') }}"
+                                    class="{{ request()->is('siswa/*')?'active' :'' }}">
+                                    <span class="fa-solid fa-person"></span>
+                                    <span>Siswa</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('data_guru/guru') }}"
+                                    class="{{ request()->is('data_guru/*')?'active' :'' }}">
+                                    <span class="fa-solid fa-chalkboard-user"></span>
+                                    <span>Guru</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('absensi/absen_guru') }}"
+                                    class="{{ request()->is('absensi/absen_guru*')?'active' :'' }}">
+                                    <span class="fa-solid fa-clipboard-list"></span>
+                                    <span>Absensi</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('absensi/presensi') }}"
+                                    class="{{ request()->is('absensi/presensi*')?'active' :'' }}">
+                                    <span class="fa-solid fa-clipboard-list"></span>
+                                    <span>Presensi Siswa</span>
+                                </a>
+                            </li>
+                        @endif
                     @endif
                     @if(Auth::user()->level =='Tata_usaha')
                     <li>
@@ -248,6 +284,16 @@
                      </li>
                     @endif
                     <hr>
+                    @if (Auth::user()->status =='0')
+                    <li>
+                         <a href="{{ url('siswa/tambah_siswa') }}"
+                             class="{{ request()->is('profil/*')?'active' :'' }}">
+                             <span class="fa-solid fa-clipboard-list"></span>
+                             <span>Absensi</span>
+                         </a>
+                     </li>
+                    @endif
+                    @if (Auth::user()->status =='1')
                     <li>
                         <a href="{{ url('absensi/absen_siswa') }}"
                             class="{{ request()->is('absensi/absen_siswa*')?'active' :'' }}">
@@ -255,6 +301,7 @@
                             <span>Absensi</span>
                         </a>
                     </li>
+                    @endif
                     <li>
                         <a href="{{ url('siswa/siswa') }}"
                             class="{{ request()->is('siswa/*')?'active' :'' }}">

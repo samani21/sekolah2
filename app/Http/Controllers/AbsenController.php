@@ -7,6 +7,7 @@ use App\Models\AbsenSiswa;
 use App\Models\Guru;
 use App\Models\Siswa;
 use App\Models\Tahun;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -125,16 +126,28 @@ class AbsenController extends Controller
 
 //Siswa
     public function index_siswa(){
+        $id = Auth::user()->id;
+        $user = User::findorfail($id);
+        $kelas1 = DB::table('kelas')->get();
+
         $id_tahun = "1";
         $tahun = Tahun::find($id_tahun);
         $kelas = Auth::user()->kelas;
+
+        $siswa = Auth::user()->id;
+        $d_siswa = DB::table('tb_siswa')->where('id_user','=',''.$siswa.'')->get();
+        foreach ($d_siswa as $sis)
+        $a_siswa = $sis->tgl_absen;
+
+        $tah = $tahun->tahun;
         $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
         ->where('kelas','=',''.$kelas.'')
-        ->where('tahun','=','2023/2024')
-        ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','tahun','nama','presensi.id')
-        ->paginate();
+        ->where('tahun','=',''.$tah.'')
+        ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','tahun','tb_guru.nama','presensi.id')
+        ->orderBy('id','desc')
+        ->paginate(10);
         $data ['title'] = "Absensi Siswa";
-        return view('absensi.absen_siswa',compact('presensi'),$data);
+        return view('absensi.absen_siswa',compact('presensi','a_siswa','kelas1','user','tahun'),$data);
     }
 
     public function store(Request $request, $id){
@@ -152,6 +165,12 @@ class AbsenController extends Controller
             'tahun'=> stripslashes($tahun['tahun'])
         ]);
         $absen->save();
+
+        $edit = Siswa::find($sis);
+        $data = [
+            'tgl_absen' => date('Y-m-d H:i:s'),
+        ];
+        $edit->update($data);
         Alert()->success('SuccessAlert','Berhasil');
         return redirect()->back();
     }

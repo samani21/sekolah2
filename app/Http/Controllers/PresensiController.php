@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guru;
+use App\Models\mapel;
 use App\Models\Presensi;
 use App\Models\Tahun;
 use Illuminate\Http\Request;
@@ -18,7 +19,10 @@ class PresensiController extends Controller
         $guru = DB::table('tb_guru')->where('id_user','=',$id_user)->get();
         foreach ($guru as $g)
         $gur = $g->id;
-        
+
+        $tahun = DB::table('tahun')->get();
+        foreach ($tahun as $t)
+        $ta = $t->tahun;
         // $siswa = DB::table('absen_siswa')->select(DB::raw('count(id_presensi) as jumlah'))
         // ->groupBy('id_presensi')->get();
         // dd($siswa);
@@ -27,19 +31,22 @@ class PresensiController extends Controller
             $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
         ->join('absen_siswa','absen_siswa.id_presensi','=','presensi.id')
         ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
-        ->where('mapel','like',"%".$cari."%")
-        ->orWhere('presensi.tgl','like',"%".$cari."%")
+        ->where('presensi.tgl','like',"%".$cari."%")
+        ->orWhere('mapel','like',"%".$cari."%")
+        ->orWhere('nama','like',"%".$cari."%")
+        ->groupBy('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
         ->paginate(10);
         }else{
             $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
         ->join('absen_siswa','absen_siswa.id_presensi','=','presensi.id')
         ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
         ->where('id_guru','=',''.$gur.'')
-        ->where('mapel','like',"%".$cari."%")
-        ->orWhere('presensi.tgl','like',"%".$cari."%")
+        ->where('presensi.tahun','=',''.$ta.'')
+        ->where('presensi.tgl','like',"%".$cari."%")
+        ->groupBy('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
         ->paginate(10);
         }
-        
+        // dd($presensi);
         $data ['title'] = "Presensi siswa";
         return view('absensi.presensi',compact('guru','presensi'),$data);
     }
@@ -48,9 +55,10 @@ class PresensiController extends Controller
         $guru = Guru::find($id_guru);
         $id_tahun = "1";
         $tahun = Tahun::find($id_tahun);
+        $mapel = mapel::all();
         $kelas = DB::table('kelas')->get();
         $data ['title'] = "Tambah Presensi";
-        return view('absensi.tambah_presensi',compact('guru','tahun','kelas'),$data);
+        return view('absensi.tambah_presensi',compact('guru','tahun','kelas','mapel'),$data);
     }
 
     public function store(Request $request){
@@ -65,7 +73,7 @@ class PresensiController extends Controller
         ]);
         $presensi->save();
         Alert()->success('SuccessAlert','Tambah presensi siswa berhasil');
-        return redirect()->route('absensi/presensi');
+        return redirect('absensi/presensi?cari='.date('Y-m-d').'');
     }
 
     public function edit_presensi($id){
@@ -138,7 +146,10 @@ class PresensiController extends Controller
         $guru = DB::table('tb_guru')->where('id_user','=',$id_user)->get();
         foreach ($guru as $g)
         $gur = $g->id;
-        
+
+        $tahun = DB::table('tahun')->get();
+        foreach ($tahun as $t)
+        $ta = $t->tahun;
         // $siswa = DB::table('absen_siswa')->select(DB::raw('count(id_presensi) as jumlah'))
         // ->groupBy('id_presensi')->get();
         // dd($siswa);
@@ -147,16 +158,19 @@ class PresensiController extends Controller
             $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
         ->join('absen_siswa','absen_siswa.id_presensi','=','presensi.id')
         ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
-        ->where('mapel','like',"%".$cari."%")
-        ->orWhere('presensi.tgl','like',"%".$cari."%")
+        ->where('presensi.tgl','like',"%".$cari."%")
+        ->orWhere('mapel','like',"%".$cari."%")
+        ->orWhere('nama','like',"%".$cari."%")
+        ->groupBy('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
         ->paginate(10);
         }else{
             $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
         ->join('absen_siswa','absen_siswa.id_presensi','=','presensi.id')
         ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
         ->where('id_guru','=',''.$gur.'')
-        ->where('mapel','like',"%".$cari."%")
-        ->orWhere('presensi.tgl','like',"%".$cari."%")
+        ->where('presensi.tahun','=',''.$ta.'')
+        ->where('presensi.tgl','like',"%".$cari."%")
+        ->groupBy('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
         ->paginate(10);
         }
         

@@ -13,15 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('presensi', function (Blueprint $table) {
+        Schema::create('mapel', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_guru');
             $table->string('mapel','20');
-            $table->string('kelas','20');
-            $table->date('tgl');
-            $table->string('jam_mulai','20');
-            $table->string('jam_selesai','20');
-            $table->string('tahun','20');
             $table->timestamps();
         });
     }
@@ -33,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('presensi');
+        Schema::dropIfExists('mapel');
     }
 };

@@ -11,7 +11,12 @@
             </div>
             <div>
                 <label for="">Mata Pelajaran</label>
-                <input class="form-control" type="text" name="mapel"  aria-label="default input example" autofocus required>
+                <select name="mapel" class="form-control" required>
+                    <option value="">--pilih--</option>
+                    @foreach ($mapel as $map)
+                        <option value="{{$map->mapel}}">{{$map->mapel}}</option>
+                    @endforeach
+                </select>
             </div>
             <div>
                 <label for="">Kelas</label>
@@ -32,7 +37,7 @@
             </div>
             <div>
                 <label for="">Jam selesai</label>
-                <input class="form-control" type="text" name="jam_selesai" value="{{date('H:i:s')}}" aria-label="default input example" required>
+                <input class="form-control" type="text" name="jam_selesai" value="{{date('H:i:s', strtotime('+3 hours'))}}" aria-label="default input example" required>
             </div>
             <div>
                 <label for="">Tahun ajaran</label>

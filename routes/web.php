@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MapelController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\SiswaController;
@@ -77,6 +78,8 @@ Route::post('updatesiswa/{id}',[SiswaController::class, 'update'])->name('update
 Route::get('siswa/hapus_siswa/{id}',[SiswaController::class, 'destroy'])->name('hapus_iswa');//hapus data siswa
 
 Route::get('profil/profilsiswa/{id}',[SiswaController::class,'profil'])->name('profil/profilsiswa');//menampilkan data profil
+Route::get('profil/edit_kelas',[SiswaController::class,'edit_kelas'])->name('profil/edit_kelas');//menampilkan edit kelas siswa
+Route::post('updateke/{id}',[SiswaController::class, 'updatekelas'])->name('updateke');//proses upodate pengguna
 
 //pengguna
 Route::get('pengguna/pengguna', [PenggunaController::class,'index'])->name('pengguna/pengguna');//menampilkan data pengguna
@@ -94,6 +97,15 @@ Route::post('kelas/tambah_kelas',[KelasController::class, 'store'])->name('kelas
 Route::get('kelas/edit_kelas/{id}',[KelasController::class, 'edit_kelas'])->name('siswa/edit_kelas');//edit datasiswa
 Route::post('updatekelas/{id}',[KelasController::class, 'update'])->name('updatekelas');//proses edit data siswa
 Route::get('kelas/hapus_kelas/{id}',[KelasController::class, 'destroy'])->name('hapus_kelas');//hapus data siswa
+
+//Mata pelajaran
+Route::get('mapel/mapel',[MapelController::class, 'index'])->name('mapel/mapel');//menampilkan data mapel
+Route::get('mapel/tambah_mapel',[MapelController::class, 'create'])->name('mapel/tambah_mapel');//input mapel
+Route::post('mapel/tambah_mapel',[MapelController::class, 'store'])->name('mapel.store');//proses tambah data mapel
+Route::get('mapel/edit_mapel/{id}',[MapelController::class, 'edit_mapel'])->name('mapel/edit_mapel');//edit datasiswa
+Route::post('updatemapel/{id}',[MapelController::class, 'update'])->name('updatemapel');//proses edit data siswa
+Route::get('mapel/hapus_mapel/{id}',[MapelController::class, 'destroy'])->name('hapus_mapel');//hapus data siswa
+
 
 //absensi
 Route::get('absensi/absen_guru', [AbsenController::class ,'index'])->name('absensi/absen_guru');//menampilkan halaman absensi guru
