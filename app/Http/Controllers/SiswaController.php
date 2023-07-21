@@ -65,6 +65,7 @@ class SiswaController extends Controller
             'tgl_harian' => "0",
             'nis' => $request->nis,
             'tahun' => $id_tahun->tahun,
+            'presensi' => "0",
         ]);
         $siswa->save();
 
@@ -163,5 +164,10 @@ class SiswaController extends Controller
         $edit->update($data);
         Alert()->success('SuccessAlert','Update kelas berhasil');
         return redirect()->back();
+    }
+    public function cetak_kartu($id){
+        $siswa = Siswa::find($id);
+        $user = User::find($siswa->id_user);
+        return view('profil.cetak_kartu',['siswa'=>$siswa,'user'=>$user]);
     }
 }

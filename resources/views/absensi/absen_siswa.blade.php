@@ -38,21 +38,20 @@
                         <thead>
                             <tr>
                                 <th scope="col">No</th>
-                                <th scope="col">Nama Guru</th>
                                 <th scope="col">Mapel</th>
                                 <th scope="col">Kelas</th>
                                 <th scope="col">Tanggal</th>
                                 <th scope="col">Jam mulai</th>
                                 <th scope="col">Jam selesai</th>
                                 <th scope="col">Tahun ajaran</th>
-                                <th scope="col">Aksi</th>
+                                <th scope="col">Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($presensi as $index=>$pre)
                             <tr>
                                 <td data-title="No">{{ $index + $presensi->firstItem() }}</td>
-                                <td data-title="Nama Guru" >{{$pre->nama}}</td>
+                                {{-- <td data-title="Nama Guru" >{{$pre->nama}}</td> --}}
                                 <td data-title="Mapel" >{{$pre->mapel}}</td>
                                 <td data-title="Kelas" >{{$pre->kelas}}</td>
                                 <td data-title="Tanggal" >{{$pre->tgl}}</td>
@@ -66,9 +65,9 @@
                                 <td>
                                     <?php
                                         if (strtotime($a_siswa) <= strtotime($a)) {
-                                            ?>
-                                                <a href="proses_absen/{{$pre->id}}" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i>Absen</a>
-                                            <?php
+                                            echo "Belum absen";
+                                        }else {
+                                            echo "Hadir";
                                         }
                                     ?>
                                 </td>

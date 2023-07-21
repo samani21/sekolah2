@@ -30,7 +30,8 @@ class HarianController extends Controller
         return view('harian/harian',['siswa'=>$siswa,'tahun'=>$id_tahun,'url'=>$url],$data);
     }
 
-    public function absen(Request $request, $id){
+    public function absen(Request $request){
+        $id = $request->id;
         $id_tahun = "1";
         $tahun = Tahun::find($id_tahun);
         $edit = Siswa::findorfail($id);

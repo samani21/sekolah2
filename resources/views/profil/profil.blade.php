@@ -9,9 +9,15 @@
             <h3 align="center">PROFIL SISWA</h3>
             <hr>
             @foreach ( $siswa as $s )
-           <div align="right">
-            <a href="/siswa/edit_siswa/{{$s->id}}" class="btn btn-warning">Edit</a>
-           </div>
+            <div class="row">
+                <div class="col-6">
+                    {!! QrCode::size(100)->generate($s->id); !!}
+                    <a href="cetak_kartu/{{$s->id}}" class="btn btn-primary"><i class="fa-solid fa-print"></i> QrCode</a>
+                </div>
+                <div align="right" class="col-6">
+                    <a href="/siswa/edit_siswa/{{$s->id}}" class="btn btn-warning">Edit</a>
+                </div>
+            </div>
             <br>
             <table class="table table-success table-striped" >
                 <tr>

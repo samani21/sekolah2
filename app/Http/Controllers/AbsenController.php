@@ -140,10 +140,12 @@ class AbsenController extends Controller
         $a_siswa = $sis->tgl_absen;
 
         $tah = $tahun->tahun;
-        $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
+        $presensi = DB::table('absen_siswa')->join('tb_siswa','tb_siswa.id','=','absen_siswa.id_siswa')
+        ->join('presensi','presensi.id','=','absen_siswa.id_presensi')
+        ->where('id_siswa','=',''.$sis->id.'')
         ->where('kelas','=',''.$kelas.'')
-        ->where('tahun','=',''.$tah.'')
-        ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','tahun','tb_guru.nama','presensi.id')
+        ->where('presensi.tahun','=',''.$tah.'')
+        ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','presensi.id')
         ->orderBy('id','desc')
         ->paginate(10);
         $data ['title'] = "Absensi Siswa";
@@ -151,14 +153,11 @@ class AbsenController extends Controller
     }
 
     public function store(Request $request, $id){
+        $id_siswa = $request->id;
         $id_tahun = "1";
         $tahun = Tahun::find($id_tahun);
-        $siswa = Auth::user()->id;
-        $id_siswa = DB::table('tb_siswa')->where('id_user','=',''.$siswa.'')->get();
-        foreach ($id_siswa as $id_s)
-        $sis =$id_s->id;
         $absen = new AbsenSiswa([
-            'id_siswa' => $sis,
+            'id_siswa' => $id_siswa,
             'id_presensi' => $id,
             'tgl' => date('d-m-Y'),
             'jam'=> date('H:i:s'),
@@ -166,9 +165,10 @@ class AbsenController extends Controller
         ]);
         $absen->save();
 
-        $edit = Siswa::find($sis);
+        $edit = Siswa::find($id_siswa);
         $data = [
             'tgl_absen' => date('Y-m-d H:i:s'),
+            'presensi' => $id,
         ];
         $edit->update($data);
         Alert()->success('SuccessAlert','Berhasil');

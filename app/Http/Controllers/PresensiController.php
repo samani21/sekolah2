@@ -29,7 +29,6 @@ class PresensiController extends Controller
         if(Auth::user()->level == "Super_admin")
         {
             $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
-        ->join('absen_siswa','absen_siswa.id_presensi','=','presensi.id')
         ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
         ->where('presensi.tgl','like',"%".$cari."%")
         ->orWhere('mapel','like',"%".$cari."%")
@@ -38,7 +37,6 @@ class PresensiController extends Controller
         ->paginate(10);
         }else{
             $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
-        ->join('absen_siswa','absen_siswa.id_presensi','=','presensi.id')
         ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
         ->where('id_guru','=',''.$gur.'')
         ->where('presensi.tahun','=',''.$ta.'')
