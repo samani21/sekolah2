@@ -26,6 +26,9 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <link rel="stylesheet"
         href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://davidshimjs.github.io/qrcodejs/qrcode.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -78,6 +81,8 @@
                                 class="{{ request()->is('kelas/kelas')?'active' :'' }}">Kelas</a>
                             <a href="{{url('mapel/mapel')}}"
                                 class="{{ request()->is('mapel/mapel')?'active' :'' }}">MAPEL</a>
+                            <a href="{{url('url/url')}}"
+                                class="{{ request()->is('url/url')?'active' :'' }}">URL</a>
                         </div>
                     </li>
                     <hr>
@@ -130,6 +135,13 @@
                             class="{{ request()->is('prestasi/guru*','prestasi/edit_guru*','prestasi/tambah_guru*')?'active' :'' }}">
                             <span class="fa-solid fa-award"></span>
                             <span>Prestasi guru</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('harian/harian') }}"
+                            class="{{ request()->is('harian/harian*')?'active' :'' }}">
+                            <span class="fa-solid fa-clipboard-list"></span>
+                            <span>Absen siswa</span>
                         </a>
                     </li>
                     @endif

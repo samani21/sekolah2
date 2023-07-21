@@ -62,6 +62,7 @@ class SiswaController extends Controller
             'jk' => $request->jk,
             'alamat' => $request->alamat,
             'tgl_absen' => "0",
+            'tgl_harian' => "0",
             'nis' => $request->nis,
             'tahun' => $id_tahun->tahun,
         ]);

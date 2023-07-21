@@ -3,6 +3,7 @@
 use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GuruController;
+use App\Http\Controllers\HarianController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MapelController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TahunController;
+use App\Http\Controllers\UrlController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -93,6 +95,10 @@ Route::post('pengguna/tambah_akun', [PenggunaController::class,'store'])->name('
 Route::get('tahun/tahun_ajaran', [TahunController::class,'index'])->name('tahun/tahun');//menampilkan halaman setting tahun ajaran
 Route::post('update', [TahunController::class,'update'])->name('update');//proses update tahun ajaran
 
+//url
+Route::get('url/url', [UrlController::class,'index'])->name('url/url');//menampilkan halaman setting tahun ajaran
+Route::post('update', [UrlController::class,'update'])->name('update');//proses update tahun ajaran
+
 //kelas
 Route::get('kelas/kelas',[KelasController::class, 'index'])->name('kelas/kelas');//menampilkan data kelas
 Route::get('kelas/tambah_kelas',[KelasController::class, 'create'])->name('kelas/tambah_kelas');//input kelas
@@ -143,6 +149,11 @@ Route::get('prestasi/edit_guru/{id}',[PrestasiController::class, 'edit_guru'])->
 Route::post('updateguru/{id}',[PrestasiController::class, 'update'])->name('updateguru');//proses edit prestasi guru
 Route::get('prestasi/hapus/{id}',[PrestasiController::class, 'destroy'])->name('hapus_prestas');//hapus prestas guru
 
+//absen siswa harian
+Route::get('harian/harian',[HarianController::class, 'index'])->name('harian/harian');//data absen siswa harian
+Route::get('harian/absen/{id}',[HarianController::class, 'absen'])->name('harian/absen');//data absen siswa harian
+
+
 //cetak
 Route::get('siswa/cetak', [SiswaController::class, 'cetak_siswa'])->name('siswa/cetak');//cetak siswa
 Route::get('data_guru/cetak', [GuruController::class, 'cetak_guru'])->name('guru/cetak');//cetak guru
@@ -150,3 +161,4 @@ Route::get('absensi/cetak_guru', [AbsenController::class, 'cetak_guru'])->name('
 Route::get('absensi/cetak_presensi/id{id}&mapel{mapel}', [PresensiController::class, 'cetak'])->name('absensi/cetak_presensi');//cetak presesnsi 
 Route::get('absensi/cetak_mapel', [PresensiController::class, 'cetak_mapel'])->name('absensi/cetak_mapel');//cetak absen mapel
 Route::get('profil/cetak/{id}', [GuruController::class, 'cetak_profil'])->name('profil/cetak');//cetak profil
+Route::get('harian/cetak_kartu/{id}', [HarianController::class, 'cetak_kartu'])->name('harian/cetak_kartu');//cetak kartu absen
