@@ -29,6 +29,8 @@
                     </select>
                 </div>
             </div>
+                <input class="form-control" type="hidden" name="kelas" value="{{$user->kelas}}" placeholder="Masukkan NIK" aria-label="default input example">
+
             <hr>
             <button type="submit" class="btn btn-success">Simpan</button>
             <button type="reset" class="btn btn-danger">Reset</button>

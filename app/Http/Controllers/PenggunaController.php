@@ -6,6 +6,7 @@ use App\Models\Tahun;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -32,11 +33,16 @@ class PenggunaController extends Controller
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'password1' => $request->password,
-            'level' =>$request->level,
+            'kelas' =>$request->kelas,
         ];
         $edit->update($data);
         Alert()->success('SuccessAlert','Tambah data Siswa berhasil');
-        return redirect()->route('pengguna/pengguna');
+        if(Auth::user()->level == "Siswa"){
+            return redirect('profil/profilsiswa/'.$id.'');
+        }
+        if(Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha" || Auth::user()->level == "Guru"){
+            return redirect('/profil/profil/'.$id.'');
+        }
     }
 
     public function create(){
@@ -72,5 +78,11 @@ class PenggunaController extends Controller
 
         Alert()->success('SuccessAlert','Tambah data Siswa berhasil');
         return redirect()->route('pengguna/pengguna');
+    }
+
+    public function ubah(){
+        $user = User::find(Auth::user()->id);
+        $data['title']="Ubah password";
+        return view('profil.ubah_password',compact('user'),$data);
     }
 }

@@ -90,6 +90,8 @@ Route::get('pengguna/edit_pengguna/{id}', [PenggunaController::class,'edit_pengg
 Route::post('updatepengguna/{id}',[PenggunaController::class, 'update'])->name('updatepengguna');//proses upodate pengguna
 Route::get('pengguna/tambah_akun', [PenggunaController::class,'create'])->name('pengguna/tambah_akun');//tambah akun siswa
 Route::post('pengguna/tambah_akun', [PenggunaController::class,'store'])->name('pengguna.store');//tambah akun siswa
+Route::get('profil/ubah_password',[PenggunaController::class, 'ubah'])->name('profil/ubah_password');//data prestasi siswa
+Route::post('ubahpassword/{id}',[PenggunaController::class, 'update_password'])->name('ubahpassword');//prestasi siswa
 
 //tahun ajaran
 Route::get('tahun/tahun_ajaran', [TahunController::class,'index'])->name('tahun/tahun');//menampilkan halaman setting tahun ajaran

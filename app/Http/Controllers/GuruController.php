@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guru;
+use App\Models\Tahun;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -88,12 +89,13 @@ class GuruController extends Controller
     }
 
     public function profil($id){
+        $tahun = Tahun::find(1);
         $guru = DB::table('tb_guru')->join('users','users.id','=','tb_guru.id_user')
         ->select('users.level','nik','id_user','nama','tempat','tgl','alamat','agama','jk','tb_guru.id','tb_guru.status','nip')
         ->where('id_user','=',''.$id.'')
         ->get();
         $data['title']= "Data profil";
-        return view('profil.profil',['guru'=>$guru],$data);
+        return view('profil.profil',['guru'=>$guru,'tahun'=>$tahun],$data);
     }
     public function cetak_guru(Request $request)
     {   

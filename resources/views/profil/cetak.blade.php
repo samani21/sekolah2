@@ -28,7 +28,7 @@
         </thead>
     </table>
     <hr>
-    <h3 align="center">LAPORAN DATA SISWA</h3>
+    <h3 align="center">PROFIL</h3>
         <table style="border-collapse:collapse;border-spacing:1;" border="0" align="center">
             @foreach ($guru as $g )
             

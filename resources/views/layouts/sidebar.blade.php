@@ -202,6 +202,13 @@
                                     <span>Presensi Siswa</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ url('harian/harian') }}"
+                                    class="{{ request()->is('harian/harian*')?'active' :'' }}">
+                                    <span class="fa-solid fa-clipboard-list"></span>
+                                    <span>Absen siswa</span>
+                                </a>
+                            </li>
                         @endif
                         @if (Auth::user()->status =='1')
                             <li>
@@ -289,6 +296,13 @@
                             <span>Absensi Guru</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ url('harian/harian') }}"
+                            class="{{ request()->is('harian/harian*')?'active' :'' }}">
+                            <span class="fa-solid fa-clipboard-list"></span>
+                            <span>Absen siswa</span>
+                        </a>
+                    </li>
                     @endif
                     @if(Auth::user()->level =='Siswa')
                     <li>
@@ -347,6 +361,13 @@
                             class="{{ request()->is('prestasi/siswa*','prestasi/tambah_siswa*','prestasi/edit_siswa*')?'active' :'' }}">
                             <span class="fa-solid fa-award"></span>
                             <span>Prestasi Siswa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('harian/harian') }}"
+                            class="{{ request()->is('harian/harian*')?'active' :'' }}">
+                            <span class="fa-solid fa-clipboard-list"></span>
+                            <span>Absen siswa</span>
                         </a>
                     </li>
                     @endif

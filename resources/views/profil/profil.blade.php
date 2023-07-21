@@ -16,6 +16,7 @@
                 </div>
                 <div align="right" class="col-6">
                     <a href="/siswa/edit_siswa/{{$s->id}}" class="btn btn-warning">Edit</a>
+                    <a href="/profil/ubah_password" class="btn btn-primary">password</a>
                 </div>
             </div>
             <br>
@@ -106,6 +107,7 @@
     }else{
         ?>
         <div class="container">
+            @if (Auth::user()->level =='Siswa')
             <form action="{{url('updateke',$user->id)}}" method="POST">
                 @csrf
                 <div>
@@ -122,6 +124,7 @@
                 <button type="reset" class="btn btn-danger">Reset</button>
             </form>
         </div>
+        @endif
         <?php
     }
 ?>
@@ -133,6 +136,7 @@
        <div align="right">
         <a href="/data_guru/edit/{{$g->id}}" class="btn btn-warning">Edit</a>
         <a href="/profil/cetak/{{$g->id_user}}" class="btn btn-success">Cetak</a>
+        <a href="/profil/ubah_password" class="btn btn-primary">password</a>
        </div>
         <br>
         <table class="table table-success table-striped" >
