@@ -4,12 +4,12 @@
     <div class="container">
         <div class="row">
             @if (Auth::user()->level =="Guru" ||Auth::user()->level =="Tata_usaha" ||Auth::user()->level =="Super_admin")
-            {{-- <div class="col-8">
-                <form action="{{route('siswa/cetak')}}" method="GET">
+            <div class="col-8">
+                <form action="{{route('prestasi/cetak')}}" method="GET">
                     <div class="row">
                         <div class="col-md-8">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" name="cari" placeholder="cetak sisawa siswa" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                <input type="text" class="form-control" name="cari" placeholder="cetak prestasi" aria-label="Recipient's username" aria-describedby="button-addon2">
                               </div>
                         </div>
                         <div class="col-md-4">
@@ -17,21 +17,23 @@
                         </div>
                     </div>
                 </form>
-            </div> --}}
+            </div>
             @endif
         </div>
         <div class="row">
             <div class="col-8">
                 <form action="" method="GET">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="cari" placeholder="Cari siswa" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <input type="text" class="form-control" name="cari" placeholder="Cari" aria-label="Recipient's username" aria-describedby="button-addon2">
                         <button class="btn btn-primary" type="submit" id="button-addon2"><i class="fa-solid fa-magnifying-glass"></i></button>
                       </div>
                 </form>
             </div>
+            @if (Auth::user()->level =="Tata_usaha" ||Auth::user()->level =="Super_admin")
             <div class="col-4">
                 <a href="tambah_guru" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Prestasi</a>
             </div>
+            @endif
         </div>
             <hr>
             <div>
@@ -45,7 +47,7 @@
                         <th scope="col">Tahun</th>
                         <th scope="col">Waktu</th>
                         <th scope="col">Bukti</th>
-                        @if (Auth::user()->level == "Guru" || Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
+                        @if (Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
                         <th scope="col">Aksi</th>
                         @endif
                     </thead>
@@ -60,7 +62,7 @@
                                 <td data-title="Tahun">{{$pre->tahun}}</td>
                                 <td data-title="Waktu">{{$pre->waktu}}</td>
                                 <td data-title="Bukti">{{$pre->bukti}}</td>
-                                @if (Auth::user()->level == "Guru" || Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
+                                @if (Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
                                 <td>
                                     <a href="edit_guru/{{$pre->id}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
                                     <a href="hapus/{{$pre->id}}" class="btn btn-danger" onclick="javascript: return confirm('Konfirmasi data akan dihapus');"><i class="fa-solid fa-trash"></i> Hapus</a>

@@ -154,7 +154,7 @@ Route::get('prestasi/hapus/{id}',[PrestasiController::class, 'destroy'])->name('
 //absen siswa harian
 Route::get('harian/harian',[HarianController::class, 'index'])->name('harian/harian');//data absen siswa harian
 Route::get('harian/absen',[HarianController::class, 'absen'])->name('harian/absen');//data absen siswa harian
-
+Route::get('harian/siswa',[HarianController::class, 'siswa'])->name('harian/siswa');//data absen siswa harian
 
 //cetak
 Route::get('siswa/cetak', [SiswaController::class, 'cetak_siswa'])->name('siswa/cetak');//cetak siswa
@@ -164,3 +164,8 @@ Route::get('absensi/cetak_presensi/id{id}&mapel{mapel}', [PresensiController::cl
 Route::get('absensi/cetak_mapel', [PresensiController::class, 'cetak_mapel'])->name('absensi/cetak_mapel');//cetak absen mapel
 Route::get('profil/cetak/{id}', [GuruController::class, 'cetak_profil'])->name('profil/cetak');//cetak profil
 Route::get('profil/profilsiswa/cetak_kartu/{id}', [SiswaController::class, 'cetak_kartu'])->name('siswa/cetak_kartu');//cetak kartu absen
+Route::get('prestasi/cetak_prestasi', [PrestasiController::class, 'cetak_siswa'])->name('prestasi/cetak_prestasi');//cetak prestasi
+Route::get('prestasi/cetak', [PrestasiController::class, 'cetak_guru'])->name('prestasi/cetak');//cetak prestasi guru
+Route::get('harian/cetak', [PrestasiController::class, 'cetak_guru'])->name('prestasi/cetak');//cetak prestasi guru
+Route::get('harian/cetak', [HarianController::class, 'cetak'])->name('harian/cetak');//cetak absen harian
+Route::get('absensi/cetak_siswa', [AbsenController::class, 'cetak_siswa'])->name('absensi/cetak_siswa');//cetak absen harian

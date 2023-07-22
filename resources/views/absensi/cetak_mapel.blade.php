@@ -49,7 +49,7 @@
                 @foreach ($presensi as $sis)
                     <tr>
                         <td>{{$no++}}</td>
-                        <td>{{$sis->mapel}}</td>Nama
+                        <td>{{$sis->nama}}</td>Nama
                         <td>{{$sis->mapel}}</td>
                         <td>{{$sis->kelas}}</td>
                         <td>{{$sis->tgl}}</td>

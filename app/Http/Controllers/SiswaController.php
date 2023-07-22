@@ -39,8 +39,11 @@ class SiswaController extends Controller
         ->select('nik','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis')
         ->paginate(10);
         }
-        
-        return view('siswa/siswa',['siswa'=>$siswa,'user'=>$user,'kelas1'=>$kelas1,'tahun'=>$id_tahun,'title'=>'Data Siswa']);
+        $ta = DB::table('tb_siswa')
+        ->select('tahun')
+        ->groupBy('tahun')
+        ->get();
+        return view('siswa/siswa',['siswa'=>$siswa,'user'=>$user,'kelas1'=>$kelas1,'ta'=>$ta,'tahun'=>$id_tahun,'title'=>'Data Siswa']);
     }
 
     public function create(){
@@ -137,10 +140,15 @@ class SiswaController extends Controller
 
     public function cetak_siswa(Request $request)
     {   
-        // $tgl = $request->tgl;
+        $tahun = $request->tahun;
         $cari = $request->cari;
-        $siswa = DB::table('tb_siswa')->where('nama','LIKE',"%".$cari."%")
-        ->orWhere('nik','LIKE',"%".$cari."%")->get();
+        if($cari == ""){
+            $siswa = DB::table('tb_siswa')->where('tahun','=',''.$tahun.'')->get();
+        }
+        $siswa = DB::table('tb_siswa')
+        ->where('nis','like',"%".$cari."%")
+        ->orWhere('nama','like',"%".$cari."%")
+        ->orWhere('nik','like',"%".$cari."%")->get();
         $pdf = PDF::loadView('siswa/cetak',compact('siswa'));
         $pdf->setPaper('A4','potrait');
         return $pdf->stream('cetak_siswa.pdf');

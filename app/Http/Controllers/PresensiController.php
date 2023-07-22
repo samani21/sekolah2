@@ -26,7 +26,7 @@ class PresensiController extends Controller
         // $siswa = DB::table('absen_siswa')->select(DB::raw('count(id_presensi) as jumlah'))
         // ->groupBy('id_presensi')->get();
         // dd($siswa);
-        if(Auth::user()->level == "Super_admin")
+        if(Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
         {
             $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
         ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
@@ -109,7 +109,7 @@ class PresensiController extends Controller
         ->join('tb_siswa','tb_siswa.id','=','absen_siswa.id_siswa')
         ->select('mapel','kelas','presensi.tgl','nis','nama','presensi.tahun','absen_siswa.jam')
         ->where('id_presensi','=',''.$id.'')
-        ->where('jam','like',"%".$cari."%")
+        ->where('nama','like',"%".$cari."%")
         ->paginate(10);
         $data ['title'] = "Absesn siswa berdasarkan mapel";
         return view('absensi.lihat_presensi',compact('presensi','id','mapel'),$data);
@@ -120,18 +120,27 @@ class PresensiController extends Controller
         $presensi = DB::table('absen_siswa') ->join('presensi','presensi.id','=','absen_siswa.id_presensi')
         ->join('tb_siswa','tb_siswa.id','=','absen_siswa.id_siswa')
         ->select('mapel','kelas','presensi.tgl','nis','nama','presensi.tahun','absen_siswa.jam','id_guru')
-        ->where('id_presensi','=',''.$id.'')
-        ->where('jam','like',"%".$cari."%")
+        ->where('id_presensi','=',"".$id."")
+        ->where('nama','like',"%".$cari."%")
         ->get();
         foreach ($presensi as $re)
         $id_guru = $re->id_guru;
-        $guru = DB::table('presensi')
+        if(Auth::user()->level == "Super_admin"){
+            $guru = DB::table('presensi')
+        ->join('tb_guru','tb_guru.id','=','presensi.id_guru')
+        ->select('tb_guru.nama','mapel','presensi.tgl','kelas')
+        ->where('mapel','=',''.$mapel.'')
+        ->groupBy('tb_guru.nama','mapel','presensi.tgl','kelas')
+        ->get();
+        }else{
+            $guru = DB::table('presensi')
         ->join('tb_guru','tb_guru.id','=','presensi.id_guru')
         ->select('tb_guru.nama','mapel','presensi.tgl','kelas')
         ->where('tb_guru.id','=',''.$id_guru.'')
         ->where('mapel','=',''.$mapel.'')
         ->groupBy('tb_guru.nama','mapel','presensi.tgl','kelas')
         ->get();
+        }
         $pdf = PDF::loadView('absensi/cetak_presensi',compact('presensi','guru'));
         $pdf->setPaper('A4','potrait');
         return $pdf->stream('cetak_siswa.pdf');
@@ -140,6 +149,8 @@ class PresensiController extends Controller
     public function cetak_mapel(Request $request)
     {   
         $cari = $request->cari;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
         $id_user = Auth::user()->id;
         $guru = DB::table('tb_guru')->where('id_user','=',$id_user)->get();
         foreach ($guru as $g)
@@ -148,19 +159,21 @@ class PresensiController extends Controller
         $tahun = DB::table('tahun')->get();
         foreach ($tahun as $t)
         $ta = $t->tahun;
-        // $siswa = DB::table('absen_siswa')->select(DB::raw('count(id_presensi) as jumlah'))
-        // ->groupBy('id_presensi')->get();
-        // dd($siswa);
-        if(Auth::user()->level == "Super_admin")
+        if(Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
         {
-            $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
-        ->join('absen_siswa','absen_siswa.id_presensi','=','presensi.id')
-        ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
-        ->where('presensi.tgl','like',"%".$cari."%")
-        ->orWhere('mapel','like',"%".$cari."%")
-        ->orWhere('nama','like',"%".$cari."%")
-        ->groupBy('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
-        ->paginate(10);
+            if($cari == ""){
+                $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
+                ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
+                ->whereBetween('presensi.tgl',[$dari,$sampai])
+                ->paginate(10);
+            }else{
+                $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
+                ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
+                ->where('presensi.tgl','like',"%".$cari."%")
+                ->orWhere('mapel','like',"%".$cari."%")
+                ->orWhere('nama','like',"%".$cari."%")
+                ->paginate(10);
+            }
         }else{
             $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
         ->join('absen_siswa','absen_siswa.id_presensi','=','presensi.id')

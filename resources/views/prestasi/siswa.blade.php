@@ -7,13 +7,12 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
     ?>
     <div class="container">
         <div class="row">
-            @if (Auth::user()->level =="Guru" ||Auth::user()->level =="Tata_usaha" ||Auth::user()->level =="Super_admin")
-            {{-- <div class="col-8">
-                <form action="{{route('siswa/cetak')}}" method="GET">
+            <div class="col-8">
+                <form action="{{route('prestasi/cetak_prestasi')}}" method="GET">
                     <div class="row">
                         <div class="col-md-8">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" name="cari" placeholder="cetak sisawa siswa" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                <input type="text" class="form-control" name="cari" placeholder="cetak" aria-label="Recipient's username" aria-describedby="button-addon2">
                               </div>
                         </div>
                         <div class="col-md-4">
@@ -21,14 +20,13 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
                         </div>
                     </div>
                 </form>
-            </div> --}}
-            @endif
+            </div>
         </div>
         <div class="row">
             <div class="col-8">
                 <form action="" method="GET">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="cari" placeholder="Cari siswa" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <input type="text" class="form-control" name="cari" placeholder="Cari prestasi" aria-label="Recipient's username" aria-describedby="button-addon2">
                         <button class="btn btn-primary" type="submit" id="button-addon2"><i class="fa-solid fa-magnifying-glass"></i></button>
                       </div>
                 </form>
@@ -84,7 +82,7 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
 }else{
     ?>
     <div class="container">
-        <form action="{{url('updateke',$user->id)}}" method="POST">
+        <form action="{{url('updateke',$user)}}" method="POST">
             @csrf
             <div>
                 <label for="">NIS</label>

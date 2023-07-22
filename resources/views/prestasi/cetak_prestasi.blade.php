@@ -28,34 +28,62 @@
         </thead>
     </table>
     <hr>
-    <h3 align="center">LAPORAN DATA SISWA</h3>
+    @if ($jenis == 'siswa')
+    <h3 align="center">LAPORAN PRESTASi SISWA</h3>
+    <hr>
+    <pre>
+    Nama   : {{$sis->nama}}
+    Nis    : {{$sis->nis}}
+    Kelas  : {{Auth::user()->kelas}}
+    </pre>
+    @endif
+    @if ($jenis == 'guru')
+    <h3 align="center">LAPORAN PRESTASi GURU</h3>
+    <hr>
+    @endif
         <table style="border-collapse:collapse;border-spacing:1;" border="1" align="center">
             <thead>
             <tr align="center">
                 <th width='auto'>No</th>
-                <th width='80'>NIk</th>
-                <th width='90'>Nama</th>
-                <th width='80'>TTL</th>
-                <th width='70'>Agama</th>
-                <th width='70'>Jk</th>
-                <th width='70'>Alamat</th>
-                <th width='30'>Tahun</th>
+                @if (Auth::user()->level == "Tata_usaha" || Auth::user()->level == "Super_admin")
+                    @if ($jenis == 'siswa')
+                    <th width='50'>NIS</th>
+                    <th width='90'>Nama</th>
+                    @endif
+                @endif
+                @if ($jenis == 'guru')
+                <th width='50'>NIP</th>
+                @endif
+                <th width='90'>Nama kegiatan</th>
+                <th width='80'>Hasil</th>
+                <th width='70'>Tingkat</th>
+                <th width='70'>Tahun</th>
+                <th width='70'>Waktu</th>
+                <th width='50'>Bukti</th>
             </tr>
             </thead>
             <tbody>
                 @php 
                 $no=1;
             @endphp
-                @foreach ($siswa as $sis)
+                @foreach ($prestasi as $pres)
                     <tr>
                         <td>{{$no++}}</td>
-                        <td>{{$sis->nik}}</td>
-                        <td>{{$sis->nama}}</td>
-                        <td>{{$sis->tempat}},{{date('d-m-Y', strtotime($sis->tgl))}}</td>
-                        <td>{{$sis->agama}}</td>
-                        <td>{{$sis->jk}}</td>
-                        <td>{{$sis->alamat}}</td>
-                        <td>{{$sis->tahun}}</td>
+                        @if (Auth::user()->level == "Tata_usaha" || Auth::user()->level == "Super_admin")
+                            @if ($jenis == 'siswa')
+                            <td>{{$pres->nis}}</td>
+                            <td>{{$pres->nama}}</td>
+                            @endif
+                        @endif
+                        @if ($jenis == 'guru')
+                        <td>{{$pres->nip}}</td>
+                        @endif
+                        <td>{{$pres->nm_kegiatan}}</td>
+                        <td>{{$pres->capaian}}</td>
+                        <td>{{$pres->tingkat}}</td>
+                        <td>{{$pres->tahun}}</td>
+                        <td>{{$pres->waktu}}</td>
+                        <td>{{$pres->bukti}}</td>
                     </tr>
                 @endforeach
             </tbody>

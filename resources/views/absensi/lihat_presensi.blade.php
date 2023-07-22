@@ -11,7 +11,7 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" name="cari" placeholder="cetak sisawa siswa" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                        <input type="text" class="form-control" name="cari" placeholder="cetak" aria-label="Recipient's username" aria-describedby="button-addon2">
                                       </div>
                                 </div>
                                 <div class="col-md-4">
@@ -25,7 +25,7 @@
                     <div class="col-8">
                         <form action="" method="get">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" name="cari" placeholder="Cari Kelas" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                <input type="text" class="form-control" name="cari" placeholder="Cari" aria-label="Recipient's username" aria-describedby="button-addon2">
                                 <button class="btn btn-primary" type="submit" id="button-addon2"><i class="fa-solid fa-magnifying-glass"></i></button>
                               </div>
                         </form>

@@ -9,6 +9,7 @@ use App\Models\Url;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class HarianController extends Controller
 {
@@ -29,6 +30,29 @@ class HarianController extends Controller
         $data['title']= "Absen siswa harian";
         return view('harian/harian',['siswa'=>$siswa,'tahun'=>$id_tahun,'url'=>$url],$data);
     }
+
+    public function siswa(Request $request){
+        $cari = $request->cari;
+        $it = 1;
+        $id_tahun = Tahun::findorfail($it);
+        if(Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha"){
+            $siswa = DB::table('abs_harian')->join('tb_siswa','tb_siswa.id','=','abs_harian.id_siswa')
+            ->join('users','users.id','=','abs_harian.id_user')
+            ->select('abs_harian.tgl','nama','kelas','abs_harian.tahun','abs_harian.jam')
+            ->where('abs_harian.tgl','like',"%".$cari."%")
+            ->paginate(10);
+        }else{
+            $siswa = DB::table('abs_harian')->join('tb_siswa','tb_siswa.id','=','abs_harian.id_siswa')
+            ->join('users','users.id','=','abs_harian.id_user')
+            ->select('abs_harian.tgl','nama','kelas','abs_harian.tahun','abs_harian.jam')
+            ->where('abs_harian.id_user','=',''.Auth::user()->id.'')
+            ->where('abs_harian.tgl','like',"%".$cari."%")
+            ->paginate(10);
+        }
+        $data['title']= "Absen siswa harian";
+        return view('harian/siswa',['siswa'=>$siswa,'tahun'=>$id_tahun],$data);
+    }
+
 
     public function absen(Request $request){
         $id = $request->id;
@@ -56,9 +80,30 @@ class HarianController extends Controller
         return redirect()->back();
     }
 
-    public function cetak_kartu($id){
-        $id_url = 1;
-        $url = Url::find($id_url);
-        return view('harian.cetak_kartu',['url'=>$url,'id'=>$id]);
+    public function cetak(Request $request){
+        $cari = $request->cari;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $it = 1;
+        $id_tahun = Tahun::findorfail($it);
+        if(Auth::user()->level == "Super_admin"){
+            $siswa = DB::table('abs_harian')->join('tb_siswa','tb_siswa.id','=','abs_harian.id_siswa')
+            ->join('users','users.id','=','abs_harian.id_user')
+            ->select('abs_harian.tgl','nama','kelas','abs_harian.tahun','abs_harian.jam')
+            ->where('abs_harian.tgl','like',"%".$cari."%")
+            ->whereBetween('abs_harian.tgl',[$dari,$sampai])
+            ->get();
+        }else{
+            $siswa = DB::table('abs_harian')->join('tb_siswa','tb_siswa.id','=','abs_harian.id_siswa')
+            ->join('users','users.id','=','abs_harian.id_user')
+            ->select('abs_harian.tgl','nama','kelas','abs_harian.tahun','abs_harian.jam')
+            ->where('abs_harian.id_user','=',''.Auth::user()->id.'')
+            ->where('abs_harian.tgl','like',"%".$cari."%")
+            ->whereBetween('abs_harian.tgl',[$dari,$sampai])
+            ->get();
+        }
+        $pdf = PDF::loadView('harian/cetak',compact('siswa'));
+        $pdf->setPaper('A4','potrait');
+        return $pdf->stream('cetak_siswa.pdf');
     }
 }

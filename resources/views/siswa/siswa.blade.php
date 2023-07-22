@@ -11,10 +11,17 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
             <div class="col-8">
                 <form action="{{route('siswa/cetak')}}" method="GET">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-4">
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" name="cari" placeholder="cetak sisawa siswa" aria-label="Recipient's username" aria-describedby="button-addon2">
                               </div>
+                        </div>
+                        <div class="col-4">
+                            <select class="form-select" name="tahun" aria-label="Default select example" required>
+                                @foreach ($ta as $t)
+                                    <option value="{{$t->tahun}}">{{$t->tahun}}</option>
+                                @endforeach
+                              </select>
                         </div>
                         <div class="col-md-4">
                             <button type="submit" class="btn btn-success">Cetak</button>

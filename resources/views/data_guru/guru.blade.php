@@ -46,10 +46,10 @@
                         <th scope="col">JK</th>
                         <th scope="col">Alamat</th>
                         <th scope="col">Jabatan</th>
+                        <th scope="col">Status</th>
                         @if(Auth::user()->level =='Tata_usaha'||Auth::user()->level =='Super_admin')
                             <th scope="col">Aksi</th>
                         @endif
-                        <th scope="col">Status</th>
                     </thead>
                     <tbody>
                         @foreach ($guru as $index=>$gur)

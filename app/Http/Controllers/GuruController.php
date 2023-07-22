@@ -104,7 +104,9 @@ class GuruController extends Controller
         $guru = DB::table('tb_guru')->join('users','users.id','=','tb_guru.id_user')
         ->select('users.level','nik','nama','tempat','tgl','alamat','agama','jk','tb_guru.id','id_user')
         ->where('nama','like',"%".$cari."%")
-        ->orWhere('nik','like',"%".$cari."%")->get();
+        ->orWhere('nik','like',"%".$cari."%")
+        ->orWhere('nip','like',"%".$cari."%")
+        ->orWhere('level','like',"%".$cari."%")->get();
         $pdf = PDF::loadView('data_guru/cetak',compact('guru'));
         $pdf->setPaper('A4','potrait');
         return $pdf->stream('cetak_siswa.pdf');

@@ -17,7 +17,6 @@ class AbsenController extends Controller
 {
     public function index(Request $request){
         $cari = $request->cari;
-
         $id_tahun = "1";
         $tahun = Tahun::find($id_tahun);
         $akun = Auth::user()->level;
@@ -25,18 +24,6 @@ class AbsenController extends Controller
         $absen = DB::table('tb_guru')->where('id_user','=',$id_user)->get();
         foreach ($absen as $a)
         $ab = $a->id;
-        if($cari = $cari){
-            $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru')
-            ->where('tahun','like',"%".$cari."%")->orWhere('absen_guru.tgl','like',"%".$cari."%")
-            ->where('id_guru','=',''.$a->id.'')
-            ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama')->paginate(10);
-            
-        }else{
-            $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru')
-            ->where('tahun','=',''.$tahun['tahun'].'')
-            ->where('id_guru','=',''.$a->id.'')
-            ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama')->paginate(10);
-        }
         if($akun == "Tata_usaha"|| $akun == "Super_admin"){
             if($cari = $cari){
                 $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru')
@@ -46,6 +33,19 @@ class AbsenController extends Controller
             }else{
                 $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru')
                 ->where('tahun','=',''.$tahun['tahun'].'')
+                ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama')->paginate(10);
+            }
+        }else{
+            if($cari = $cari){
+                $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru')
+                ->where('tahun','like',"%".$cari."%")->orWhere('absen_guru.tgl','like',"%".$cari."%")
+                ->where('id_guru','=',''.$a->id.'')
+                ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama')->paginate(10);
+                
+            }else{
+                $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru')
+                ->where('tahun','=',''.$tahun['tahun'].'')
+                ->where('id_guru','=',''.$a->id.'')
                 ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama')->paginate(10);
             }
         }
@@ -64,7 +64,7 @@ class AbsenController extends Controller
 
         $absen = new AbsenGuru([
             'id_guru' => $id,
-            'tgl' => date('d-m-Y'),
+            'tgl' => date('Y-m-d'),
             'jam_mulai'=> date('H:i:s'),
             'jam_selesai'=> "-",
             'tahun'=> stripslashes($tahun['tahun'])
@@ -87,7 +87,8 @@ class AbsenController extends Controller
     public function cetak_guru(Request $request)
     {   
         $cari = $request->cari;
-        
+        $dari = $request->dari;
+        $sampai = $request->sampai;
         $id_tahun = "1";
         $tahun = Tahun::find($id_tahun);
         $akun = Auth::user()->level;
@@ -108,14 +109,17 @@ class AbsenController extends Controller
             ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama')->paginate(10);
         }
         if($akun == "Tata_usaha"|| $akun == "Super_admin"){
-            if($cari = $cari){
+            if($cari == $cari){
                 $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru')
                 ->where('tahun','like',"%".$cari."%")->orWhere('absen_guru.tgl','like',"%".$cari."%")
+                ->orWhere('nama','like',"%".$cari."%")
+                ->orWhere('nip','like',"%".$cari."%")
                 ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama')->paginate(10);
                 
             }else{
                 $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru')
                 ->where('tahun','=',''.$tahun['tahun'].'')
+                ->whereBetween('absen_guru.tgl',[$dari,$sampai])
                 ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama')->paginate(10);
             }
         }
@@ -125,7 +129,8 @@ class AbsenController extends Controller
     }
 
 //Siswa
-    public function index_siswa(){
+    public function index_siswa(Request $request){
+        $cari = $request->cari;
         $id = Auth::user()->id;
         $user = User::findorfail($id);
         $kelas1 = DB::table('kelas')->get();
@@ -137,7 +142,6 @@ class AbsenController extends Controller
         $siswa = Auth::user()->id;
         $d_siswa = DB::table('tb_siswa')->where('id_user','=',''.$siswa.'')->get();
         foreach ($d_siswa as $sis)
-        $a_siswa = $sis->tgl_absen;
 
         $tah = $tahun->tahun;
         $presensi = DB::table('absen_siswa')->join('tb_siswa','tb_siswa.id','=','absen_siswa.id_siswa')
@@ -145,11 +149,12 @@ class AbsenController extends Controller
         ->where('id_siswa','=',''.$sis->id.'')
         ->where('kelas','=',''.$kelas.'')
         ->where('presensi.tahun','=',''.$tah.'')
+        ->where('presensi.tgl','like',"%".$cari."%")
         ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','presensi.id')
         ->orderBy('id','desc')
         ->paginate(10);
         $data ['title'] = "Absensi Siswa";
-        return view('absensi.absen_siswa',compact('presensi','a_siswa','kelas1','user','tahun'),$data);
+        return view('absensi.absen_siswa',compact('presensi','sis','kelas1','user','tahun'),$data);
     }
 
     public function store(Request $request, $id){
@@ -159,7 +164,7 @@ class AbsenController extends Controller
         $absen = new AbsenSiswa([
             'id_siswa' => $id_siswa,
             'id_presensi' => $id,
-            'tgl' => date('d-m-Y'),
+            'tgl' => date('Y-m-d'),
             'jam'=> date('H:i:s'),
             'tahun'=> stripslashes($tahun['tahun'])
         ]);
@@ -173,5 +178,22 @@ class AbsenController extends Controller
         $edit->update($data);
         Alert()->success('SuccessAlert','Berhasil');
         return redirect()->back();
+    }
+
+    public function cetak_siswa(Request $request)
+    {   
+        $cari = $request->cari;
+        $siswa = DB::table('tb_siswa')->where('id_user','=',''.Auth::user()->id.'')->get();
+        foreach ($siswa as $sis)
+        $cari = $request->cari;
+        $siswa1 = DB::table('absen_siswa')->join('tb_siswa','tb_siswa.id','=','absen_siswa.id_siswa')
+        ->join('presensi','presensi.id','=','absen_siswa.id_presensi')
+        ->select('mapel','absen_siswa.tgl','jam','presensi.tahun')
+        ->where('id_siswa','=',''.$sis->id.'')
+        ->where('absen_siswa.tgl','like',"%".$cari."%")
+        ->get();
+        $pdf = PDF::loadView('absensi/cetak_siswa',compact('siswa1','sis'));
+        $pdf->setPaper('A4','potrait');
+        return $pdf->stream('cetak_siswa.pdf');
     }
 }

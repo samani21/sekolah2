@@ -28,33 +28,33 @@
         </thead>
     </table>
     <hr>
-    <h3 align="center">LAPORAN DATA SISWA</h3>
+    <h3 align="center">LAPORAN PRESTASi SISWA</h3>
+    <hr>
+    <pre>
+    Nama   : {{$sis->nama}}
+    Nis    : {{$sis->nis}}
+    Kelas  : {{Auth::user()->kelas}}
+    </pre>
         <table style="border-collapse:collapse;border-spacing:1;" border="1" align="center">
             <thead>
             <tr align="center">
                 <th width='auto'>No</th>
-                <th width='80'>NIk</th>
-                <th width='90'>Nama</th>
-                <th width='80'>TTL</th>
-                <th width='70'>Agama</th>
-                <th width='70'>Jk</th>
-                <th width='70'>Alamat</th>
-                <th width='30'>Tahun</th>
+                <th width='90'>Nama MAPEL</th>
+                <th width='80'>Tanggal</th>
+                <th width='70'>Jam</th>
+                <th width='70'>Tahun</th>
             </tr>
             </thead>
             <tbody>
                 @php 
                 $no=1;
             @endphp
-                @foreach ($siswa as $sis)
+                @foreach ($siswa1 as $sis)
                     <tr>
                         <td>{{$no++}}</td>
-                        <td>{{$sis->nik}}</td>
-                        <td>{{$sis->nama}}</td>
-                        <td>{{$sis->tempat}},{{date('d-m-Y', strtotime($sis->tgl))}}</td>
-                        <td>{{$sis->agama}}</td>
-                        <td>{{$sis->jk}}</td>
-                        <td>{{$sis->alamat}}</td>
+                        <td>{{$sis->mapel}}</td>
+                        <td>{{$sis->tgl}}</td>
+                        <td>{{$sis->jam}}</td>
                         <td>{{$sis->tahun}}</td>
                     </tr>
                 @endforeach

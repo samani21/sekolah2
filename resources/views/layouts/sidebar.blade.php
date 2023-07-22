@@ -109,7 +109,7 @@
                     </li>
                     @if (Auth::user()->status =='1')
                     <li>
-                        <a href="{{ url('absensi/absen_guru?cari='.date('d-m-Y').'') }}"
+                        <a href="{{ url('absensi/absen_guru?cari='.date('Y-m-d').'') }}"
                             class="{{ request()->is('absensi/absen_guru*')?'active' :'' }}">
                             <span class="fa-solid fa-clipboard-list"></span>
                             <span>Absensi Guru</span>
@@ -139,7 +139,7 @@
                     </li>
                     <li>
                         <a href="{{ url('harian/harian') }}"
-                            class="{{ request()->is('harian/harian*')?'active' :'' }}">
+                            class="{{ request()->is('harian/harian*','harian/siswa*')?'active' :'' }}">
                             <span class="fa-solid fa-clipboard-list"></span>
                             <span>Absen siswa</span>
                         </a>
@@ -203,10 +203,17 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ url('harian/harian') }}"
-                                    class="{{ request()->is('harian/harian*')?'active' :'' }}">
+                                <a href="{{ url('data_guru/tambah_guru') }}"
+                                    class="{{ request()->is('profil/*')?'active' :'' }}">
                                     <span class="fa-solid fa-clipboard-list"></span>
                                     <span>Absen siswa</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('data_guru/tambah_guru') }}"
+                                    class="{{ request()->is('profil/*')?'active' :'' }}">
+                                    <span class="fa-solid fa-award"></span>
+                                    <span>Prestasi guru</span>
                                 </a>
                             </li>
                         @endif
@@ -233,8 +240,8 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ url('absensi/presensi') }}"
-                                    class="{{ request()->is('absensi/presensi*')?'active' :'' }}">
+                                <a href="{{ url('absensi/presensi?cari='.date('Y-m-d').'') }}"
+                                    class="{{ request()->is('absensi/presensi*','absensi/lihat_presensi*')?'active' :'' }}">
                                     <span class="fa-solid fa-clipboard-list"></span>
                                     <span>Presensi Siswa</span>
                                 </a>
@@ -264,6 +271,56 @@
                              <span>Profil</span>
                          </a>
                      </li>
+                     <hr>
+                     <li>
+                        <a href="{{ url('data_guru/tambah_guru') }}"
+                            class="{{ request()->is('profil/*')?'active' :'' }}">
+                            <span class="fa-solid fa-person"></span>
+                            <span>Siswa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('data_guru/tambah_guru') }}"
+                            class="{{ request()->is('profil/*')?'active' :'' }}">
+                            <span class="fa-solid fa-chalkboard-user"></span>
+                            <span>Guru</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('data_guru/tambah_guru') }}"
+                            class="{{ request()->is('profil/*')?'active' :'' }}">
+                            <span class="fa-solid fa-clipboard-list"></span>
+                            <span>Absensi Guru</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('data_guru/tambah_guru') }}"
+                            class="{{ request()->is('profil/*')?'active' :'' }}">
+                            <span class="fa-solid fa-clipboard-list"></span>
+                            <span>Presensi Siswa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('data_guru/tambah_guru') }}"
+                            class="{{ request()->is('profil/*')?'active' :'' }}">
+                            <span class="fa-solid fa-award"></span>
+                            <span>Prestasi Siswa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('data_guru/tambah_guru') }}"
+                            class="{{ request()->is('profil/*')?'active' :'' }}">
+                            <span class="fa-solid fa-award"></span>
+                            <span>Prestasi guru</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('data_guru/tambah_guru') }}"
+                            class="{{ request()->is('profil/*')?'active' :'' }}">
+                            <span class="fa-solid fa-clipboard-list"></span>
+                            <span>Absen siswa</span>
+                        </a>
+                    </li>
                     @endif
                     @if (Auth::user()->status =='1')
                     <li>
@@ -273,7 +330,6 @@
                              <span>Profil</span>
                          </a>
                      </li>
-                    @endif
                     <hr>
                     <li>
                         <a href="{{ url('siswa/siswa') }}"
@@ -290,19 +346,41 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ url('absensi/absen_guru?cari='.date('d-m-Y').'') }}"
+                        <a href="{{ url('absensi/absen_guru?cari='.date('Y-m-d').'') }}"
                             class="{{ request()->is('absensi/absen_guru*')?'active' :'' }}">
                             <span class="fa-solid fa-clipboard-list"></span>
                             <span>Absensi Guru</span>
                         </a>
                     </li>
                     <li>
+                        <a href="{{ url('absensi/presensi?cari='.date('Y-m-d').'') }}"
+                            class="{{ request()->is('absensi/presensi*','absensi/lihat_presensi*')?'active' :'' }}">
+                            <span class="fa-solid fa-clipboard-list"></span>
+                            <span>Presensi Siswa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('prestasi/siswa') }}"
+                            class="{{ request()->is('prestasi/siswa*','prestasi/tambah_siswa*','prestasi/edit_siswa*')?'active' :'' }}">
+                            <span class="fa-solid fa-award"></span>
+                            <span>Prestasi Siswa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('prestasi/guru') }}"
+                            class="{{ request()->is('prestasi/guru*','prestasi/edit_guru*','prestasi/tambah_guru*')?'active' :'' }}">
+                            <span class="fa-solid fa-award"></span>
+                            <span>Prestasi guru</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ url('harian/harian') }}"
-                            class="{{ request()->is('harian/harian*')?'active' :'' }}">
+                            class="{{ request()->is('harian/harian*','harian/siswa*')?'active' :'' }}">
                             <span class="fa-solid fa-clipboard-list"></span>
                             <span>Absen siswa</span>
                         </a>
                     </li>
+                    @endif
                     @endif
                     @if(Auth::user()->level =='Siswa')
                     <li>
@@ -331,24 +409,13 @@
                      </li>
                     @endif
                     <hr>
-                    @if (Auth::user()->status =='0')
                     <li>
-                         <a href="{{ url('siswa/tambah_siswa') }}"
-                             class="{{ request()->is('profil/*')?'active' :'' }}">
-                             <span class="fa-solid fa-clipboard-list"></span>
-                             <span>Absensi</span>
-                         </a>
-                     </li>
-                    @endif
-                    @if (Auth::user()->status =='1')
-                    <li>
-                        <a href="{{ url('absensi/absen_siswa') }}"
+                        <a href="{{ url('absensi/absen_siswa?cari='.date('Y-m-d').'') }}"
                             class="{{ request()->is('absensi/absen_siswa*')?'active' :'' }}">
                             <span class="fa-solid fa-clipboard-list"></span>
                             <span>Absensi</span>
                         </a>
                     </li>
-                    @endif
                     <li>
                         <a href="{{ url('siswa/siswa') }}"
                             class="{{ request()->is('siswa/*')?'active' :'' }}">
@@ -364,8 +431,8 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ url('harian/harian') }}"
-                            class="{{ request()->is('harian/harian*')?'active' :'' }}">
+                        <a href="{{ url('harian/siswa') }}"
+                            class="{{ request()->is('harian/siswa*')?'active' :'' }}">
                             <span class="fa-solid fa-clipboard-list"></span>
                             <span>Absen siswa</span>
                         </a>
