@@ -12,7 +12,27 @@
                 <input class="form-control" type="text" name="id_guru" list="siswa" autocomplete="off" placeholder="Masukkan Nama siswa" aria-label="default input example" autofocus required>
                 <datalist id="siswa">
                     @foreach ($guru as $gur)
-                        <option value="00{{$gur->id}} NIP: {{$gur->nip}}, Nama: {{$gur->nama}}"></option>
+                        <option <?php 
+                            if ($gur->id <= 9) {
+                                ?>
+                                value="000{{$gur->id}} NIP: {{$gur->nip}}, Nama: {{$gur->nama}}"
+                                <?php
+                            }
+                            if ($gur->id <= 99) {
+                                ?>
+                                value="00{{$gur->id}} NIP: {{$gur->nip}}, Nama: {{$gur->nama}}"
+                                <?php
+                            }
+                            if ($gur->id <= 999) {
+                                ?>
+                                value="0{{$gur->id}} NIP: {{$gur->nip}}, Nama: {{$gur->nama}}"
+                                <?php
+                            }else {
+                                ?>
+                                value="{{$gur->id}} NIP: {{$gur->nip}}, Nama: {{$gur->nama}}"
+                                <?php
+                            }
+                        ?>></option>
                     @endforeach
                 </datalist>
             </div>
