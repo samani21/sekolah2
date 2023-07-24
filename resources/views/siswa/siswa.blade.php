@@ -13,7 +13,7 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
                     <div class="row">
                         <div class="col-md-4">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" name="cari" placeholder="cetak sisawa siswa" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                <input type="text" class="form-control" name="cari" placeholder="cetak siswa" aria-label="Recipient's username" aria-describedby="button-addon2">
                               </div>
                         </div>
                         <div class="col-4">

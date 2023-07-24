@@ -7,7 +7,7 @@
             <div class="col-8">
                 <form action="" method="GET">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="cari" placeholder="Cari siswa" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <input type="text" class="form-control" name="cari" placeholder="Cari" aria-label="Recipient's username" aria-describedby="button-addon2">
                         <button class="btn btn-primary" type="submit" id="button-addon2"><i class="fa-solid fa-magnifying-glass"></i></button>
                       </div>
                 </form>

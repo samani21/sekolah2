@@ -40,8 +40,11 @@ class PenggunaController extends Controller
         if(Auth::user()->level == "Siswa"){
             return redirect('profil/profilsiswa/'.$id.'');
         }
-        if(Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha" || Auth::user()->level == "Guru"){
+        if(Auth::user()->level == "Tata_usaha" || Auth::user()->level == "Guru"){
             return redirect('/profil/profil/'.$id.'');
+        }
+        if(Auth::user()->level == "Super_admin"){
+            return redirect('/pengguna/pengguna');
         }
     }
 
@@ -74,7 +77,6 @@ class PenggunaController extends Controller
         $user->save();
 
         event(new Registered($user));
-        auth()->login($user);
 
         Alert()->success('SuccessAlert','Tambah data Siswa berhasil');
         return redirect()->route('pengguna/pengguna');

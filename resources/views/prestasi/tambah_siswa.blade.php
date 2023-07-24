@@ -38,27 +38,27 @@
             </div>
             <div>
                 <label for="">Nama Kegiatan</label>
-                <input class="form-control" type="text" name="nm_kegiatan" autocomplete="off" placeholder="Masukkan Nama siswa" aria-label="default input example" autofocus required>
+                <input class="form-control" type="text" name="nm_kegiatan" autocomplete="off" placeholder="Masukkan Nama kegiatan" aria-label="default input example" autofocus required>
             </div>
             <div>
                 <label for="">Capaian</label>
-                <input class="form-control" type="text" name="capaian" autocomplete="off" placeholder="Masukkan Nama siswa" aria-label="default input example" autofocus required>
+                <input class="form-control" type="text" name="capaian" autocomplete="off" placeholder="Masukkan pencapain didapat" aria-label="default input example" autofocus required>
             </div>
             <div>
-                <label for="">Tingakat</label>
-                <input class="form-control" type="text" name="tingkat" autocomplete="off" placeholder="Masukkan Nama siswa" aria-label="default input example" autofocus required>
+                <label for="">Tingkat</label>
+                <input class="form-control" type="text" name="tingkat" autocomplete="off" placeholder="Masukkan tingkat prestasi" aria-label="default input example" autofocus required>
             </div>
             <div>
                 <label for="">Tahun</label>
-                <input class="form-control" type="text" name="tahun" autocomplete="off" placeholder="Masukkan Nama siswa" aria-label="default input example" autofocus required>
+                <input class="form-control" type="text" name="tahun" autocomplete="off" placeholder="Masukkan tahun prestasi" aria-label="default input example" autofocus required>
             </div>
             <div>
                 <label for="">Waktu</label>
-                <input class="form-control" type="date" name="waktu" autocomplete="off" placeholder="Masukkan Nama siswa" aria-label="default input example" autofocus required>
+                <input class="form-control" type="date" name="waktu" autocomplete="off" placeholder="Masukkan waktu prestasi" aria-label="default input example" autofocus required>
             </div>
             <div>
                 <label for="">Bukti</label>
-                <input class="form-control" type="text" name="bukti" autocomplete="off" placeholder="Masukkan Nama siswa" aria-label="default input example" autofocus required>
+                <input class="form-control" type="text" name="bukti" autocomplete="off" placeholder="Masukkan bukti prestasi" aria-label="default input example" autofocus required>
             </div>
             <hr>
             <button type="submit" class="btn btn-success">Simpan</button>

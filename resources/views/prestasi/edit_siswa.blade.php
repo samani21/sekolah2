@@ -20,7 +20,7 @@
                     <input class="form-control" type="text" name="capaian" value="{{$sis->capaian}}" autocomplete="off" placeholder="Masukkan Nama siswa" aria-label="default input example" autofocus required>
                 </div>
                 <div>
-                    <label for="">Tingakat</label>
+                    <label for="">Tingkat</label>
                     <input class="form-control" type="text" name="tingkat" value="{{$sis->tingkat}}" autocomplete="off" placeholder="Masukkan Nama siswa" aria-label="default input example" autofocus required>
                 </div>
                 <div>

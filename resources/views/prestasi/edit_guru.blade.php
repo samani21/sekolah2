@@ -8,7 +8,7 @@
                 @csrf
                 <input type="hidden" value="guru" name="status">
                 <div>
-                    <label for="">Nama Siswa</label>
+                    <label for="">Nama Guru</label>
                     <input class="form-control" type="text" name="id_siswa" value="{{$gur->nama}}" autocomplete="off" placeholder="Masukkan Nama siswa" aria-label="default input example" readonly>
                 </div>
                 <div>
@@ -20,7 +20,7 @@
                     <input class="form-control" type="text" name="capaian" value="{{$gur->capaian}}" autocomplete="off" placeholder="Masukkan Nama siswa" aria-label="default input example" autofocus required>
                 </div>
                 <div>
-                    <label for="">Tingakat</label>
+                    <label for="">Tingkat</label>
                     <input class="form-control" type="text" name="tingkat" value="{{$gur->tingkat}}" autocomplete="off" placeholder="Masukkan Nama siswa" aria-label="default input example" autofocus required>
                 </div>
                 <div>
