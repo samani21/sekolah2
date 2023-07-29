@@ -52,6 +52,13 @@ class SiswaController extends Controller
     }
 
     public function store(Request $request){
+        $this->validate($request, [
+            // check validtion for image or file
+            'images_portfolio' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+        ]);
+        $filename = round(microtime(true) * 1000).'-'.str_replace(' ','-',$request->file('images_portfolio')->getClientOriginalName());
+        $request->file('images_portfolio')->move(public_path('images'), $filename);
+        
         $id = $request->id_user;
         $it = 1;
         $id_tahun = Tahun::findorfail($it);
@@ -69,6 +76,7 @@ class SiswaController extends Controller
             'nis' => $request->nis,
             'tahun' => $id_tahun->tahun,
             'presensi' => "0",
+            'foto' =>$filename
         ]);
         $siswa->save();
 
@@ -131,11 +139,33 @@ class SiswaController extends Controller
         $it = 1;
         $id_tahun = Tahun::findorfail($it);
         $siswa = DB::table('tb_siswa')->join('users','users.id','=','tb_siswa.id_user')
-        ->select('users.level','nik','nama','tempat','tgl','alamat','agama','jk','tb_siswa.id','nis')
+        ->select('users.level','nik','nama','tempat','tgl','alamat','agama','jk','tb_siswa.id','nis','foto')
         ->where('id_user','=',''.$id.'')
         ->get();
         $data['title']= "Data profil";
         return view('profil.profil',['siswa'=>$siswa,'tahun'=>$id_tahun,'user'=>$user,'kelas'=>$kelas],$data);
+    }
+
+    public function edit_gambar($id){
+        $siswa = Siswa::findorfail($id);
+        return view('profil.ubah_gambar',['title'=>"Edit Gambar",'siswa'=>$siswa]);
+    }
+
+    public function updategambar(Request $request,$id){
+        $this->validate($request, [
+            // check validtion for image or file
+            'images_portfolio' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+        ]);
+        $filename = round(microtime(true) * 1000).'-'.str_replace(' ','-',$request->file('images_portfolio')->getClientOriginalName());
+        $request->file('images_portfolio')->move(public_path('images'), $filename);
+        
+        $edit = Siswa::findorfail($id);
+        $data = [
+            'foto' => $filename,
+        ];
+        $edit->update($data);
+        Alert()->success('SuccessAlert','Update Gambar berhasil');
+        return redirect()->back();
     }
 
     public function cetak_siswa(Request $request)

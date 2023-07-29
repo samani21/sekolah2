@@ -83,6 +83,8 @@ Route::get('siswa/hapus_siswa/{id}',[SiswaController::class, 'destroy'])->name('
 Route::get('profil/profilsiswa/{id}',[SiswaController::class,'profil'])->name('profil/profilsiswa');//menampilkan data profil
 Route::get('profil/edit_kelas',[SiswaController::class,'edit_kelas'])->name('profil/edit_kelas');//menampilkan edit kelas siswa
 Route::post('updateke/{id}',[SiswaController::class, 'updatekelas'])->name('updateke');//proses upodate pengguna
+Route::get('profil/ubah_gambar/{id}',[SiswaController::class,'edit_gambar'])->name('profil/ubah_gambar');//menampilkan edit kelas siswa
+Route::post('updategambar/{id}',[SiswaController::class, 'updategambar'])->name('updategambar');//proses upodate pengguna
 
 //pengguna
 Route::get('pengguna/pengguna', [PenggunaController::class,'index'])->name('pengguna/pengguna');//menampilkan data pengguna
@@ -98,8 +100,8 @@ Route::get('tahun/tahun_ajaran', [TahunController::class,'index'])->name('tahun/
 Route::post('update', [TahunController::class,'update'])->name('update');//proses update tahun ajaran
 
 //url
-Route::get('url/url', [UrlController::class,'index'])->name('url/url');//menampilkan halaman setting tahun ajaran
-Route::post('update', [UrlController::class,'update'])->name('update');//proses update tahun ajaran
+// Route::get('url/url', [UrlController::class,'index'])->name('url/url');//menampilkan halaman setting tahun ajaran
+// Route::post('update', [UrlController::class,'update'])->name('update');//proses update tahun ajaran
 
 //kelas
 Route::get('kelas/kelas',[KelasController::class, 'index'])->name('kelas/kelas');//menampilkan data kelas

@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="container">
-        <form action="{{route('siswa.store')}}" method="POST">
+        <form action="{{route('siswa.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <input type="hidden" value="{{ Auth::user()->id }}" name="id_user">
             <input type="hidden" value="1" name="status">
@@ -33,7 +33,7 @@
             <div>
                 <label for="">Agama</label>
                 <select class="form-select" name="agama" aria-label="Default select example" required>
-                    <option selected>--Pilih</option>
+                    <option value="" selected>--Pilih</option>
                     <option value="Islam">Islam</option>
                     <option value="Protestan">Protestan</option>
                     <option value="Katolik">Katolik</option>
@@ -45,7 +45,7 @@
             <div>
                 <label for="">Jenis Kelamin</label>
                 <select class="form-select" name="jk" aria-label="Default select example" required>
-                    <option selected required>--Pilih</option>
+                    <option value="" required>--Pilih</option>
                     <option value="Laki-laki">Laki-laki</option>
                     <option value="Perempuan">Perempuan</option>
                   </select>
@@ -53,6 +53,13 @@
             <div>
                 <label for="">Alamat</label>
                 <input class="form-control" type="text" name="alamat" placeholder="Masukkan alamat" aria-label="default input example" required>
+            </div>
+            <div class="col-md-6">
+                <label for="">Masukkan Gambar</label>
+                <input type="file" class="form-control" name="images_portfolio" required>
+                @if ($errors->has('images_portfolio'))
+                <div class="alert alert-danger">Harus diisi gambar</div>
+                @endif
             </div>
             <hr>
             <button type="submit" class="btn btn-success">Simpan</button>

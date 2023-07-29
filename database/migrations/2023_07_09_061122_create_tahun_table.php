@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('tahun', function (Blueprint $table) {
             $table->id();
             $table->string('tahun','20');
+            $table->integer('sem');
             $table->timestamps();
         });
     }

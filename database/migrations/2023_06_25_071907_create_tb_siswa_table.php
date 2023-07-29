@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('jk','10');
             $table->string('tahun','20');
             $table->string('presensi','10');
+            $table->string('foto');
             $table->timestamps();
         });
     }

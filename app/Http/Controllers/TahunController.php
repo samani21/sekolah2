@@ -19,6 +19,7 @@ class TahunController extends Controller
         $edit = Tahun::findorfail($id);
         $data = [
             'tahun' => $request->tahun,
+            'sem' => $request->sem,
         ];
         $edit->update($data);
         Alert()->success('SuccessAlert','Tambah data Tahun ajaran berhasil');

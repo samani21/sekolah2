@@ -10,7 +10,11 @@
             <hr>
             @foreach ( $siswa as $s )
             <div class="row">
-                <div class="col-6">
+                <div class="col-3">
+                    <img src="{{url('images/'.$s->foto.'')}}" alt="" width="100" height="100">
+                    <a href="/profil/ubah_gambar/{{$s->id}}" class="btn btn-primary">Edit gambar</a>
+                </div>
+                <div class="col-3">
                     {!! QrCode::size(100)->generate($s->id); !!}
                     <a href="cetak_kartu/{{$s->id}}" class="btn btn-primary"><i class="fa-solid fa-print"></i> QrCode</a>
                 </div>
