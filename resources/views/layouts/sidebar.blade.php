@@ -301,6 +301,13 @@
                                     <span>Prestasi guru</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ url('poin/poin') }}"
+                                    class="{{ request()->is('poin/*')?'active' :'' }}">
+                                    <span class="fa-solid fa-triangle-exclamation"></span>
+                                    <span>Point Disiplin</span>
+                                </a>
+                            </li>
                         @endif
                     @endif
                     @if(Auth::user()->level =='Tata_usaha')

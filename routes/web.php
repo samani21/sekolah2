@@ -8,6 +8,7 @@ use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\PenggunaController;
+use App\Http\Controllers\PoinController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\SiswaController;
@@ -67,7 +68,7 @@ Route::get('data_guru/guru', [GuruController::class,'index'])->name('guru/guru')
 Route::get('data_guru/tambah_guru', [GuruController::class,'create'])->name('guru/tambah_guru');//menampilkan tambah data guru
 Route::post('data_guru/tambah_guru',[GuruController::class, 'store'])->name('guru.store');//proses tambah data guru
 Route::get('data_guru/edit/{id}',[GuruController::class, 'edit'])->name('guru/edit');//menampilkan edit data guru
-Route::post('updateguru/{id}',[GuruController::class, 'update'])->name('updateguru');//proses update guru
+Route::post('ubahguru/{id}',[GuruController::class, 'update'])->name('ubahguru');//proses update guru
 Route::get('data_guru/hapus_guru/{id}&{id_user}',[GuruController::class, 'destroy'])->name('hapus_guru');//hapus data guru
 
 //profil
@@ -86,6 +87,14 @@ Route::get('profil/edit_kelas',[SiswaController::class,'edit_kelas'])->name('pro
 Route::post('updateke/{id}',[SiswaController::class, 'updatekelas'])->name('updateke');//proses upodate pengguna
 Route::get('profil/ubah_gambar/{id}',[SiswaController::class,'edit_gambar'])->name('profil/ubah_gambar');//menampilkan edit kelas siswa
 Route::post('updategambar/{id}',[SiswaController::class, 'updategambar'])->name('updategambar');//proses upodate pengguna
+
+//poin
+Route::get('poin/poin', [PoinController::class, 'index'])->name('poin/poin');
+Route::get('poin/tambah_point/{id}',[PoinController::class,'create'])->name('poin/tambah_poin');
+Route::post('poin/tambah_point',[PoinController::class,'store'])->name('poin.store');
+Route::get('poin/edit/{id}',[PoinController::class,'edit'])->name('poin/edit');
+Route::post('updatepoin/{id}', [PoinController::class,'update'])->name('updatepoin');
+Route::get('poin/hapus_poin/{id}',[PoinController::class, 'destroy'])->name('hapus_poin');//hapus data siswa
 
 //pengguna
 Route::get('pengguna/pengguna', [PenggunaController::class,'index'])->name('pengguna/pengguna');//menampilkan data pengguna

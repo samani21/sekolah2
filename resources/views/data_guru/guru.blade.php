@@ -66,7 +66,13 @@
                                     if ($gur->level == "Tata_usaha") {
                                         echo "Tata Usaha";
                                     }else {
-                                        echo $gur->level;
+                                       if ($gur->level == "Super_admin") {
+                                        echo "Super Admin" ;
+                                       }
+                                       if ($gur->level == "Guru") {
+                                        echo ''.$gur->level.' / '.$gur->wakel.'' ;
+                                       }
+                                       
                                     }
                                 ?></td>
                                 <td data-title="Statu">Pegawai {{$gur->status}}</td>

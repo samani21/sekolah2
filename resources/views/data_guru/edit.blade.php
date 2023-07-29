@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="container">
-        <form action="{{url('updateguru',$guru->id)}}" method="POST">
+        <form action="{{url('ubahguru',$guru->id)}}" method="POST">
             @csrf
             <div>
                 <label for="">NIP</label>
@@ -52,6 +52,30 @@
                 <label for="">Alamat</label>
                 <input class="form-control" type="text" name="alamat" value="{{$guru->alamat}}" placeholder="Masukkan alamat" aria-label="default input example">
             </div>
+            @if (Auth::user()->level == "Guru" || Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha" )
+                <?php 
+                    if ($guru->wakel == "BK" || $guru->wakel == "-") {
+                        ?>
+                        <div>
+                            <label for="">Wali kelas</label>
+                            <input class="form-control" type="text" name="wakel" value="{{$guru->wakel}}" placeholder="Masukkan alamat" aria-label="default input example" readonly>
+                        </div>
+                        <?php
+                    }else {
+                        ?>
+                        <div>
+                            <label for="">Wali kelas</label>
+                            <select name="wakel" class="form-control" required>
+                                <option value="{{$guru->wakel}}">{{$guru->wakel}}</option>
+                                @foreach ($kelas as $kel)
+                                    <option value="{{$kel->nm_kelas}}">{{$kel->nm_kelas}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <?php
+                    }
+                ?>
+            @endif
             <div>
                 <label for="">Status</label>
                 <select class="form-select" name="status1" aria-label="Default select example" required>

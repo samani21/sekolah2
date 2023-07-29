@@ -47,48 +47,41 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
             <hr>
             <div>
                 <table class="table table-secondary table-striped" id="no-more-tables">
-                    <thead align="center">
+                    <thead>
                         <th scope="col">No</th>
                         <th scope="col">NIS</th>
-                        <th scope="col">NIk</th>
                         <th scope="col">Nama</th>
-                        <th scope="col">TTL</th>
-                        <th scope="col">Agama</th>
-                        <th scope="col">JK</th>
-                        <th scope="col">Alamat</th>
                         <th scope="col">Kelas</th>
+                        <th scope="col">Keterangan</th>
+                        <th scope="col">Tanggal</th>
                         <th scope="col">Point</th>
+                        <th scope="col">Tahun Ajaran</th>
                         @if (Auth::user()->level == "Guru" || Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
                         <th scope="col">Aksi</th>
                         @endif
                     </thead>
                     <tbody>
-                        @foreach ($siswa as $index=>$sis)
+                        @foreach ($poin as $index=>$po)
                             <tr>
-                                <td data-title="No">{{ $index + $siswa->firstItem() }}</td>
-                                <td data-title="NIS">{{$sis->nis}}</td>
-                                <td data-title="NIK">{{$sis->nik}}</td>
-                                <td data-title="Nama">{{$sis->nama}}</td>
-                                <td data-title="TTL">{{$sis->tempat}}, {{date('d-m-Y', strtotime($sis->tgl))}}</td>
-                                <td data-title="Agama">{{$sis->agama}}</td>
-                                <td data-title="Jenis Kelamin">{{$sis->jk}}</td>
-                                <td data-title="Alamat">{{$sis->alamat}}</td>
-                                <td data-title="Kelas">{{$sis->kelas}}</td>
-                                <td data-title="Point">{{$sis->poin}}</td>
+                                <td data-title="No">{{ $index + $poin->firstItem() }}</td>
+                                <td data-title="NIS">{{$po->nis}}</td>
+                                <td data-title="Nama">{{$po->nama}}</td>
+                                <td data-title="Kelas">{{$po->kelas}}</td>
+                                <td data-title="Keterangan">{{$po->ket}}</td>
+                                <td data-title="Tanggal">{{$po->tgl}}</td>
+                                <td data-title="Point">{{$po->poin}}</td>
+                                <td data-title="Tahun Ajaran">{{$po->tahun}}</td>
                                 @if (Auth::user()->level == "Guru" || Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
                                 <td>
-                                    <a href="edit_siswa/{{$sis->id}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
-                                    <a href="hapus_siswa/{{$sis->id}}" class="btn btn-danger" onclick="javascript: return confirm('Konfirmasi data akan dihapus');"><i class="fa-solid fa-trash"></i> Hapus</a>
-                                    @if ($g->wakel == "-" || $g->wakel == "BK" )
-                                    <a href="/poin/tambah_point/{{$sis->id}}" class="btn btn-secondary" ><i class="fa-solid fa-plus"></i> Point</a>
-                                    @endif
+                                    <a href="edit/{{$po->id}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
+                                    <a href="hapus_poin/{{$po->id}}" class="btn btn-danger" onclick="javascript: return confirm('Konfirmasi data akan dihapus');"><i class="fa-solid fa-trash"></i> Hapus</a>
                                 </td>
                                 @endif
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-                {{ $siswa->links() }}
+                {{ $poin->links() }}
             </div>
         </div>
 	</div>

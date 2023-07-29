@@ -14,7 +14,7 @@ class GuruController extends Controller
     public function index(Request $request){
         $cari = $request->cari;
         $guru = DB::table('tb_guru')->join('users','users.id','=','tb_guru.id_user')
-        ->select('users.level','nik','nama','tempat','tgl','alamat','agama','jk','tb_guru.id','id_user','tb_guru.status','nip')
+        ->select('users.level','nik','nama','tempat','tgl','alamat','agama','jk','tb_guru.id','id_user','tb_guru.status','nip','wakel')
         ->where('nama','like',"%".$cari."%")
         ->orWhere('nik','like',"%".$cari."%")
         ->paginate(10);
@@ -57,7 +57,8 @@ class GuruController extends Controller
     public function edit($id){
         $guru = Guru::find($id);
         $data['title'] = 'Edit Guru';
-        return view('data_guru/edit',compact(['guru']),$data);
+        $kelas = DB::table('kelas')->get();
+        return view('data_guru/edit',compact(['guru','kelas']),$data);
     }
     public function update(Request $request, $id){
         $edit = Guru::findorfail($id);
@@ -71,6 +72,7 @@ class GuruController extends Controller
             'alamat' => $request->alamat,
             'status' => $request->status1,
             'nip' => $request->nip,
+            'wakel' => $request->wakel,
         ];
         $edit->update($data);
         Alert()->success('SuccessAlert','Tambah data Guru berhasil');
@@ -93,7 +95,7 @@ class GuruController extends Controller
     public function profil($id){
         $tahun = Tahun::find(1);
         $guru = DB::table('tb_guru')->join('users','users.id','=','tb_guru.id_user')
-        ->select('users.level','nik','id_user','nama','tempat','tgl','alamat','agama','jk','tb_guru.id','tb_guru.status','nip')
+        ->select('users.level','nik','id_user','nama','tempat','tgl','alamat','agama','jk','tb_guru.id','tb_guru.status','nip','wakel')
         ->where('id_user','=',''.$id.'')
         ->get();
         $data['title']= "Data profil";

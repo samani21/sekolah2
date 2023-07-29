@@ -210,13 +210,36 @@
             </tr>
             <tr>
                 <th>
+                    Wali Kelas :
+                </th> 
+                <td>
+                    <?php
+                        if ($g->level == "Tata_usaha") {
+                            echo "Tata Usaha";
+                        }else {
+                            if ($g->level == "Super_admin") {
+                                echo "Super Admin" ;
+                            }
+                            if ($g->level == "Guru") {
+                                echo $g->wakel ;
+                            }  
+                        }
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <th>
                     Jabatanan :
                 </th> 
                 <td>
                     <?php
                         if ($g->level == "Tata_usaha") {
                                 echo "Tata Usaha";
-                        }else {
+                        }
+                        if ($g->level == "Super_admin") {
+                                echo "Super Admin";
+                        }
+                        else {
                                 echo $g->level;
                         }
                     ?>

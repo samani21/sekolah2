@@ -55,6 +55,12 @@
                 <label for="">Alamat</label>
                 <input class="form-control" type="text" name="alamat" placeholder="Masukkan alamat" aria-label="default input example" required>
             </div>
+            @if (Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
+            <div>
+               <input type="hidden" value="-" name="wakel">
+            </div>
+            @endif
+            @if (Auth::user()->level == "Guru")
             <div>
                 <label for="">Wali kelas</label>
                 <select name="wakel" class="form-control" required>
@@ -64,6 +70,7 @@
                     <option value="BK">BK</option>
                 </select>
             </div>
+            @endif
             <div>
                 <label for="">Status</label>
                 <select class="form-select" name="status1" aria-label="Default select example" required>

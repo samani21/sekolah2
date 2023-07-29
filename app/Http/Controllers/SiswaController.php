@@ -17,33 +17,45 @@ class SiswaController extends Controller
         $id_user = Auth::user()->id;
         $kelas = Auth::user()->kelas;
         $cari = $request->cari;
-        $id = Auth::user()->id;
 
+        $id = Auth::user()->id;
         $user = User::findorfail($id);
+
         $kelas1 = DB::table('kelas')->get();
+
         $it = 1;
         $id_tahun = Tahun::findorfail($it);
 
+        $guru = DB::table('tb_guru')->where('id_user','=',''.Auth::user()->id.'')->get();
+        foreach ($guru as $g)
+
         if (Auth::user()->kelas == "-"){
-            $siswa = DB::table('tb_siswa')->join('users','users.id','=','tb_siswa.id_user')
-            ->select('nik','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis','tb_siswa.tahun')
-        ->where('nama','like',"%".$cari."%")
-        ->orWhere('nik','like',"%".$cari."%")
-        ->orWhere('tb_siswa.tahun','like',"%".$cari."%")
-        // ->where('id_user','=',''.$id_user.'')
-        
-        ->paginate(10);
-        }else{
+            if($g->wakel == "-" || $g->wakel == "BK"){
+                $siswa = DB::table('tb_siswa')->join('users','users.id','=','tb_siswa.id_user')
+                ->select('nik','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis','poin','tb_siswa.tahun')
+                ->where('nama','like',"%".$cari."%")
+                ->orWhere('nik','like',"%".$cari."%")
+                ->orWhere('tb_siswa.tahun','like',"%".$cari."%")
+                ->paginate(10);
+            }else{
+                $siswa = DB::table('tb_siswa')->join('users','users.id','=','tb_siswa.id_user')
+                ->where('kelas','=',''.$g->wakel.'')
+                ->select('nik','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis')
+                ->paginate(10);
+            }
+        }
+        else{
             $siswa = DB::table('tb_siswa')->join('users','users.id','=','tb_siswa.id_user')
         ->where('kelas','=',''.$kelas.'')
         ->select('nik','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis')
         ->paginate(10);
         }
+
         $ta = DB::table('tb_siswa')
         ->select('tahun')
         ->groupBy('tahun')
         ->get();
-        return view('siswa/siswa',['siswa'=>$siswa,'user'=>$user,'kelas1'=>$kelas1,'ta'=>$ta,'tahun'=>$id_tahun,'title'=>'Data Siswa']);
+        return view('siswa/siswa',['siswa'=>$siswa,'user'=>$user,'kelas1'=>$kelas1,'ta'=>$ta,'tahun'=>$id_tahun,'g'=>$g,'title'=>'Data Siswa']);
     }
 
     public function create(){
@@ -200,6 +212,14 @@ class SiswaController extends Controller
             'tahun' => $id_tahun->tahun
         ];
         $edit->update($data);
+
+        $siswa = DB::table('tb_siswa')->where('id_user','=',''.Auth::user()->id.'')->get();
+        foreach ($siswa as $sis)
+        $siswaa= Siswa::findorfail($sis->id);
+        $data = [
+            'poin' => "100"
+        ];
+        $siswaa->update($data);
         Alert()->success('SuccessAlert','Update kelas berhasil');
         return redirect()->back();
     }
