@@ -38,7 +38,7 @@
                 <th width='100'>Tanggal</th>
                 <th width='70'>jam mula</th>
                 <th width='70'>jam selesai</th>
-                <th width='70'>Tahun Ajaran</th>
+                <th width='70'>Tahun</th>
             </tr>
             </thead>
             <tbody>
@@ -53,7 +53,7 @@
                         <td>{{$sis->tgl}}</td>
                         <td>{{$sis->jam_mulai}}</td>
                         <td>{{$sis->jam_selesai}}</td>
-                        <td>{{$sis->tahun}}</td>
+                        <td>{{$sis->tahun}} ({{$sis->semester}})</td>
                     </tr>
                 @endforeach
             </tbody>

@@ -33,12 +33,14 @@ class AbsenController extends Controller
             }else{
                 $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru')
                 ->where('tahun','=',''.$tahun['tahun'].'')
+                ->where('semester','like',''.$tahun['sem'].'')
                 ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama')->paginate(10);
             }
         }else{
             if($cari = $cari){
                 $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru')
-                ->where('tahun','like',"%".$cari."%")->orWhere('absen_guru.tgl','like',"%".$cari."%")
+                ->where('tahun','like',"%".$cari."%")
+                ->orWhere('absen_guru.tgl','like',"%".$cari."%")
                 ->where('id_guru','=',''.$a->id.'')
                 ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama')->paginate(10);
                 
@@ -46,11 +48,16 @@ class AbsenController extends Controller
                 $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru')
                 ->where('tahun','=',''.$tahun['tahun'].'')
                 ->where('id_guru','=',''.$a->id.'')
+                ->where('semester','like',''.$tahun['sem'].'')
                 ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama')->paginate(10);
             }
         }
+
+        $ta = DB::table('absen_guru')
+        ->select(DB::raw('distinct(tahun)'),'semester')
+        ->get();
         $data ['title'] = "Absen Guru";
-        return view('absensi.absen_guru',compact('absen','absen_guru'),$data);
+        return view('absensi.absen_guru',compact('absen','absen_guru','ta'),$data);
     }
 
     public function update(Request $request, $id){
@@ -67,7 +74,8 @@ class AbsenController extends Controller
             'tgl' => date('Y-m-d'),
             'jam_mulai'=> date('H:i:s'),
             'jam_selesai'=> "-",
-            'tahun'=> stripslashes($tahun['tahun'])
+            'tahun'=> stripslashes($tahun['tahun']),
+            'semester'=> $tahun['sem']
         ]);
         $absen->save();
         Alert()->success('SuccessAlert','Berhasil');
@@ -89,6 +97,9 @@ class AbsenController extends Controller
         $cari = $request->cari;
         $dari = $request->dari;
         $sampai = $request->sampai;
+        $ta = $request->ta;
+        $tahun_ajaran = substr($request->ta,0,9);
+        $semester = substr($request->ta,10);
         $id_tahun = "1";
         $tahun = Tahun::find($id_tahun);
         $akun = Auth::user()->level;
@@ -100,27 +111,37 @@ class AbsenController extends Controller
             $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru')
             ->where('tahun','like',"%".$cari."%")->orWhere('absen_guru.tgl','like',"%".$cari."%")
             ->where('id_guru','=',''.$a->id.'')
-            ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama')->paginate(10);
+            ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama','semester')->paginate(10);
             
         }else{
             $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru')
             ->where('tahun','=',''.$tahun['tahun'].'')
             ->where('id_guru','=',''.$a->id.'')
-            ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama')->paginate(10);
+            ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama','semester')->paginate(10);
         }
+
+
         if($akun == "Tata_usaha"|| $akun == "Super_admin"){
-            if($cari == $cari){
+            if($cari == $cari && $ta == ""){
                 $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru')
                 ->where('tahun','like',"%".$cari."%")->orWhere('absen_guru.tgl','like',"%".$cari."%")
                 ->orWhere('nama','like',"%".$cari."%")
                 ->orWhere('nip','like',"%".$cari."%")
-                ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama')->paginate(10);
+                ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama','semester')->paginate(10);
                 
-            }else{
+            }
+            if($cari == "" && $ta == $ta){
                 $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru')
+                ->where('tahun','=',''.$tahun_ajaran.'')
+                ->where('semester','=',''.$semester.'')
+                ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama','semester')->paginate(10);
+                
+            }
+            if($cari == "" && $ta == ""){
+                $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru','semester')
                 ->where('tahun','=',''.$tahun['tahun'].'')
                 ->whereBetween('absen_guru.tgl',[$dari,$sampai])
-                ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama')->paginate(10);
+                ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama','semester')->paginate(10);  
             }
         }
         $pdf = PDF::loadView('absensi/cetak_guru',compact('absen_guru'));

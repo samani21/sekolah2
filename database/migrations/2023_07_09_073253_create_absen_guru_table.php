@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('jam_mulai','20');
             $table->string('jam_selesai','20');
             $table->string('tahun','20');
+            $table->integer('semester');
             $table->timestamps();
         });
     }

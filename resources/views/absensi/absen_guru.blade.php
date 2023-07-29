@@ -7,30 +7,37 @@
             <div class="col-12">
                 <form action="{{route('absensi/cetak_guru')}}" method="GET">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <label for="">Dari</label>
                             <div class="input-group mb-3">
                                 <input type="date" class="form-control" name="dari" value="{{date('Y-m-d')}}" placeholder="cetak sisawa siswa" aria-label="Recipient's username" aria-describedby="button-addon2">
                               </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <label for="">Sampai</label>
                             <div class="input-group mb-3">
                                 <input type="date" class="form-control" name="sampai" value="{{date('Y-m-d')}}" placeholder="cetak sisawa siswa" aria-label="Recipient's username" aria-describedby="button-addon2">
                               </div>
                         </div>
-                        <div class="col-2">
-                            <br>
+                        <div class="col-5">
                             <input type="text" class="form-control" name="cari" placeholder="Cetak berdasarkan" aria-label="Recipient's username" aria-describedby="button-addon2">
                         </div>
+                        <div class="col-5">
+                            <select name="ta" class="form-control">
+                                <option value="">Pilih tahun & semester</option>
+                                @foreach ($ta as $t)
+                                    <option value="{{$t->tahun}} {{$t->semester}}">{{$t->tahun}} Semester {{$t->semester}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="col-2">
-                            <br>
                             <button type="submit" class="btn btn-success">Cetak</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+        <br>
         <div class="row">
             <div class="col-8">
                 <form action="" method="get">
