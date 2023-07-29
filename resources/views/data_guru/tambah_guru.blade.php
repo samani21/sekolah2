@@ -56,6 +56,15 @@
                 <input class="form-control" type="text" name="alamat" placeholder="Masukkan alamat" aria-label="default input example" required>
             </div>
             <div>
+                <label for="">Wali kelas</label>
+                <select name="wakel" class="form-control" required>
+                    @foreach ($kelas as $kel)
+                        <option value="{{$kel->nm_kelas}}">{{$kel->nm_kelas}}</option>
+                    @endforeach
+                    <option value="BK">BK</option>
+                </select>
+            </div>
+            <div>
                 <label for="">Status</label>
                 <select class="form-select" name="status1" aria-label="Default select example" required>
                     <option selected value="">--Pilih</option>

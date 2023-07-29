@@ -23,7 +23,8 @@ class GuruController extends Controller
 
     public function create(){
         $data['title']= "Tambah Data";
-        return view('data_guru/tambah_guru',$data);
+        $kelas = DB::table('kelas')->get();
+        return view('data_guru/tambah_guru',$data,['kelas'=>$kelas]);
     }
 
     public function store(Request $request){
@@ -40,6 +41,7 @@ class GuruController extends Controller
             'alamat' => $request->alamat,
             'status' => $request->status1,
             'nip' => $request->nip,
+            'wakel' => $request->wakel,
         ]);
         $guru->save();
 

@@ -62,6 +62,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
 });
 
+//guru
 Route::get('data_guru/guru', [GuruController::class,'index'])->name('guru/guru');//menampilkan data guru
 Route::get('data_guru/tambah_guru', [GuruController::class,'create'])->name('guru/tambah_guru');//menampilkan tambah data guru
 Route::post('data_guru/tambah_guru',[GuruController::class, 'store'])->name('guru.store');//proses tambah data guru
