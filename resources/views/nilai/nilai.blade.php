@@ -44,6 +44,7 @@
                                 <th scope="col">Jam Absen</th>
                                 <th scope="col">Tahun ajaran</th>
                                 <th scope="col">Semester</th>
+                                <th scope="col">Nilai</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,6 +58,7 @@
                                 <td data-title="Jam Absen" >{{$pre->jam}}</td>
                                 <td data-title="Tahun" >{{$pre->tahun}}</td>
                                 <td data-title="Semester" >Semester {{$pre->semester}}</td>
+                                <td data-title="Nilai" >{{$pre->nilai}}</td>
                                
                             </tr>
                         @endforeach

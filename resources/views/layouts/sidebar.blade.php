@@ -488,6 +488,13 @@
                             <span>Point Disiplin</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ url('siswa/tambah_siswa') }}"
+                            class="{{ request()->is('nilai/*')?'active' :'' }}">
+                            <span class="fa-solid fa-triangle-exclamation"></span>
+                            <span>Nilai</span>
+                        </a>
+                    </li>
                     @endif
                     @if (Auth::user()->status =='1')
                     <li>
@@ -531,6 +538,13 @@
                             class="{{ request()->is('poin/*')?'active' :'' }}">
                             <span class="fa-solid fa-triangle-exclamation"></span>
                             <span>Point Disiplin</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('nilai/nilai') }}"
+                            class="{{ request()->is('nilai/*')?'active' :'' }}">
+                            <span class="fa-solid fa-triangle-exclamation"></span>
+                            <span>Nilai</span>
                         </a>
                     </li>
                     @endif

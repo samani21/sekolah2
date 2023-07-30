@@ -158,24 +158,39 @@ class AbsenController extends Controller
 
         $id_tahun = "1";
         $tahun = Tahun::find($id_tahun);
+        $tah = $tahun->tahun;
         $kelas = Auth::user()->kelas;
 
         $siswa = Auth::user()->id;
+
         $d_siswa = DB::table('tb_siswa')->where('id_user','=',''.$siswa.'')->get();
         foreach ($d_siswa as $sis)
-
-        $tah = $tahun->tahun;
-        $presensi = DB::table('absen_siswa')->join('tb_siswa','tb_siswa.id','=','absen_siswa.id_siswa')
+        $presensi = DB::table('absen_siswa')
         ->join('presensi','presensi.id','=','absen_siswa.id_presensi')
+        ->select('mapel','kelas','presensi.tgl','jam','presensi.tahun','presensi.id','absen_siswa.semester')
         ->where('id_siswa','=',''.$sis->id.'')
         ->where('kelas','=',''.$kelas.'')
         ->where('presensi.tahun','=',''.$tah.'')
         ->where('presensi.tgl','like',"%".$cari."%")
-        ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','presensi.id')
         ->orderBy('id','desc')
         ->paginate(10);
+
+        $tahun = Tahun::findorfail(1);
+        // $d_siswa = DB::table('tb_siswa')->where('id_user','=',''.$siswa.'')->get();
+        // foreach ($d_siswa as $sis)
+
+        // $tah = $tahun->tahun;
+        // $presensi = DB::table('absen_siswa')->join('tb_siswa','tb_siswa.id','=','absen_siswa.id_siswa')
+        // ->join('presensi','presensi.id','=','absen_siswa.id_presensi')
+        // ->where('id_siswa','=',''.$sis->id.'')
+        // ->where('kelas','=',''.$kelas.'')
+        // ->where('presensi.tahun','=',''.$tah.'')
+        // ->where('presensi.tgl','like',"%".$cari."%")
+        // ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','presensi.id')
+        // ->orderBy('id','desc')
+        // ->paginate(10);
         $data ['title'] = "Absensi Siswa";
-        return view('absensi.absen_siswa',compact('presensi','sis','kelas1','user','tahun'),$data);
+        return view('absensi.absen_siswa',compact('presensi','tahun','user','kelas1'),$data);
     }
 
     public function store(Request $request, $id){
@@ -187,7 +202,10 @@ class AbsenController extends Controller
             'id_presensi' => $id,
             'tgl' => date('Y-m-d'),
             'jam'=> date('H:i:s'),
-            'tahun'=> stripslashes($tahun['tahun'])
+            'tahun'=> stripslashes($tahun['tahun']),
+            'semester'=> $tahun['sem'],
+            'nilai'=> 0,
+            'status'=> 0,
         ]);
         $absen->save();
 

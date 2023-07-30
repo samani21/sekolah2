@@ -47,7 +47,7 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
             <hr>
             <div>
                 <table class="table table-secondary table-striped" id="no-more-tables">
-                    <thead align="center">
+                    <thead >
                         <th scope="col">No</th>
                         <th scope="col">NIS</th>
                         <th scope="col">NIk</th>
@@ -57,9 +57,9 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
                         <th scope="col">JK</th>
                         <th scope="col">Alamat</th>
                         <th scope="col">Kelas</th>
-                        <th scope="col">Point</th>
                         @if (Auth::user()->level == "Guru" || Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
-                        <th scope="col">Aksi</th>
+                            <th scope="col">Point</th>
+                            <th scope="col">Aksi</th>
                         @endif
                     </thead>
                     <tbody>
@@ -74,8 +74,8 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
                                 <td data-title="Jenis Kelamin">{{$sis->jk}}</td>
                                 <td data-title="Alamat">{{$sis->alamat}}</td>
                                 <td data-title="Kelas">{{$sis->kelas}}</td>
-                                <td data-title="Point">{{$sis->poin}}</td>
                                 @if (Auth::user()->level == "Guru" || Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
+                                <td data-title="Point">{{$sis->poin}}</td>
                                 <td>
                                     <a href="edit_siswa/{{$sis->id}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
                                     <a href="hapus_siswa/{{$sis->id}}" class="btn btn-danger" onclick="javascript: return confirm('Konfirmasi data akan dihapus');"><i class="fa-solid fa-trash"></i> Hapus</a>

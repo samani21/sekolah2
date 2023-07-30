@@ -7,6 +7,7 @@ use App\Http\Controllers\HarianController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MapelController;
+use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\PoinController;
 use App\Http\Controllers\PresensiController;
@@ -146,6 +147,13 @@ Route::get('absensi/lihat_presensi/{id}/{mapel}',[PresensiController::class, 'li
 //absesnsi siswa
 Route::get('absensi/absen_siswa', [AbsenController::class ,'index_siswa'])->name('absensi/absen_siswa');//absen siswa
 Route::get('proses_absen/{id}', [AbsenController::class, 'store'])->name('proses_absen');//proses absen siswa
+
+
+//lihat nilai
+Route::get('nilai/lihat_nilai/{id}/{mapel}',[NilaiController::class, 'lihat'])->name('nilai/lihat_nilai');//lihat nilai
+Route::post('tambah_nilai/{id}',[NilaiController::class, 'store'])->name('tambah_nilai');//Tambah nilai
+Route::post('update_nilai/{id}',[NilaiController::class, 'update'])->name('update_nilai');//Tambah nilai
+Route::get('nilai/nilai',[NilaiController::class, 'index'])->name('nilai/nilai');//lihat nilai siswa
 
 //prestasi siswa
 Route::get('prestasi/siswa',[PrestasiController::class, 'index_siswa'])->name('prestasi/siswa');//data prestasi siswa

@@ -71,7 +71,8 @@ class HarianController extends Controller
                     'id_user' => $edit->id_user,
                     'tgl' => date('Y-m-d'),
                     'jam'=> date('H:i:s'),
-                    'tahun'=> stripslashes($tahun['tahun'])
+                    'tahun'=> stripslashes($tahun['tahun']),
+                    'semester'=> $tahun->sem
                 ]);
                 $absen->save();
             }

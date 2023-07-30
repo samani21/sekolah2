@@ -68,6 +68,7 @@ class PresensiController extends Controller
             'jam_mulai' => $request->jam_mulai,
             'jam_selesai' => $request->jam_selesai,
             'tahun' => $request->tahun,
+            'semester' => $request->semester,
         ]);
         $presensi->save();
         Alert()->success('SuccessAlert','Tambah presensi siswa berhasil');
