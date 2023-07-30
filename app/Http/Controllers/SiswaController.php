@@ -17,7 +17,7 @@ class SiswaController extends Controller
         $id_user = Auth::user()->id;
         $kelas = Auth::user()->kelas;
         $cari = $request->cari;
-
+        
         $id = Auth::user()->id;
         $user = User::findorfail($id);
 
@@ -27,9 +27,10 @@ class SiswaController extends Controller
         $id_tahun = Tahun::findorfail($it);
 
         $guru = DB::table('tb_guru')->where('id_user','=',''.Auth::user()->id.'')->get();
-        foreach ($guru as $g)
 
         if (Auth::user()->kelas == "-"){
+            $guru = DB::table('tb_guru')->where('id_user','=',''.Auth::user()->id.'')->get();
+            foreach ($guru as $g)
             if($g->wakel == "-" || $g->wakel == "BK"){
                 $siswa = DB::table('tb_siswa')->join('users','users.id','=','tb_siswa.id_user')
                 ->select('nik','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis','poin','tb_siswa.tahun')
@@ -40,22 +41,27 @@ class SiswaController extends Controller
             }else{
                 $siswa = DB::table('tb_siswa')->join('users','users.id','=','tb_siswa.id_user')
                 ->where('kelas','=',''.$g->wakel.'')
-                ->select('nik','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis')
+                ->select('nik','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis','poin')
                 ->paginate(10);
             }
         }
         else{
             $siswa = DB::table('tb_siswa')->join('users','users.id','=','tb_siswa.id_user')
-        ->where('kelas','=',''.$kelas.'')
-        ->select('nik','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis')
-        ->paginate(10);
+            ->select('nik','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis','poin','tb_siswa.tahun')
+            ->where('kelas','=',''.$kelas.'')
+            ->where('nama','like',"%".$cari."%")
+            ->paginate(10);
         }
 
         $ta = DB::table('tb_siswa')
         ->select('tahun')
         ->groupBy('tahun')
         ->get();
-        return view('siswa/siswa',['siswa'=>$siswa,'user'=>$user,'kelas1'=>$kelas1,'ta'=>$ta,'tahun'=>$id_tahun,'g'=>$g,'title'=>'Data Siswa']);
+        if (Auth::user()->kelas == "-"){
+            return view('siswa/siswa',['siswa'=>$siswa,'user'=>$user,'kelas1'=>$kelas1,'ta'=>$ta,'g'=>$g,'tahun'=>$id_tahun,'title'=>'Data Siswa']); 
+        }else{
+            return view('siswa/siswa',['siswa'=>$siswa,'user'=>$user,'kelas1'=>$kelas1,'ta'=>$ta,'tahun'=>$id_tahun,'title'=>'Data Siswa']); 
+        }
     }
 
     public function create(){
@@ -88,7 +94,8 @@ class SiswaController extends Controller
             'nis' => $request->nis,
             'tahun' => $id_tahun->tahun,
             'presensi' => "0",
-            'foto' =>$filename
+            'poin' => 100,
+            
         ]);
         $siswa->save();
 

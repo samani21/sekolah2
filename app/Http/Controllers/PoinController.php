@@ -25,10 +25,9 @@ class PoinController extends Controller
         $it = 1;
         $id_tahun = Tahun::findorfail($it);
 
-        $guru = DB::table('tb_guru')->where('id_user','=',''.Auth::user()->id.'')->get();
-        foreach ($guru as $g)
-
         if (Auth::user()->kelas == "-"){
+            $guru = DB::table('tb_guru')->where('id_user','=',''.Auth::user()->id.'')->get();
+            foreach ($guru as $g)
             if($g->wakel == "-" || $g->wakel == "BK"){
                 $poin =  DB::table('poin')->join('tb_siswa','tb_siswa.id','=','poin.id_siswa')
                 ->join('users','users.id','=','poin.id_user')
@@ -38,14 +37,33 @@ class PoinController extends Controller
                 ->orWhere('poin.tgl','like',"%".$cari."%")
                 ->orWhere('poin.tahun','like',"%".$cari."%")
                 ->paginate(10);
+            }else{
+                $poin =  DB::table('poin')->join('tb_siswa','tb_siswa.id','=','poin.id_siswa')
+                ->join('users','users.id','=','poin.id_user')
+                ->select('poin.tahun','kelas','nis','nama','poin.tgl','ket','poin.poin','poin.id')
+                ->where('kelas','like',''.$g->wakel.'')
+                ->where('nama','like',"%".$cari."%")
+                ->paginate(10);
             }
+        }else{
+                $poin =  DB::table('poin')->join('tb_siswa','tb_siswa.id','=','poin.id_siswa')
+                ->join('users','users.id','=','poin.id_user')
+                ->select('poin.tahun','kelas','nis','nama','poin.tgl','ket','poin.poin','poin.id')
+                ->where('users.id','=',''.$id_user.'')
+                ->where('kelas','like',''.$kelas.'')
+                ->where('nama','like',"%".$cari."%")
+                ->paginate(10);
         }
 
         $ta = DB::table('poin')
         ->select('tahun')
         ->groupBy('tahun')
         ->get();
-        return view('poin/poin',['poin'=>$poin,'user'=>$user,'kelas1'=>$kelas1,'ta'=>$ta,'tahun'=>$id_tahun,'g'=>$g,'title'=>'Point Kedisiplinan']);
+        if (Auth::user()->kelas == "-"){
+            return view('poin/poin',['poin'=>$poin,'user'=>$user,'kelas1'=>$kelas1,'ta'=>$ta,'tahun'=>$id_tahun,'g'=>$g,'title'=>'Point Kedisiplinan']);
+        }else{
+            return view('poin/poin',['poin'=>$poin,'user'=>$user,'kelas1'=>$kelas1,'ta'=>$ta,'tahun'=>$id_tahun,'title'=>'Point Kedisiplinan']);
+        }
     }
     
     public function create($id){

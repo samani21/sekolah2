@@ -56,7 +56,7 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
                         <th scope="col">Tanggal</th>
                         <th scope="col">Point</th>
                         <th scope="col">Tahun Ajaran</th>
-                        @if (Auth::user()->level == "Guru" || Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
+                        @if ($g->wakel == "BK" || Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
                         <th scope="col">Aksi</th>
                         @endif
                     </thead>
@@ -71,7 +71,7 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
                                 <td data-title="Tanggal">{{$po->tgl}}</td>
                                 <td data-title="Point">{{$po->poin}}</td>
                                 <td data-title="Tahun Ajaran">{{$po->tahun}}</td>
-                                @if (Auth::user()->level == "Guru" || Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
+                                @if ($g->wakel == "BK" || Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
                                 <td>
                                     <a href="edit/{{$po->id}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
                                     <a href="hapus_poin/{{$po->id}}" class="btn btn-danger" onclick="javascript: return confirm('Konfirmasi data akan dihapus');"><i class="fa-solid fa-trash"></i> Hapus</a>

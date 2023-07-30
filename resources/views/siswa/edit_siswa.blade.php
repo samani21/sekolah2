@@ -5,7 +5,7 @@
     <div class="container">
         @foreach ($siswa2 as $siswa)
 
-        <form action="{{url('updatesiswa',$siswa->id)}}" method="POST">
+        <form action="{{url('updatesis',$siswa->id)}}" method="POST">
             @csrf
             <div>
                 <label for="">NIS</label>

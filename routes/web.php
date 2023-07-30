@@ -65,7 +65,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 //guru
 Route::get('data_guru/guru', [GuruController::class,'index'])->name('guru/guru');//menampilkan data guru
-Route::get('data_guru/tambah_guru', [GuruController::class,'create'])->name('guru/tambah_guru');//menampilkan tambah data guru
+Route::get('data_guru/tambah_guru', [GuruController::class,'crefotoate'])->name('guru/tambah_guru');//menampilkan tambah data guru
 Route::post('data_guru/tambah_guru',[GuruController::class, 'store'])->name('guru.store');//proses tambah data guru
 Route::get('data_guru/edit/{id}',[GuruController::class, 'edit'])->name('guru/edit');//menampilkan edit data guru
 Route::post('ubahguru/{id}',[GuruController::class, 'update'])->name('ubahguru');//proses update guru
@@ -79,7 +79,7 @@ Route::get('siswa/siswa',[SiswaController::class, 'index'])->name('siswa/siswa')
 Route::get('siswa/tambah_siswa',[SiswaController::class, 'create'])->name('siswa/tambah_siswa');//input siswa
 Route::post('siswa/tambah_siswa',[SiswaController::class, 'store'])->name('siswa.store');//proses tambah data siswa
 Route::get('siswa/edit_siswa/{id}',[SiswaController::class, 'edit_siswa'])->name('siswa/edit_siswa');//edit datasiswa
-Route::post('updatesiswa/{id}',[SiswaController::class, 'update'])->name('updatesiswa');//proses edit data siswa
+Route::post('updatesis/{id}',[SiswaController::class, 'update'])->name('updatesis');//proses edit data siswa
 Route::get('siswa/hapus_siswa/{id}',[SiswaController::class, 'destroy'])->name('hapus_iswa');//hapus data siswa
 
 Route::get('profil/profilsiswa/{id}',[SiswaController::class,'profil'])->name('profil/profilsiswa');//menampilkan data profil
