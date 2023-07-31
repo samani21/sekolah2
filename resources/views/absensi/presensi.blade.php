@@ -75,8 +75,20 @@
                                     <a href="edit_presensi/{{$pre->id}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
                                     <a href="hapus_presensi/{{$pre->id}}" class="btn btn-danger" onclick="javascript: return confirm('Konfirmasi data akan dihapus');"><i class="fa-solid fa-trash"></i> Hapus</a>
                                     <a href="lihat_presensi/{{$pre->id}}/{{$pre->mapel}}" class="btn btn-primary"><i class="fa-solid fa-plus"></i>Lihat</a>
-                                    <a href="/nilai/lihat_nilai/{{$pre->id}}/{{$pre->mapel}}" class="btn btn-secondary"><i class="fa-solid fa-plus"></i>Nilai</a>
-                                    <a href="/nilai/lihat_nilai/{{$pre->id}}/{{$pre->mapel}}" class="btn btn-success"><i class="fa-solid fa-plus"></i>Jurnal</a>
+                                    <?php
+                                        if ($pre->s_nilai == 1) {
+                                            ?>
+                                            <a href="/nilai/lihat_nilai/{{$pre->id}}/{{$pre->mapel}}" class="btn btn-secondary"><i class="fa-solid fa-plus"></i>Nilai</a>
+                                            <?php
+                                        }
+                                    ?>
+                                    <?php
+                                    if ($pre->s_jurnal == 0) {
+                                        ?>
+                                        <a href="/jurnal/tambah_jurnal/{{$pre->id}}" class="btn btn-success"><i class="fa-solid fa-plus"></i>Jurnal</a>
+                                        <?php
+                                        }
+                                    ?>
                                 </td>
                             </tr>
                         @endforeach

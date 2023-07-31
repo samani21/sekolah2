@@ -43,7 +43,15 @@
                 <label for="">Tahun ajaran</label>
                 <input class="form-control" type="text" name="tahun" value="{{$tahun->tahun}}" aria-label="default input example" readonly required>
             </div>
-                <input class="form-control" type="hidden" name="semester" value="{{$tahun->sem}}" aria-label="default input example" readonly required>
+            <div>
+                <label for="">Jenis penilaian</label>
+                <select name="s_nilai" class="form-control" required>
+                    <option value="">--pilih--</option>
+                        <option value="0">Absen</option>
+                        <option value="1">Nilai tugas dan absen</option>
+                </select>
+            </div>
+            <input class="form-control" type="hidden" name="semester" value="{{$tahun->sem}}" aria-label="default input example" readonly required>
             <input type="hidden" value="{{$guru->id}}" name="id_guru">
             <hr>
             <button type="submit" class="btn btn-success">Simpan</button>

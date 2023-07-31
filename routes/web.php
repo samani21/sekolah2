@@ -4,6 +4,7 @@ use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\HarianController;
+use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MapelController;
@@ -175,6 +176,15 @@ Route::get('prestasi/hapus/{id}',[PrestasiController::class, 'destroy'])->name('
 Route::get('harian/harian',[HarianController::class, 'index'])->name('harian/harian');//data absen siswa harian
 Route::get('harian/absen',[HarianController::class, 'absen'])->name('harian/absen');//data absen siswa harian
 Route::get('harian/siswa',[HarianController::class, 'siswa'])->name('harian/siswa');//data absen siswa harian
+
+//jurnal mengajar
+Route::get('jurnal/jurnal',[JurnalController::class, 'index'])->name('jurnal/jurnal');//menapilkan data jurnal
+Route::get('jurnal/tambah_jurnal/{id}',[JurnalController::class, 'create'])->name('jurnal/tambah_jurnal');// tambah jurnal
+Route::post('jurnal/tambah_jurnal/{id}',[JurnalController::class, 'store'])->name('jurnal.store');//proeses tambah jurnal
+Route::get('jurnal/edit_jurnal/{id}',[JurnalController::class, 'edit'])->name('jurnal/edit_jurnal');// edit jurnal
+Route::post('updatejurnal/{id}',[JurnalController::class, 'update'])->name('updatejurnal');//proeses Update jurnal
+Route::get('jurnal/hapus_jurnal/{id}',[JurnalController::class, 'destroy'])->name('hapus_jurnal');//hapus prestas guru
+
 
 //cetak
 Route::get('siswa/cetak', [SiswaController::class, 'cetak_siswa'])->name('siswa/cetak');//cetak siswa

@@ -198,6 +198,13 @@
                             <span>Absen siswa</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ url('jurnal/jurnal') }}"
+                            class="{{ request()->is('jurnal/*')?'active' :'' }}">
+                            <span class="fa-solid fa-triangle-exclamation"></span>
+                            <span>Jurnal Mengajar</span>
+                        </a>
+                    </li>
                     @endif
                     @endif
 
@@ -306,6 +313,13 @@
                                     class="{{ request()->is('poin/*')?'active' :'' }}">
                                     <span class="fa-solid fa-triangle-exclamation"></span>
                                     <span>Point Disiplin</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('jurnal/jurnal') }}"
+                                    class="{{ request()->is('jurnal/*')?'active' :'' }}">
+                                    <span class="fa-solid fa-triangle-exclamation"></span>
+                                    <span>Jurnal Mengajar</span>
                                 </a>
                             </li>
                         @endif

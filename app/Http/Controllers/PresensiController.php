@@ -29,19 +29,19 @@ class PresensiController extends Controller
         if(Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
         {
             $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
-        ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
+        ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id','s_nilai','s_jurnal')
         ->where('presensi.tgl','like',"%".$cari."%")
         ->orWhere('mapel','like',"%".$cari."%")
         ->orWhere('nama','like',"%".$cari."%")
-        ->groupBy('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
+        ->groupBy('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id','s_nilai','s_jurnal')
         ->paginate(10);
         }else{
             $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
-        ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
+        ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id','s_nilai','s_jurnal')
         ->where('id_guru','=',''.$gur.'')
         ->where('presensi.tahun','=',''.$ta.'')
         ->where('presensi.tgl','like',"%".$cari."%")
-        ->groupBy('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
+        ->groupBy('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id','s_nilai','s_jurnal')
         ->paginate(10);
         }
         // dd($presensi);
@@ -69,6 +69,8 @@ class PresensiController extends Controller
             'jam_selesai' => $request->jam_selesai,
             'tahun' => $request->tahun,
             'semester' => $request->semester,
+            's_nilai' => $request->s_nilai,
+            's_jurnal' => 0,
         ]);
         $presensi->save();
         Alert()->success('SuccessAlert','Tambah presensi siswa berhasil');
@@ -92,6 +94,7 @@ class PresensiController extends Controller
             'jam_mulai' => $request->jam_mulai,
             'jam_selesai' => $request->jam_selesai,
             'tahun' => $request->tahun,
+            's_nilai' => $request->s_nilai,
         ];
         $edit->update($data);
         Alert()->success('SuccessAlert','Update presensi Kelas berhasil');

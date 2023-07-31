@@ -38,6 +38,27 @@
                 <label for="">Tahun ajaran</label>
                 <input class="form-control" type="text" name="tahun" value="{{$presensi->tahun}}" aria-label="default input example" readonly required>
             </div>
+            <div>
+                <label for="">Jenis penilaian</label>
+                <select name="s_nilai" class="form-control" required>
+                    <option value="{{$presensi->s_nilai}}">
+                        <?php 
+                            if ($presensi->s_nilai == 1) {
+                               ?>
+                                   Nilai tugas dan absen
+                               <?php
+                            }
+                            if ($presensi->s_nilai == 0) {
+                               ?>
+                                   Absen
+                               <?php
+                            }
+                        ?>
+                    </option>
+                        <option value="0">Absen</option>
+                        <option value="1">Nilai tugas dan absen</option>
+                </select>
+            </div>
             <input type="hidden" value="{{$presensi->id_guru}}" name="id_guru">
             <hr>
             <button type="submit" class="btn btn-success">Simpan</button>
