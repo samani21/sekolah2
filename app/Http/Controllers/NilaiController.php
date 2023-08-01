@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class NilaiController extends Controller
 {
@@ -114,5 +115,49 @@ class NilaiController extends Controller
         $edit->update($data);
         Alert()->success('SuccessAlert','Tambah presensi siswa berhasil');
         return redirect('nilai/lihat_nilai/'.$id_presensi.'/'.$mapel.'');
+    }
+
+    public function cetak (Request $request, $id){
+        $cari = $request->cari;
+        $nilai =  DB::table('nilai')
+        ->where('id_presensi','=',''.$id.'')->join('tb_guru','tb_guru.id','=','nilai.id_guru')
+        ->join('tb_siswa','tb_siswa.id','=','nilai.id_siswa')
+        ->join('presensi','presensi.id','=','nilai.id_presensi')
+        ->select('presensi.tgl','tb_guru.nama as nm_guru','nis','tb_siswa.nama as nm_siswa','presensi.kelas','presensi.mapel','nilai.nilai')
+        ->where('tb_siswa.nama','like',"%".$cari."%")
+        ->orWhere('tb_siswa.nis','like',"%".$cari."%")
+        ->get();
+
+        $ta = DB::table('presensi')
+        ->where('id','=',''.$id.'')
+        ->get();
+        foreach ($ta as $t)
+        $pdf = PDF::loadView('nilai/cetak_nilai',compact('nilai','t'));
+        $pdf->setPaper('A4','potrait');
+        return $pdf->stream('cetak_nilai.pdf');
+    }
+
+    public function cetak_siswa(Request $request){
+
+        $cari = $request->cari;
+        $siswa = DB::table('tb_siswa')->where('id_user','=',''.Auth::user()->id.'')->get();
+        foreach ($siswa as $sis)
+        $cari = $request->cari;
+        $nilai =  DB::table('nilai')
+        ->join('tb_guru','tb_guru.id','=','nilai.id_guru')
+        ->join('tb_siswa','tb_siswa.id','=','nilai.id_siswa')
+        ->join('presensi','presensi.id','=','nilai.id_presensi')
+        ->select('presensi.tgl','tb_guru.nama as nm_guru','id_siswa','nis','tb_siswa.nama as nm_siswa','presensi.kelas','presensi.mapel','nilai.nilai')
+        ->where('id_siswa','=',''.$sis->id.'')
+        ->get();
+        // $siswa1 = DB::table('absen_siswa')->join('tb_siswa','tb_siswa.id','=','absen_siswa.id_siswa')
+        // ->join('presensi','presensi.id','=','absen_siswa.id_presensi')
+        // ->select('mapel','absen_siswa.tgl','jam','presensi.tahun')
+        // ->where('id_siswa','=',''.$sis->id.'')
+        // ->where('absen_siswa.tgl','like',"%".$cari."%")
+        // ->get();
+        $pdf = PDF::loadView('nilai/cetak_siswa',compact('nilai','sis'));
+        $pdf->setPaper('A4','potrait');
+        return $pdf->stream('cetak_nilai.pdf');
     }
 }

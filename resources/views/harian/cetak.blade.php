@@ -28,7 +28,18 @@
         </thead>
     </table>
     <hr>
-    <h3 align="center">LAPORAN ABSEN GURU</h3>
+    <h3 align="center">LAPORAN ABSEN HARIAN SISWA</h3>
+    <?php
+        if ($dari == "" && $sampai == "") {
+            
+        }else {
+            ?>
+        <pre>
+    Periode tanggal {{$dari}} sampai {{$sampai}}
+        </pre>
+            <?php
+        }
+    ?>
         <table style="border-collapse:collapse;border-spacing:1;" border="1" align="center">
             <thead>
             <tr align="center">

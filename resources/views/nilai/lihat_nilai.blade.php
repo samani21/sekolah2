@@ -7,7 +7,7 @@
             <div class="col-8">
                 <div class="row">
                     <div class="col-8">
-                        <form action="{{route('absensi/cetak_presensi',[$id,$mapel])}}" method="GET">
+                        <form action="{{route('nilai/cetak_nilai',$id)}}" method="GET">
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="input-group mb-3">

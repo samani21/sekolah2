@@ -152,36 +152,123 @@ class PrestasiController extends Controller
 
     public function cetak_siswa(Request $request)
     {   
-        $siswa = DB::table('tb_siswa')->where('id_user','=',''.Auth::user()->id.'')->get();
-        foreach ($siswa as $sis)
         $cari = $request->cari;
-       if(Auth::user()->level == "Siswa"){
-        $prestasi = DB::table('prestasi')->join('tb_siswa','tb_siswa.id','=','prestasi.id_siswa')
-        ->where('status','=','siswa')
-        ->where('id_siswa','=',''.$sis->id.'')
-        ->where('capaian','like',"%".$cari."%")
-        ->get();
-       }else{
-        $prestasi = DB::table('prestasi')->join('tb_siswa','tb_siswa.id','=','prestasi.id_siswa')
-        ->where('status','=','siswa')
-        ->where('nama','like',"%".$cari."%")
-        ->orWhere('capaian','like',"%".$cari."%")
-        ->orWhere('tingkat','like',"%".$cari."%")
-        ->get();
-       }
-        $jenis = "siswa";
-        $pdf = PDF::loadView('prestasi/cetak_prestasi',compact('prestasi','jenis','sis'));
-        $pdf->setPaper('A4','potrait');
-        return $pdf->stream('cetak_siswa.pdf');
+
+        if(Auth::user()->level = "Super_admin" || Auth::user()->level = "Tata_usaha"){
+            if($cari == ""){
+                $dari = $request->dari;
+                $sampai = $request->sampai;
+                $prestasi = DB::table('prestasi')->join('tb_siswa','tb_siswa.id','=','prestasi.id_siswa')
+                ->select('nm_kegiatan','status','nama','prestasi.tahun','waktu','tingkat','capaian','nis','bukti')
+                ->where('status','=','siswa')
+                ->whereBetween('waktu',[$dari,$sampai])
+                ->get();
+                $jenis = "siswa";
+                $pdf = PDF::loadView('prestasi/cetak_prestasi',compact('prestasi','jenis','dari','sampai'));
+                $pdf->setPaper('A4','potrait');
+                return $pdf->stream('cetak_siswa.pdf');
+            }else{
+                $prestasi = DB::table('prestasi')->join('tb_siswa','tb_siswa.id','=','prestasi.id_siswa')
+                ->select('nm_kegiatan','status','nama','prestasi.tahun','waktu','tingkat','capaian','nis','bukti')
+                ->where('status','=','siswa')
+                ->where('nm_kegiatan','like',"%".$cari."%")
+                ->orWhere('nama','like',"%".$cari."%")
+                ->orWhere('waktu','like',"%".$cari."%")
+                ->orWhere('nis','like',"%".$cari."%")
+                ->get();
+                $jenis = "siswa";
+                $dari = "";
+                $sampai = "";
+                $pdf = PDF::loadView('prestasi/cetak_prestasi',compact('prestasi','jenis','dari','sampai'));
+                $pdf->setPaper('A4','potrait');
+                return $pdf->stream('cetak_prestasi.pdf');
+            }
+
+        }else{
+
+                $siswa = DB::table('tb_siswa')->where('id_user','=',''.Auth::user()->id.'')->get();
+                foreach ($siswa as $sis)
+                $cari = $request->cari;
+            if(Auth::user()->level == "Siswa"){
+                $prestasi = DB::table('prestasi')->join('tb_siswa','tb_siswa.id','=','prestasi.id_siswa')
+                ->where('status','=','siswa')
+                ->where('id_siswa','=',''.$sis->id.'')
+                ->where('capaian','like',"%".$cari."%")
+                ->get();
+            }else{
+                $prestasi = DB::table('prestasi')->join('tb_siswa','tb_siswa.id','=','prestasi.id_siswa')
+                ->where('status','=','siswa')
+                ->where('nama','like',"%".$cari."%")
+                ->orWhere('capaian','like',"%".$cari."%")
+                ->orWhere('tingkat','like',"%".$cari."%")
+                ->get();
+            }
+                $jenis = "";
+                $pdf = PDF::loadView('prestasi/cetak_prestasi',compact('prestasi','jenis','sis'));
+                $pdf->setPaper('A4','potrait');
+                return $pdf->stream('cetak_prestasi.pdf');
+        }
     }
     public function cetak_guru(Request $request)
     {   
         $cari = $request->cari;
+
+        if(Auth::user()->level = "Super_admin" || Auth::user()->level = "Tata_usaha"){
+            if($cari == ""){
+                $dari = $request->dari;
+                $sampai = $request->sampai;
+                $prestasi = DB::table('prestasi')->join('tb_guru','tb_guru.id','=','prestasi.id_guru')
+                ->select('nm_kegiatan','prestasi.status','nama','prestasi.tahun','waktu','tingkat','capaian','nip','bukti')
+                ->where('prestasi.status','=','guru')
+                ->whereBetween('waktu',[$dari,$sampai])
+                ->get();
+                $jenis = "guru";
+                $pdf = PDF::loadView('prestasi/cetak_prestasi',compact('prestasi','jenis','dari','sampai'));
+                $pdf->setPaper('A4','potrait');
+                return $pdf->stream('cetak_siswa.pdf');
+            }else{
+                $prestasi = DB::table('prestasi')->join('tb_guru','tb_guru.id','=','prestasi.id_guru')
+                ->select('nm_kegiatan','prestasi.status','nama','prestasi.tahun','waktu','tingkat','capaian','nip','bukti')
+                ->where('prestasi.status','=','guru')
+                ->where('nm_kegiatan','like',"%".$cari."%")
+                ->orWhere('nama','like',"%".$cari."%")
+                ->orWhere('waktu','like',"%".$cari."%")
+                ->orWhere('nip','like',"%".$cari."%")
+                ->get();
+                $jenis = "guru";
+                $dari = "";
+                $sampai = "";
+                $pdf = PDF::loadView('prestasi/cetak_prestasi',compact('prestasi','jenis','dari','sampai'));
+                $pdf->setPaper('A4','potrait');
+                return $pdf->stream('cetak_prestasi_guru.pdf');
+            }
+
+        }else{
+
+                $siswa = DB::table('tb_siswa')->where('id_user','=',''.Auth::user()->id.'')->get();
+                foreach ($siswa as $sis)
+                $cari = $request->cari;
+            if(Auth::user()->level == "Siswa"){
+                $prestasi = DB::table('prestasi')->join('tb_siswa','tb_siswa.id','=','prestasi.id_siswa')
+                ->where('status','=','siswa')
+                ->where('id_siswa','=',''.$sis->id.'')
+                ->where('capaian','like',"%".$cari."%")
+                ->get();
+            }else{
+                $prestasi = DB::table('prestasi')->join('tb_siswa','tb_siswa.id','=','prestasi.id_siswa')
+                ->where('status','=','siswa')
+                ->where('nama','like',"%".$cari."%")
+                ->orWhere('capaian','like',"%".$cari."%")
+                ->orWhere('tingkat','like',"%".$cari."%")
+                ->get();
+            }
+                $jenis = "siswa";
+                $pdf = PDF::loadView('prestasi/cetak_prestasi',compact('prestasi','jenis','sis'));
+                $pdf->setPaper('A4','potrait');
+                return $pdf->stream('cetak_prestasi_guru.pdf');
+        }
         $prestasi = DB::table('prestasi')->join('tb_guru','tb_guru.id','=','prestasi.id_guru')
         ->where('prestasi.status','=','guru')
-        ->where('nama','like',"%".$cari."%")
-        ->orWhere('capaian','like',"%".$cari."%")
-        ->orWhere('tingkat','like',"%".$cari."%")
         ->get();
         $jenis = "guru";
         $pdf = PDF::loadView('prestasi/cetak_prestasi',compact('prestasi','jenis'));

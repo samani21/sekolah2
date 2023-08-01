@@ -28,38 +28,41 @@
         </thead>
     </table>
     <hr>
-    <h3 align="center">LAPORAN ABSEN GURU</h3>
+    <h3 align="center">LAPORAN NILAI SISWA</h3>
+    <hr>
     <pre>
-Berdasarkan Periode tanggal : {{$dari}} - {{$sampai}}
+    Nama   : {{$sis->nama}}
+    Nis    : {{$sis->nis}}
+    Kelas  : {{Auth::user()->kelas}}
     </pre>
         <table style="border-collapse:collapse;border-spacing:1;" border="1" align="center">
             <thead>
-            <tr align="center">
-                <th width='auto'>No</th>
-                <th width='80'>NIP</th>
-                <th width='100'>Nama</th>
-                <th width='100'>Tanggal</th>
-                <th width='70'>jam mula</th>
-                <th width='70'>jam selesai</th>
-                <th width='70'>Tahun</th>
-            </tr>
+                <tr align="center">
+                    <th width='auto'>No</th>
+                    <th width='50'>Tanggal</th>
+                    <th width='50'>Guru</th>
+                    <th width='50'>NIS</th>
+                    <th width='60'>Nama</th>
+                    <th width='70'>Kelas</th>
+                    <th width='100'>Mapel</th>
+                    <th width='70'>Nilai</th>
+                </tr>
             </thead>
-            <tbody>
-                @php 
-                $no=1;
-            @endphp
-                @foreach ($absen_guru as $sis)
+            @php 
+                    $no=1;
+                @endphp
+                    @foreach ($nilai as $nil)
                     <tr>
-                        <td>{{$no++}}</td>
-                        <td>{{$sis->nip}}</td>
-                        <td>{{$sis->nama}}</td>
-                        <td>{{$sis->tgl}}</td>
-                        <td>{{$sis->jam_mulai}}</td>
-                        <td>{{$sis->jam_selesai}}</td>
-                        <td>{{$sis->tahun}} ({{$sis->semester}})</td>
+                        <td>{{$no++ }}</td>
+                        <td>{{$nil->tgl}}</td>
+                        <td>{{$nil->nm_guru}}</td>
+                        <td>{{$nil->nis}}</td>
+                        <td>{{$nil->nm_siswa}}</td>
+                        <td>{{$nil->kelas}}</td>
+                        <td>{{$nil->mapel}}</td>
+                        <td>{{$nil->nilai}}</td>
                     </tr>
                 @endforeach
-            </tbody>
         </table>
         <div>
             <pre align="right">

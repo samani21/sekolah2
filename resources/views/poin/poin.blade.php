@@ -7,9 +7,9 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
     ?>
     <div class="container">
         <div class="row">
-            @if (Auth::user()->level =="Guru" ||Auth::user()->level =="Guru"|| Auth::user()->level =="Tata_usaha" ||Auth::user()->level =="Super_admin")
+            {{-- @if (Auth::user()->level =="Guru" ||Auth::user()->level =="Guru"|| Auth::user()->level =="Tata_usaha" ||Auth::user()->level =="Super_admin") --}}
             <div class="col-8">
-                <form action="{{route('siswa/cetak')}}" method="GET">
+                <form action="{{route('poin/cetak')}}" method="GET">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -29,7 +29,7 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
                     </div>
                 </form>
             </div>
-            @endif
+            {{-- @endif --}}
         </div>
         <div class="row">
             <div class="col-8">

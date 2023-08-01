@@ -7,15 +7,26 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
     ?>
     <div class="container">
         <div class="row">
-            <div class="col-8">
+            <div class="col-12">
                 <form action="{{route('prestasi/cetak_prestasi')}}" method="GET">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-3">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" name="cari" placeholder="cetak" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                <input type="date" class="form-control" name="dari" value="{{date('Y-m-d')}}" placeholder="cetak presensi" aria-label="Recipient's username" aria-describedby="button-addon2">
                               </div>
                         </div>
-                        <div class="col-md-4">
+                        sampai
+                        <div class="col-md-3">
+                            <div class="input-group mb-3">
+                                <input type="date" class="form-control" name="sampai" value="{{date('Y-m-d')}}" placeholder="cetak presensi" aria-label="Recipient's username" aria-describedby="button-addon2">
+                              </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" name="cari" placeholder="cetak presensi" aria-label="Recipient's username" aria-describedby="button-addon2">
+                              </div>
+                        </div>
+                        <div class="col-md-2">
                             <button type="submit" class="btn btn-success">Cetak</button>
                         </div>
                     </div>

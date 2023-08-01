@@ -4,19 +4,31 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-8">
-                {{-- <form action="{{route('guru/cetak')}}" method="GET">
+            <div class="col-12">
+                <form action="{{route('jurnal/cetak')}}" method="GET">
                     <div class="row">
-                        <div class="col-md-8">
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" name="cari" placeholder="cetak sisawa siswa" aria-label="Recipient's username" aria-describedby="button-addon2">
-                              </div>
-                        </div>
-                        <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="input-group mb-3">
+                                    <input type="date" class="form-control" name="dari" value="{{date('Y-m-d')}}" placeholder="cetak presensi" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                  </div>
+                            </div>
+                            sampai
+                            <div class="col-md-3">
+                                <div class="input-group mb-3">
+                                    <input type="date" class="form-control" name="sampai" value="{{date('Y-m-d')}}" placeholder="cetak presensi" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                  </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" name="cari" placeholder="cetak presensi" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                  </div>
+                            </div>
+                        <div class="col-md-2">
                             <button type="submit" class="btn btn-success">Cetak</button>
                         </div>
                     </div>
-                </form> --}}
+                </form>
             </div>
         </div>
         <div class="row">
@@ -27,9 +39,6 @@
                         <button class="btn btn-primary" type="submit" id="button-addon2"><i class="fa-solid fa-magnifying-glass"></i></button>
                       </div>
                 </form>
-            </div>
-            <div class="col-4">
-                <a href="tambah_kelas" class="btn btn-success">Tambah kelas</a>
             </div>
         </div>
         <hr>

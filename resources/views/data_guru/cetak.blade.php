@@ -33,12 +33,13 @@
             <thead>
             <tr align="center">
                 <th width='auto'>No</th>
-                <th width='80'>NIk</th>
+                <th width='6'>NIk</th>
                 <th width='100'>Nama</th>
                 <th width='100'>TTL</th>
-                <th width='70'>Jk</th>
+                <th width='50'>Jk</th>
                 <th width='70'>Alamat</th>
-                <th width='70'>status</th>
+                <th width='70'>Status</th>
+                <th width='70'>Jabatan</th>
             </tr>
             </thead>
             <tbody>
@@ -53,7 +54,20 @@
                         <td>{{$gur->tempat}},{{date('d-m-Y', strtotime($gur->tgl))}}</td>
                         <td>{{$gur->jk}}</td>
                         <td>{{$gur->alamat}}</td>
-                        <td>{{$gur->level}}</td>
+                        <td>Pegawai {{$gur->status}}</td>
+                        <td><?php
+                            if ($gur->level == "Tata_usaha") {
+                                echo "Tata Usaha";
+                            }else {
+                               if ($gur->level == "Super_admin") {
+                                echo "Super Admin" ;
+                               }
+                               if ($gur->level == "Guru") {
+                                echo ''.$gur->level.' / '.$gur->wakel.'' ;
+                               }
+                               
+                            }
+                        ?></td>
                     </tr>
                 @endforeach
             </tbody>

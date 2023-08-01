@@ -5,12 +5,16 @@
     <div class="container">
         <form action="{{route('poin.store')}}" method="POST" >
             @csrf
-            <input class="form-control" type="hidden" name="id_user" value="{{$siswa->id_user}}" aria-label="default input example" readonly>
-            <input class="form-control" type="hidden" name="id_siswa" value="{{$siswa->id}}" aria-label="default input example" readonly>
+            <input class="form-control" type="text" name="id_user" value="{{$siswa->id_user}}" aria-label="default input example" readonly>
+            <input class="form-control" type="text" name="id_siswa" value="{{$siswa->id}}" aria-label="default input example" readonly>
             <input class="form-control" type="hidden" name="tahun" value="{{$tahun->tahun}}" aria-label="default input example" readonly>
             <div>
                 <label for="">Nama</label>
-                <input class="form-control" type="text" value="{{$siswa->nama}}" aria-label="default input example" required>
+                <input class="form-control" type="text" value="{{$siswa->nama}}" aria-label="default input example" required readonly>
+            </div>
+            <div>
+                <label for="">Kelas</label>
+                <input class="form-control" type="text" name="kelas" value="{{$siswa->kelas}}" aria-label="default input example" required readonly>
             </div>
             <div>
                 <label for="">Poin</label>

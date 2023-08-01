@@ -28,35 +28,48 @@
         </thead>
     </table>
     <hr>
-    <h3 align="center">LAPORAN ABSEN GURU</h3>
-    <pre>
-Berdasarkan Periode tanggal : {{$dari}} - {{$sampai}}
-    </pre>
+    <h3 align="center">LAPORAN DATA SISWA</h3>
+    <?php
+    if ($tahun == "") {
+        
+    }else {
+        ?>
+        <pre>
+Siswa masuk tahun ajaran : {{$tahun}}
+        </pre>
+        <?php
+    }
+
+    ?>
         <table style="border-collapse:collapse;border-spacing:1;" border="1" align="center">
             <thead>
             <tr align="center">
                 <th width='auto'>No</th>
-                <th width='80'>NIP</th>
-                <th width='100'>Nama</th>
-                <th width='100'>Tanggal</th>
-                <th width='70'>jam mula</th>
-                <th width='70'>jam selesai</th>
-                <th width='70'>Tahun</th>
+                <th width='50'>NIk</th>
+                <th width='90'>Nama</th>
+                <th width='80'>TTL</th>
+                <th width='50'>Kelas</th>
+                <th width='50'>Jk</th>
+                <th width='50'>Tahun ajaran</th>
+                <th width='60'>Tanggal</th>
+                <th width='30'>Poin</th>
             </tr>
             </thead>
             <tbody>
                 @php 
                 $no=1;
             @endphp
-                @foreach ($absen_guru as $sis)
+                @foreach ($poin as $po)
                     <tr>
                         <td>{{$no++}}</td>
-                        <td>{{$sis->nip}}</td>
-                        <td>{{$sis->nama}}</td>
-                        <td>{{$sis->tgl}}</td>
-                        <td>{{$sis->jam_mulai}}</td>
-                        <td>{{$sis->jam_selesai}}</td>
-                        <td>{{$sis->tahun}} ({{$sis->semester}})</td>
+                        <td>{{$po->nis}}</td>
+                        <td>{{$po->nama}}</td>
+                        <td>{{$po->tempat}},{{date('d-m-Y', strtotime($po->tgl))}}</td>
+                        <td>{{$po->kelas}}</td>
+                        <td>{{$po->jk}}</td>
+                        <td>{{$po->tahun}}</td>
+                        <td>{{$po->tgl}}</td>
+                        <td>{{$po->poin}}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -77,9 +90,9 @@ Berdasarkan Periode tanggal : {{$dari}} - {{$sampai}}
 
 
                             
-                           
+                        
 
-                                                   
+                                                
             </pre>
         </div>
 </body>

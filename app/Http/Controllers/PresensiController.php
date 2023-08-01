@@ -132,22 +132,24 @@ class PresensiController extends Controller
         if(Auth::user()->level == "Super_admin"){
             $guru = DB::table('presensi')
         ->join('tb_guru','tb_guru.id','=','presensi.id_guru')
-        ->select('tb_guru.nama','mapel','presensi.tgl','kelas')
+        ->select('tb_guru.nama','mapel','presensi.tgl','kelas','presensi.id')
+        ->where('presensi.id','=',''.$id.'')
         ->where('mapel','=',''.$mapel.'')
-        ->groupBy('tb_guru.nama','mapel','presensi.tgl','kelas')
+        ->groupBy('tb_guru.nama','mapel','presensi.tgl','kelas','presensi.id')
         ->get();
         }else{
             $guru = DB::table('presensi')
         ->join('tb_guru','tb_guru.id','=','presensi.id_guru')
-        ->select('tb_guru.nama','mapel','presensi.tgl','kelas')
+        ->select('tb_guru.nama','mapel','presensi.tgl','kelas','presensi.id')
         ->where('tb_guru.id','=',''.$id_guru.'')
+        ->where('presensi.id','=',''.$id.'')
         ->where('mapel','=',''.$mapel.'')
-        ->groupBy('tb_guru.nama','mapel','presensi.tgl','kelas')
+        ->groupBy('tb_guru.nama','mapel','presensi.tgl','kelas','presensi.id')
         ->get();
         }
         $pdf = PDF::loadView('absensi/cetak_presensi',compact('presensi','guru'));
         $pdf->setPaper('A4','potrait');
-        return $pdf->stream('cetak_siswa.pdf');
+        return $pdf->stream('cetak_presensi.pdf');
     }
 
     public function cetak_mapel(Request $request)
@@ -179,19 +181,29 @@ class PresensiController extends Controller
                 ->paginate(10);
             }
         }else{
-            $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
-        ->join('absen_siswa','absen_siswa.id_presensi','=','presensi.id')
-        ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
-        ->where('id_guru','=',''.$gur.'')
-        ->where('presensi.tahun','=',''.$ta.'')
-        ->where('presensi.tgl','like',"%".$cari."%")
-        ->groupBy('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
-        ->paginate(10);
+            if($cari == ""){
+                $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
+                ->join('absen_siswa','absen_siswa.id_presensi','=','presensi.id')
+                ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
+                ->where('id_guru','=',''.$gur.'')
+                ->whereBetween('presensi.tgl',[$dari,$sampai])
+                ->groupBy('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
+                ->paginate(10);
+            }else{
+                $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
+                ->join('absen_siswa','absen_siswa.id_presensi','=','presensi.id')
+                ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
+                ->where('id_guru','=',''.$gur.'')
+                ->where('presensi.tgl','like',"%".$cari."%")
+                ->orWhere('mapel','like',"%".$cari."%")
+                ->groupBy('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
+                ->paginate(10);
+            }
         }
         
         
         $pdf = PDF::loadView('absensi/cetak_mapel',compact('guru','presensi'));
         $pdf->setPaper('A4','potrait');
-        return $pdf->stream('cetak_siswa.pdf');
+        return $pdf->stream('cetak_mapel.pdf');
     }
 }

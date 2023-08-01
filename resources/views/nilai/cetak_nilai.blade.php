@@ -28,48 +28,43 @@
             </thead>
         </table>
         <hr>
-        <h3 align="center">LAPORAN DATA SISWA</h3>
-    <?php
-    if ($tahun == "") {
-        
-    }else {
-        ?>
-        <pre>
-Siswa masuk tahun ajaran : {{$tahun}}
-        </pre>
-        <?php
-    }
-
-    ?>
+        <h3 align="center">LAPORAN NILAI SISWA</h3>
+        <div>
+            Tahun Ajaran {{$t->tahun}}
+        <br>
+        Semester {{$t->semester}}
+        <br>
+        </div>
+        <br>
             <table style="border-collapse:collapse;border-spacing:1;" border="1" align="center">
                 <thead>
                 <tr align="center">
                     <th width='auto'>No</th>
-                    <th width='80'>NIk</th>
-                    <th width='90'>Nama</th>
-                    <th width='80'>TTL</th>
-                    <th width='70'>Agama</th>
-                    <th width='50'>Jk</th>
-                    <th width='70'>Alamat</th>
-                    <th width='50'>Kelas</th>
+                    <th width='50'>Tanggal</th>
+                    <th width='50'>Guru</th>
+                    <th width='50'>NIS</th>
+                    <th width='60'>Nama</th>
+                    <th width='70'>Kelas</th>
+                    <th width='100'>Mapel</th>
+                    <th width='70'>Nilai</th>
                 </tr>
                 </thead>
                 <tbody>
                     @php 
                     $no=1;
                 @endphp
-                    @foreach ($siswa as $sis)
-                        <tr>
-                            <td>{{$no++}}</td>
-                            <td>{{$sis->nik}}</td>
-                            <td>{{$sis->nama}}</td>
-                            <td>{{$sis->tempat}},{{date('d-m-Y', strtotime($sis->tgl))}}</td>
-                            <td>{{$sis->agama}}</td>
-                            <td>{{$sis->jk}}</td>
-                            <td>{{$sis->alamat}}</td>
-                            <td>{{$sis->kelas}}</td>
-                        </tr>
-                    @endforeach
+                    @foreach ($nilai as $nil)
+                    <tr>
+                        <td>{{$no++ }}</td>
+                        <td>{{$nil->tgl}}</td>
+                        <td>{{$nil->nm_guru}}</td>
+                        <td>{{$nil->nis}}</td>
+                        <td>{{$nil->nm_siswa}}</td>
+                        <td>{{$nil->kelas}}</td>
+                        <td>{{$nil->mapel}}</td>
+                        <td>{{$nil->nilai}}</td>
+                    </tr>
+                @endforeach
                 </tbody>
             </table>
             <div>

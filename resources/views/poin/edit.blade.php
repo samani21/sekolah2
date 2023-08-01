@@ -5,9 +5,9 @@
     <div class="container">
         <form action="{{route('updatepoin',$poin->id)}}" method="POST" >
             @csrf
-            <input class="form-control" type="text" name="id_user" value="{{$siswa->id_user}}" aria-label="default input example" readonly>
-            <input class="form-control" type="text" name="id_siswa" value="{{$siswa->id}}" aria-label="default input example" readonly>
-            <input class="form-control" type="text" name="tahun" value="{{$tahun->tahun}}" aria-label="default input example" readonly>
+            <input class="form-control" type="hidden" name="id_user" value="{{$siswa->id_user}}" aria-label="default input example" readonly>
+            <input class="form-control" type="hidden" name="id_siswa" value="{{$siswa->id}}" aria-label="default input example" readonly>
+            <input class="form-control" type="hidden" name="tahun" value="{{$tahun->tahun}}" aria-label="default input example" readonly>
             <div>
                 <label for="">Nama</label>
                 <input class="form-control" type="text" value="{{$siswa->nama}}" aria-label="default input example" readonly>

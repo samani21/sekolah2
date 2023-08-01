@@ -6,17 +6,40 @@ use App\Models\Jurnal;
 use App\Models\Presensi;
 use App\Models\Tahun;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class JurnalController extends Controller
 {
     
-    public function index(){
-        $jurnal = DB::table('jurnal')
-        ->join('presensi','presensi.id','=','jurnal.id_presensi')
-        ->join('tb_guru','tb_guru.id','=','jurnal.id_guru')
-        ->select('nama','presensi.tgl','presensi.tahun','presensi.semester','materi','kegiatan','penilaian','jurnal.id','jam_mulai','jam_selesai')
-        ->paginate(10);
+    public function index(Request $request){
+        $cari = $request->cari;
+        $tahun = Tahun::findorfail(1);
+        if(Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha"){
+            $jurnal = DB::table('jurnal')
+            ->join('presensi','presensi.id','=','jurnal.id_presensi')
+            ->join('tb_guru','tb_guru.id','=','jurnal.id_guru')
+            ->select('nama','presensi.tgl','presensi.tahun','presensi.semester','materi','kegiatan','penilaian','jurnal.id','jam_mulai','jam_selesai')
+            ->where('nama','like',"%".$cari."%")
+            ->orWhere('presensi.tgl','like',"%".$cari."%")
+            ->paginate(10);
+        }else{
+            $guru = DB::table('tb_guru')->where('id_user','=',''.Auth::user()->id.'')->get();
+            foreach ($guru as $g)
+            if($cari == ""){
+                $jurnal = DB::table('jurnal')
+                ->join('presensi','presensi.id','=','jurnal.id_presensi')
+                ->join('tb_guru','tb_guru.id','=','jurnal.id_guru')
+                ->select('nama','tb_guru.id','presensi.tgl','presensi.tahun','presensi.semester','materi','kegiatan','penilaian','jurnal.id','jam_mulai','jam_selesai')
+                ->where('tb_guru.id','=',''.$g->id.'')
+                ->where('presensi.tgl','like',"%".$cari."%")
+                ->where('presensi.tahun','=',''.$tahun->tahun.'')
+                ->where('presensi.semester','=',''.$tahun->sem.'')
+                ->paginate(10);
+            }else{
+            }
+        }
         $data['title']= "Data Jurnal Menagajar";
         return view('jurnal.jurnal',compact('jurnal'),$data);
     }
@@ -95,5 +118,60 @@ class JurnalController extends Controller
         $edit->update($data);
         toast('Berhasil menghapus data','success');
         return redirect()->route('jurnal/jurnal');
+    }
+
+    public function cetak (Request $request){
+        $cari = $request->cari;
+        if(Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha"){
+            if($cari == ""){
+                $dari = $request->dari;
+                $sampai = $request->sampai;
+                $jurnal =  DB::table('jurnal')->join('tb_guru','tb_guru.id','=','jurnal.id_guru')
+                ->join('presensi','presensi.id','=','jurnal.id_presensi')
+                ->select('nip','nama','presensi.kelas','mapel','jam_mulai','jam_selesai','presensi.tahun','presensi.tgl','presensi.semester','materi','kegiatan','penilaian')
+                ->whereBetween('presensi.tgl',[$dari,$sampai])
+                ->get();
+            }else{
+                $dari = "";
+                $sampai = "";
+                $jurnal =  DB::table('jurnal')->join('tb_guru','tb_guru.id','=','jurnal.id_guru')
+                ->join('presensi','presensi.id','=','jurnal.id_presensi')
+                ->select('nip','nama','presensi.kelas','mapel','jam_mulai','jam_selesai','presensi.tahun','presensi.tgl','presensi.semester','materi','kegiatan','penilaian')
+                ->where('nip','like',"%".$cari."%")
+                ->orWhere('nama','like',"%".$cari."%")
+                ->orWhere('presensi.semester','like',"%".$cari."%")
+                ->orWhere('mapel','like',"%".$cari."%")
+                ->get();
+            }
+        }else{
+            $guru = DB::table('tb_guru')->where('id_user','=',''.Auth::user()->id.'')->get();
+            foreach ($guru as $g)
+            if($cari == ""){
+                $dari = $request->dari;
+                $sampai = $request->sampai;
+                $jurnal =  DB::table('jurnal')->join('tb_guru','tb_guru.id','=','jurnal.id_guru')
+                ->join('presensi','presensi.id','=','jurnal.id_presensi')
+                ->select('nip','nama','tb_guru.id','presensi.kelas','mapel','jam_mulai','jam_selesai','presensi.tahun','presensi.tgl','presensi.semester','materi','kegiatan','penilaian')
+                ->whereBetween('presensi.tgl',[$dari,$sampai])
+                ->where('tb_guru.id','=',''.$g->id.'')
+                ->get();
+            }else{
+                $dari = "";
+                $sampai = "";
+                $jurnal =  DB::table('jurnal')->join('tb_guru','tb_guru.id','=','jurnal.id_guru')
+                ->join('presensi','presensi.id','=','jurnal.id_presensi')
+                ->select('nip','nama','presensi.kelas','tb_guru.id','mapel','jam_mulai','jam_selesai','presensi.tahun','presensi.tgl','presensi.semester','materi','kegiatan','penilaian')
+                ->where('tb_guru.id','=',''.$g->id.'')
+                ->where('nip','like',"%".$cari."%")
+                ->orWhere('nama','like',"%".$cari."%")
+                ->orWhere('presensi.semester','like',"%".$cari."%")
+                ->orWhere('mapel','like',"%".$cari."%")
+                ->orWhere('presensi.tgl','like',"%".$cari."%")
+                ->get();
+            }
+        }
+        $pdf = PDF::loadView('jurnal/cetak',compact('jurnal','dari','sampai'));
+        $pdf->setPaper('A4','landscape');
+        return $pdf->stream('cetak_jurnal.pdf');
     }
 }

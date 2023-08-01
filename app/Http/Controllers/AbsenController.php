@@ -113,7 +113,16 @@ class AbsenController extends Controller
             ->where('id_guru','=',''.$a->id.'')
             ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama','semester')->paginate(10);
             
-        }else{
+        }
+        if($cari == "" && $ta == $ta){
+            $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru')
+            ->where('tahun','=',''.$tahun_ajaran.'')
+            ->where('id_guru','=',''.$a->id.'')
+            ->where('semester','=',''.$semester.'')
+            ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama','semester')->paginate(10);
+            
+        }
+        else{
             $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru')
             ->where('tahun','=',''.$tahun['tahun'].'')
             ->where('id_guru','=',''.$a->id.'')
@@ -138,15 +147,14 @@ class AbsenController extends Controller
                 
             }
             if($cari == "" && $ta == ""){
-                $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru','semester')
-                ->where('tahun','=',''.$tahun['tahun'].'')
+                $absen_guru = DB::table('absen_guru')->join('tb_guru','tb_guru.id','=','absen_guru.id_guru')
                 ->whereBetween('absen_guru.tgl',[$dari,$sampai])
-                ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama','semester')->paginate(10);  
+                ->select('absen_guru.tgl','jam_mulai','jam_selesai','tahun','absen_guru.id','nip','nama','semester')->paginate(10);
             }
         }
-        $pdf = PDF::loadView('absensi/cetak_guru',compact('absen_guru'));
+        $pdf = PDF::loadView('absensi/cetak_guru',compact('absen_guru','dari','sampai'));
         $pdf->setPaper('A4','potrait');
-        return $pdf->stream('cetak_siswa.pdf');
+        return $pdf->stream('cetak_guru.pdf');
     }
 
 //Siswa
@@ -233,6 +241,6 @@ class AbsenController extends Controller
         ->get();
         $pdf = PDF::loadView('absensi/cetak_siswa',compact('siswa1','sis'));
         $pdf->setPaper('A4','potrait');
-        return $pdf->stream('cetak_siswa.pdf');
+        return $pdf->stream('cetak_absen_siswa.pdf');
     }
 }

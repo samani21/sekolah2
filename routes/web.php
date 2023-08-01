@@ -190,7 +190,7 @@ Route::get('jurnal/hapus_jurnal/{id}',[JurnalController::class, 'destroy'])->nam
 Route::get('siswa/cetak', [SiswaController::class, 'cetak_siswa'])->name('siswa/cetak');//cetak siswa
 Route::get('data_guru/cetak', [GuruController::class, 'cetak_guru'])->name('guru/cetak');//cetak guru
 Route::get('absensi/cetak_guru', [AbsenController::class, 'cetak_guru'])->name('absensi/cetak_guru');//cetak guru
-Route::get('absensi/cetak_presensi/id{id}&mapel{mapel}', [PresensiController::class, 'cetak'])->name('absensi/cetak_presensi');//cetak presesnsi 
+Route::get('absensi/cetak_presensi/id={id}&mapel={mapel}', [PresensiController::class, 'cetak'])->name('absensi/cetak_presensi');//cetak presesnsi 
 Route::get('absensi/cetak_mapel', [PresensiController::class, 'cetak_mapel'])->name('absensi/cetak_mapel');//cetak absen mapel
 Route::get('profil/cetak/{id}', [GuruController::class, 'cetak_profil'])->name('profil/cetak');//cetak profil
 Route::get('profil/profilsiswa/cetak_kartu/{id}', [SiswaController::class, 'cetak_kartu'])->name('siswa/cetak_kartu');//cetak kartu absen
@@ -199,3 +199,7 @@ Route::get('prestasi/cetak', [PrestasiController::class, 'cetak_guru'])->name('p
 Route::get('harian/cetak', [PrestasiController::class, 'cetak_guru'])->name('prestasi/cetak');//cetak prestasi guru
 Route::get('harian/cetak', [HarianController::class, 'cetak'])->name('harian/cetak');//cetak absen harian
 Route::get('absensi/cetak_siswa', [AbsenController::class, 'cetak_siswa'])->name('absensi/cetak_siswa');//cetak absen harian
+Route::get('jurnal/cetak',[JurnalController::class, 'cetak'])->name('jurnal/cetak');//hapus prestas guru
+Route::get('nilai/cetak_nilai/id={id}',[NilaiController::class, 'cetak'])->name('nilai/cetak_nilai');//hapus prestas guru
+Route::get('nilai/cetak_siswa',[NilaiController::class, 'cetak_siswa'])->name('nilai/cetak_siswa');//cetak nilai siswa
+Route::get('poin/cetak', [PoinController::class, 'cetak_poin'])->name('poin/cetak');//cetak siswa

@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class PoinController extends Controller
 {
@@ -31,7 +32,7 @@ class PoinController extends Controller
             if($g->wakel == "-" || $g->wakel == "BK"){
                 $poin =  DB::table('poin')->join('tb_siswa','tb_siswa.id','=','poin.id_siswa')
                 ->join('users','users.id','=','poin.id_user')
-                ->select('poin.tahun','kelas','nis','nama','poin.tgl','ket','poin.poin','poin.id')
+                ->select('poin.tahun','poin.kelas','nis','nama','poin.tgl','ket','poin.poin','poin.id')
                 ->where('nama','like',"%".$cari."%")
                 ->orWhere('nis','like',"%".$cari."%")
                 ->orWhere('poin.tgl','like',"%".$cari."%")
@@ -40,19 +41,20 @@ class PoinController extends Controller
             }else{
                 $poin =  DB::table('poin')->join('tb_siswa','tb_siswa.id','=','poin.id_siswa')
                 ->join('users','users.id','=','poin.id_user')
-                ->select('poin.tahun','kelas','nis','nama','poin.tgl','ket','poin.poin','poin.id')
-                ->where('kelas','like',''.$g->wakel.'')
+                ->select('poin.tahun','poin.kelas','nis','nama','poin.tgl','ket','poin.poin','poin.id')
+                ->where('poin.kelas','like',''.$g->wakel.'')
                 ->where('nama','like',"%".$cari."%")
                 ->paginate(10);
             }
         }else{
                 $poin =  DB::table('poin')->join('tb_siswa','tb_siswa.id','=','poin.id_siswa')
                 ->join('users','users.id','=','poin.id_user')
-                ->select('poin.tahun','kelas','nis','nama','poin.tgl','ket','poin.poin','poin.id')
+                ->select('poin.tahun','poin.kelas','nis','nama','poin.tgl','ket','poin.poin','poin.id')
                 ->where('users.id','=',''.$id_user.'')
-                ->where('kelas','like',''.$kelas.'')
+                ->where('poin.kelas','like',''.$kelas.'')
                 ->where('nama','like',"%".$cari."%")
                 ->paginate(10);
+                // dd($id_user);
         }
 
         $ta = DB::table('poin')
@@ -67,7 +69,12 @@ class PoinController extends Controller
     }
     
     public function create($id){
-        $siswa = Siswa::findorfail($id);
+        $siswaa = DB::table('tb_siswa')
+        ->join('users','users.id','=','tb_siswa.id_user')
+        ->select('tb_siswa.id','kelas','tb_siswa.id_user','nama')
+        ->where('tb_siswa.id','=',''.$id.'')
+        ->get();
+        foreach ($siswaa as $siswa)
         $tahun = Tahun::findorfail(1);
         $data['title'] =  "Tambah Poin";
         return view('poin/tambah_point',compact('siswa','tahun'), $data);
@@ -81,6 +88,7 @@ class PoinController extends Controller
             'tgl' => $request->tgl,
             'ket' => $request->ket,
             'tahun' => $request->tahun,
+            'kelas' => $request->kelas,
         ]);
         $point->save();
         Alert()->success('SuccessAlert','Tambah data Siswa berhasil');
@@ -116,5 +124,81 @@ class PoinController extends Controller
         $poin->delete();
         toast('Berhasil menghapus data','success');
         return redirect('poin/poin');
+    }
+
+    public function cetak_poin(Request $request){
+        $tahun = $request->tahun;
+        $cari = $request->cari;
+
+        if(Auth::user()->level == "Guru"){
+            $guru = DB::table('tb_guru')->where('id_user','=',''.Auth::user()->id.'')->get();
+            foreach ($guru as $g)
+            if($g->wakel == "-" || $g->wakel == "BK"){
+                if($cari == ""){
+                    $poin =  DB::table('poin')->join('tb_siswa','tb_siswa.id','=','poin.id_siswa')
+                    ->join('users','users.id','=','poin.id_user')
+                    ->select('poin.tahun','poin.kelas','nis','nama','tb_siswa.tgl','ket','poin.poin','poin.id','tempat','agama','jk','alamat')
+                    ->where('poin.tahun','like',''.$tahun.'')
+                    ->paginate(10);
+                }else{
+                    $tahun = "";
+                    $poin =  DB::table('poin')->join('tb_siswa','tb_siswa.id','=','poin.id_siswa')
+                    ->join('users','users.id','=','poin.id_user')
+                    ->select('poin.tahun','poin.kelas','nis','nama','tb_siswa.tgl','ket','poin.poin','poin.id','tempat','agama','jk','alamat')
+                    ->where('nama','like',"%".$cari."%")
+                    ->orWhere('nis','like',"%".$cari."%")
+                    ->orWhere('poin.tgl','like',"%".$cari."%")
+                    ->orWhere('poin.tahun','like',"%".$cari."%")
+                    ->paginate(10);
+                }
+            }else{
+                if($cari == ""){
+                    $poin =  DB::table('poin')->join('tb_siswa','tb_siswa.id','=','poin.id_siswa')
+                    ->join('users','users.id','=','poin.id_user')
+                    ->select('poin.tahun','poin.kelas','nis','nama','tb_siswa.tgl','ket','poin.poin','poin.id','tempat','agama','jk','alamat')
+                    ->where('poin.kelas','like',''.$g->wakel.'')
+                    ->where('nama','like',"%".$cari."%")
+                    ->where('poin.tahun','like',"%".$tahun."%")
+                    ->paginate(10);
+                }else{
+                    $tahun = "";
+                    $poin =  DB::table('poin')->join('tb_siswa','tb_siswa.id','=','poin.id_siswa')
+                    ->join('users','users.id','=','poin.id_user')
+                    ->select('poin.tahun','kelas','nis','nama','tb_siswa.tgl','ket','poin.poin','poin.id','tempat','agama','jk','alamat')
+                    ->where('poin.kelas','like',''.$g->wakel.'')
+                    ->where('nama','like',"%".$cari."%")
+                    ->orWhere('nis','like',"%".$cari."%")
+                    ->paginate(10);
+                }
+            }
+            
+        }else{
+            // $siswa = DB::table('tb_siswa')->where('id_user','=',''.Auth::user()->id.'')->get();
+            // foreach ($siswa as $s)
+           
+                if($cari == ""){
+                    $poin =  DB::table('poin')->join('tb_siswa','tb_siswa.id','=','poin.id_siswa')
+                    ->join('users','users.id','=','poin.id_user')
+                    ->select('poin.tahun','poin.kelas','nis','nama','tb_siswa.tgl','ket','poin.tgl','poin.poin','poin.id','tempat','agama','jk','alamat')
+                    ->where('tb_siswa.id_user','=',''.Auth::user()->id.'')
+                    ->where('nama','like',"%".$cari."%")
+                    ->where('poin.tahun','like',"%".$tahun."%")
+                    ->paginate(10);
+                }else{
+                    $tahun = "";
+                    $poin =  DB::table('poin')->join('tb_siswa','tb_siswa.id','=','poin.id_siswa')
+                    ->join('users','users.id','=','poin.id_user')
+                    ->select('poin.tahun','poin.kelas','nis','nama','tb_siswa.tgl','ket','poin.poin','poin.tgl','poin.id','tempat','agama','jk','alamat')
+                    ->where('tb_siswa.id_user','=',''.Auth::user()->id.'')
+                    ->where('nama','like',"%".$cari."%")
+                    ->orWhere('nis','like',"%".$cari."%")
+                    ->orWhere('poin.tgl','like',"%".$cari."%")
+                    ->paginate(10);
+                
+            }
+        }
+        $pdf = PDF::loadView('poin/cetak',compact('poin','tahun'));
+        $pdf->setPaper('A4','potrait');
+        return $pdf->stream('cetak_poin.pdf');
     }
 }

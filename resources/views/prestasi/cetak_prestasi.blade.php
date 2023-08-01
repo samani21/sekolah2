@@ -28,7 +28,7 @@
         </thead>
     </table>
     <hr>
-    @if ($jenis == 'siswa')
+    @if ($jenis == '')
     <h3 align="center">LAPORAN PRESTASi SISWA</h3>
     <hr>
     <pre>
@@ -36,30 +36,79 @@
     Nis    : {{$sis->nis}}
     Kelas  : {{Auth::user()->kelas}}
     </pre>
+    <table style="border-collapse:collapse;border-spacing:1;" border="1" align="center">
+        <thead>
+        <tr align="center">
+            <th width='auto'>No</th>
+            @if (Auth::user()->level == "Tata_usaha" || Auth::user()->level == "Super_admin")
+                @if ($jenis == 'siswa')
+                <th width='50'>NIS</th>
+                <th width='90'>Nama</th>
+                @endif
+            @endif
+            @if ($jenis == 'guru')
+            <th width='50'>NIP</th>
+            @endif
+            <th width='90'>Nama kegiatan</th>
+            <th width='80'>Hasil</th>
+            <th width='70'>Tingkat</th>
+            <th width='70'>Tahun</th>
+            <th width='70'>Waktu</th>
+            <th width='50'>Bukti</th>
+        </tr>
+        </thead>
+        <tbody>
+            @php 
+            $no=1;
+        @endphp
+            @foreach ($prestasi as $pres)
+                <tr>
+                    <td>{{$no++}}</td>
+                    @if (Auth::user()->level == "Tata_usaha" || Auth::user()->level == "Super_admin")
+                        @if ($jenis == 'siswa')
+                        <td>{{$pres->nis}}</td>
+                        <td>{{$pres->nama}}</td>
+                        @endif
+                    @endif
+                    @if ($jenis == 'guru')
+                    <td>{{$pres->nip}}</td>
+                    @endif
+                    <td>{{$pres->nm_kegiatan}}</td>
+                    <td>{{$pres->capaian}}</td>
+                    <td>{{$pres->tingkat}}</td>
+                    <td>{{$pres->tahun}}</td>
+                    <td>{{$pres->waktu}}</td>
+                    <td>{{$pres->bukti}}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
     @endif
+
     @if ($jenis == 'guru')
-    <h3 align="center">LAPORAN PRESTASi GURU</h3>
-    <hr>
-    @endif
+        <h3 align="center">LAPORAN PRESTASi GURU</h3>
+            <?php
+                if ($dari == "" && $sampai == "") {
+                    # code...
+                }else {
+                    ?>
+                    <pre>
+    Peridoe dari {{$dari}} sampai {{$sampai}}
+                    </pre>
+                    <?php
+                }
+            ?>
         <table style="border-collapse:collapse;border-spacing:1;" border="1" align="center">
             <thead>
             <tr align="center">
                 <th width='auto'>No</th>
-                @if (Auth::user()->level == "Tata_usaha" || Auth::user()->level == "Super_admin")
-                    @if ($jenis == 'siswa')
-                    <th width='50'>NIS</th>
-                    <th width='90'>Nama</th>
-                    @endif
-                @endif
-                @if ($jenis == 'guru')
-                <th width='50'>NIP</th>
-                @endif
-                <th width='90'>Nama kegiatan</th>
+                <th width='40'>NIP</th>
+                <th width='70'>Nama</th>
+                <th width='70'>Nama kegiatan</th>
                 <th width='80'>Hasil</th>
                 <th width='70'>Tingkat</th>
                 <th width='70'>Tahun</th>
                 <th width='70'>Waktu</th>
-                <th width='50'>Bukti</th>
             </tr>
             </thead>
             <tbody>
@@ -69,25 +118,64 @@
                 @foreach ($prestasi as $pres)
                     <tr>
                         <td>{{$no++}}</td>
-                        @if (Auth::user()->level == "Tata_usaha" || Auth::user()->level == "Super_admin")
-                            @if ($jenis == 'siswa')
-                            <td>{{$pres->nis}}</td>
-                            <td>{{$pres->nama}}</td>
-                            @endif
-                        @endif
-                        @if ($jenis == 'guru')
+                        <td>{{$pres->nama}}</td>
                         <td>{{$pres->nip}}</td>
-                        @endif
                         <td>{{$pres->nm_kegiatan}}</td>
                         <td>{{$pres->capaian}}</td>
                         <td>{{$pres->tingkat}}</td>
                         <td>{{$pres->tahun}}</td>
                         <td>{{$pres->waktu}}</td>
-                        <td>{{$pres->bukti}}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+    @endif
+
+    @if ($jenis == 'siswa')
+        <h3 align="center">LAPORAN PRESTASI SISWA</h3>
+        <?php
+                if ($dari == "" && $sampai == "") {
+                    # code...
+                }else {
+                    ?>
+                    <pre>
+    Peridoe dari {{$dari}} sampai {{$sampai}}
+                    </pre>
+                    <?php
+                }
+        ?>
+        <table style="border-collapse:collapse;border-spacing:1;" border="1" align="center">
+            <thead>
+            <tr align="center">
+                <th width='auto'>No</th>
+                <th width='40'>NIS</th>
+                <th width='70'>Nama</th>
+                <th width='70'>Nama kegiatan</th>
+                <th width='80'>Hasil</th>
+                <th width='70'>Tingkat</th>
+                <th width='70'>Tahun</th>
+                <th width='70'>Waktu</th>
+            </tr>
+            </thead>
+            <tbody>
+                @php 
+                $no=1;
+            @endphp
+                @foreach ($prestasi as $pres)
+                    <tr>
+                        <td>{{$no++}}</td>
+                        <td>{{$pres->nis}}</td>
+                        <td>{{$pres->nama}}</td>
+                        <td>{{$pres->nm_kegiatan}}</td>
+                        <td>{{$pres->capaian}}</td>
+                        <td>{{$pres->tingkat}}</td>
+                        <td>{{$pres->tahun}}</td>
+                        <td>{{$pres->waktu}}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
         <div>
             <pre align="right">
                                                 Banjarmasin,<?php echo date('d-m-Y'); ?>

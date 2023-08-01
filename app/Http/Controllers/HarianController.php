@@ -38,13 +38,13 @@ class HarianController extends Controller
         if(Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha"){
             $siswa = DB::table('abs_harian')->join('tb_siswa','tb_siswa.id','=','abs_harian.id_siswa')
             ->join('users','users.id','=','abs_harian.id_user')
-            ->select('abs_harian.tgl','nama','kelas','abs_harian.tahun','abs_harian.jam')
+            ->select('abs_harian.tgl','nama','abs_harian.kelas','abs_harian.tahun','abs_harian.jam')
             ->where('abs_harian.tgl','like',"%".$cari."%")
             ->paginate(10);
         }else{
             $siswa = DB::table('abs_harian')->join('tb_siswa','tb_siswa.id','=','abs_harian.id_siswa')
             ->join('users','users.id','=','abs_harian.id_user')
-            ->select('abs_harian.tgl','nama','kelas','abs_harian.tahun','abs_harian.jam')
+            ->select('abs_harian.tgl','nama','abs_harian.kelas','abs_harian.tahun','abs_harian.jam')
             ->where('abs_harian.id_user','=',''.Auth::user()->id.'')
             ->where('abs_harian.tgl','like',"%".$cari."%")
             ->paginate(10);
@@ -59,6 +59,8 @@ class HarianController extends Controller
         $id_tahun = "1";
         $tahun = Tahun::find($id_tahun);
         $edit = Siswa::findorfail($id);
+        $kelas = DB::table('users')->where('id','=',''.$edit->id_user.'')->get();
+        foreach ($kelas as $kel)
         if(isset(Auth::user()->level)){
             if(Auth::user()->level == "Super_admin"){
                 $data = [
@@ -72,7 +74,8 @@ class HarianController extends Controller
                     'tgl' => date('Y-m-d'),
                     'jam'=> date('H:i:s'),
                     'tahun'=> stripslashes($tahun['tahun']),
-                    'semester'=> $tahun->sem
+                    'semester'=> $tahun->sem,
+                    'kelas' => $kel->kelas
                 ]);
                 $absen->save();
             }
@@ -83,28 +86,43 @@ class HarianController extends Controller
 
     public function cetak(Request $request){
         $cari = $request->cari;
-        $dari = $request->dari;
-        $sampai = $request->sampai;
         $it = 1;
         $id_tahun = Tahun::findorfail($it);
-        if(Auth::user()->level == "Super_admin"){
-            $siswa = DB::table('abs_harian')->join('tb_siswa','tb_siswa.id','=','abs_harian.id_siswa')
-            ->join('users','users.id','=','abs_harian.id_user')
-            ->select('abs_harian.tgl','nama','kelas','abs_harian.tahun','abs_harian.jam')
-            ->where('abs_harian.tgl','like',"%".$cari."%")
-            ->whereBetween('abs_harian.tgl',[$dari,$sampai])
-            ->get();
+        if(Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha"){
+            if ($cari == ""){
+                $dari = $request->dari;
+                $sampai = $request->sampai;
+                $siswa = DB::table('abs_harian')->join('tb_siswa','tb_siswa.id','=','abs_harian.id_siswa')
+                ->join('users','users.id','=','abs_harian.id_user')
+                ->select('abs_harian.tgl','nama','abs_harian.kelas','abs_harian.tahun','abs_harian.jam')
+                ->where('abs_harian.tgl','like',"%".$cari."%")
+                ->whereBetween('abs_harian.tgl',[$dari,$sampai])
+                ->get();
+            }else{
+                $dari = "";
+                $sampai = "";
+                $siswa = DB::table('abs_harian')->join('tb_siswa','tb_siswa.id','=','abs_harian.id_siswa')
+                ->join('users','users.id','=','abs_harian.id_user')
+                ->select('abs_harian.tgl','nama','abs_harian.kelas','abs_harian.tahun','abs_harian.jam')
+                ->where('abs_harian.tgl','like',"%".$cari."%")
+                ->orWhere('nama','like',"%".$cari."%")
+                ->orWhere('abs_harian.kelas','like',"%".$cari."%")
+                ->orWhere('abs_harian.tahun','like',"%".$cari."%")
+                ->get();
+            }
         }else{
+            $dari = $request->dari;
+            $sampai = $request->sampai;
             $siswa = DB::table('abs_harian')->join('tb_siswa','tb_siswa.id','=','abs_harian.id_siswa')
             ->join('users','users.id','=','abs_harian.id_user')
-            ->select('abs_harian.tgl','nama','kelas','abs_harian.tahun','abs_harian.jam')
+            ->select('abs_harian.tgl','nama','abs_harian.kelas','abs_harian.tahun','abs_harian.jam')
             ->where('abs_harian.id_user','=',''.Auth::user()->id.'')
             ->where('abs_harian.tgl','like',"%".$cari."%")
             ->whereBetween('abs_harian.tgl',[$dari,$sampai])
             ->get();
         }
-        $pdf = PDF::loadView('harian/cetak',compact('siswa'));
+        $pdf = PDF::loadView('harian/cetak',compact('siswa','dari','sampai'));
         $pdf->setPaper('A4','potrait');
-        return $pdf->stream('cetak_siswa.pdf');
+        return $pdf->stream('cetak_harian.pdf');
     }
 }

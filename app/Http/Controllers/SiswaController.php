@@ -29,15 +29,18 @@ class SiswaController extends Controller
         $guru = DB::table('tb_guru')->where('id_user','=',''.Auth::user()->id.'')->get();
 
         if (Auth::user()->kelas == "-"){
+
             $guru = DB::table('tb_guru')->where('id_user','=',''.Auth::user()->id.'')->get();
             foreach ($guru as $g)
-            if($g->wakel == "-" || $g->wakel == "BK"){
+
+            if($g->wakel == "-" || $g->wakel == "BK" || Auth::user()->level == "Tata_usaha"){
                 $siswa = DB::table('tb_siswa')->join('users','users.id','=','tb_siswa.id_user')
                 ->select('nik','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis','poin','tb_siswa.tahun')
                 ->where('nama','like',"%".$cari."%")
                 ->orWhere('nik','like',"%".$cari."%")
                 ->orWhere('tb_siswa.tahun','like',"%".$cari."%")
                 ->paginate(10);
+                
             }else{
                 $siswa = DB::table('tb_siswa')->join('users','users.id','=','tb_siswa.id_user')
                 ->where('kelas','=',''.$g->wakel.'')
@@ -46,6 +49,7 @@ class SiswaController extends Controller
             }
         }
         else{
+
             $siswa = DB::table('tb_siswa')->join('users','users.id','=','tb_siswa.id_user')
             ->select('nik','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis','poin','tb_siswa.tahun')
             ->where('kelas','=',''.$kelas.'')
@@ -192,13 +196,17 @@ class SiswaController extends Controller
         $tahun = $request->tahun;
         $cari = $request->cari;
         if($cari == ""){
-            $siswa = DB::table('tb_siswa')->where('tahun','=',''.$tahun.'')->get();
+            $siswa = DB::table('tb_siswa')
+            ->join('users','users.id','=','tb_siswa.id_user')
+            ->where('tb_siswa.tahun','=',''.$tahun.'')->get();
+        }else{
+            $siswa = DB::table('tb_siswa')
+            ->join('users','users.id','=','tb_siswa.id_user')
+            ->where('nis','like',"%".$cari."%")
+            ->orWhere('nama','like',"%".$cari."%")
+            ->orWhere('nik','like',"%".$cari."%")->get();
         }
-        $siswa = DB::table('tb_siswa')
-        ->where('nis','like',"%".$cari."%")
-        ->orWhere('nama','like',"%".$cari."%")
-        ->orWhere('nik','like',"%".$cari."%")->get();
-        $pdf = PDF::loadView('siswa/cetak',compact('siswa'));
+        $pdf = PDF::loadView('siswa/cetak',compact('siswa','tahun'));
         $pdf->setPaper('A4','potrait');
         return $pdf->stream('cetak_siswa.pdf');
     }

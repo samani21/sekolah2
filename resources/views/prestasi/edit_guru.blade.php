@@ -32,8 +32,13 @@
                     <input class="form-control" type="date" name="waktu" value="{{$gur->waktu}}" autocomplete="off" placeholder="Masukkan Nama siswa" aria-label="default input example" autofocus required>
                 </div>
                 <div>
-                    <label for="">Bukti</label>
-                    <input class="form-control" type="text" name="bukti" value="{{$gur->bukti}}" autocomplete="off" placeholder="Masukkan Nama siswa" aria-label="default input example" autofocus required>
+                    <label for="">Bukti prestasi</label>
+                    <select name="bukti" class="form-control" required>
+                        <option value="{{$gur->bukti}}">{{$gur->bukti}}</option>
+                        <option value="Piala">Piala</option>
+                        <option value="Sertifikat">Sertifikat</option>
+                        <option value="Medali">Medali</option>
+                    </select>
                 </div>
                 <hr>
                 <button type="submit" class="btn btn-success">Simpan</button>

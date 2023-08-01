@@ -17,7 +17,8 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
                               </div>
                         </div>
                         <div class="col-4">
-                            <select class="form-select" name="tahun" aria-label="Default select example" required>
+                            <select class="form-select" name="tahun" aria-label="Default select example">
+                                <option value="">--Tahun ajaran</option>
                                 @foreach ($ta as $t)
                                     <option value="{{$t->tahun}}">{{$t->tahun}}</option>
                                 @endforeach

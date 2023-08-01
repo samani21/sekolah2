@@ -8,11 +8,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-8">
-                    <form action="{{route('absensi/cetak_siswa')}}" method="GET">
+                    <form action="{{route('nilai/cetak_siswa')}}" method="GET">
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="input-group mb-3">
-                                    <input type="text" class="form-control" name="cari" value="{{date('Y-m-d')}}"  placeholder="cetak sisawa siswa" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                    <input type="text" class="form-control" name="cari"  placeholder="cetak nilai siswa" aria-label="Recipient's username" aria-describedby="button-addon2">
                                   </div>
                             </div>
                             <div class="col-md-4">
