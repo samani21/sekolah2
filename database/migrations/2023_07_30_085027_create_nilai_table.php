@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('id_siswa');
             $table->integer('id_presensi');
+            $table->integer('id_guru');
             $table->integer('nilai');
             $table->string('tahun','20');
             $table->date('tgl');

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('id_siswa');
             $table->integer('id_user');
+            $table->string('kelas','20');
             $table->integer('poin');
             $table->date('tgl');
             $table->text('ket','50');

@@ -21,8 +21,6 @@ return new class extends Migration
             $table->string('materi','50');
             $table->text('kegiatan');
             $table->text('penilaian');
-            $table->string('tahun','20');
-            $table->integer('semester');
             $table->timestamps();
         });
     }

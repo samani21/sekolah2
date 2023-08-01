@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('agama','10');
             $table->string('jk','10');
             $table->string('status','20');
+            $table->string('wakel','20');
             $table->string('tgl_absen','20');
             $table->timestamps();
         });

@@ -20,6 +20,9 @@ return new class extends Migration
             $table->string('tgl','20');
             $table->string('jam','20');
             $table->string('tahun','20');
+            $table->integer('semester');
+            $table->integer('nilai');
+            $table->integer('status');
             $table->timestamps();
         });
     }
