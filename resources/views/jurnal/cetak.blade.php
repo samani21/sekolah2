@@ -63,6 +63,11 @@
         }else {
             ?>
         <pre>
+    @if ($jenis == "guru")
+    Nama          : {{$g->nama}}
+        NIK           : {{$g->nik}}
+        NIP           : {{$g->nip}}
+    @endif
     Periode tanggal {{$dari}} sampai {{$sampai}}
         </pre>
             <?php

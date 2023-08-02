@@ -123,6 +123,8 @@ class JurnalController extends Controller
     public function cetak (Request $request){
         $cari = $request->cari;
         if(Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha"){
+            $jenis = "";
+            $g="";
             if($cari == ""){
                 $dari = $request->dari;
                 $sampai = $request->sampai;
@@ -144,6 +146,7 @@ class JurnalController extends Controller
                 ->get();
             }
         }else{
+            $jenis = "guru";
             $guru = DB::table('tb_guru')->where('id_user','=',''.Auth::user()->id.'')->get();
             foreach ($guru as $g)
             if($cari == ""){
@@ -170,7 +173,7 @@ class JurnalController extends Controller
                 ->get();
             }
         }
-        $pdf = PDF::loadView('jurnal/cetak',compact('jurnal','dari','sampai'));
+        $pdf = PDF::loadView('jurnal/cetak',compact('jurnal','dari','sampai','jenis','g'));
         $pdf->setPaper('A4','landscape');
         return $pdf->stream('cetak_jurnal.pdf');
     }
