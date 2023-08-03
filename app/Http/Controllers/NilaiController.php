@@ -120,12 +120,12 @@ class NilaiController extends Controller
     public function cetak (Request $request, $id){
         $cari = $request->cari;
         $nilai =  DB::table('nilai')
-        ->where('id_presensi','=',''.$id.'')->join('tb_guru','tb_guru.id','=','nilai.id_guru')
+        ->join('tb_guru','tb_guru.id','=','nilai.id_guru')
         ->join('tb_siswa','tb_siswa.id','=','nilai.id_siswa')
         ->join('presensi','presensi.id','=','nilai.id_presensi')
         ->select('presensi.tgl','tb_guru.nama as nm_guru','nis','tb_siswa.nama as nm_siswa','presensi.kelas','presensi.mapel','nilai.nilai')
+        ->where('id_presensi','=',''.$id.'')
         ->where('tb_siswa.nama','like',"%".$cari."%")
-        ->orWhere('tb_siswa.nis','like',"%".$cari."%")
         ->get();
 
         $ta = DB::table('presensi')

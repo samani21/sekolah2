@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SiswaExport;
+use App\Imports\SiswaImport;
+use App\Models\DataSiswa;
 use App\Models\Siswa;
 use App\Models\Tahun;
 use App\Models\User;
@@ -9,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
 use PDF;
 
 class SiswaController extends Controller
@@ -242,5 +247,80 @@ class SiswaController extends Controller
         $siswa = Siswa::find($id);
         $user = User::find($siswa->id_user);
         return view('profil.cetak_kartu',['siswa'=>$siswa,'user'=>$user]);
+    }
+
+
+
+    public function import_excel(Request $request) 
+	{
+		// validasi
+		$this->validate($request, [
+			'file' => 'required|mimes:csv,xls,xlsx'
+		]);
+ 
+		// menangkap file excel
+		$file = $request->file('file');
+ 
+		// membuat nama file unik
+		$nama_file = rand().$file->getClientOriginalName();
+ 
+		// upload ke folder file_siswa di dalam folder public
+		$file->move('file_siswa',$nama_file);
+ 
+		// import data
+		Excel::import(new SiswaImport, public_path('/file_siswa/'.$nama_file));
+ 
+		// notifikasi dengan session
+		Session::flash('sukses','Data Siswa Berhasil Diimport!');
+ 
+		// alihkan halaman kembali
+		return redirect('/siswa/data_siswa');
+        
+	}
+
+    public function export_excel()
+	{
+		return Excel::download(new SiswaExport, 'siswa.xlsx');
+	}
+
+    public function data_siswa(Request $request){
+        $cari = $request->cari;
+        $data['title'] = "Data Siswa";
+        $ta = DB::table('data_siswa')
+        ->select('tahun')
+        ->groupBy('tahun')
+        ->get();
+        $siswa = DB::table('data_siswa')
+        ->where('nama','like',"%".$cari."%")
+        ->orWhere('nik','like',"%".$cari."%")
+        ->orWhere('tahun','like',"%".$cari."%")
+        ->orWhere('kelas','like',"%".$cari."%")
+        ->paginate(10);
+        return view('siswa/data_siswa',compact('ta','siswa'),$data);
+    }
+
+    public function cetak_data_siswa(Request $request){
+        $tahun = $request->tahun;
+        $cari = $request->cari;
+        if($cari == ""){
+            $siswa = DB::table('data_siswa')
+            ->where('tahun','=',''.$tahun.'')->get();
+        }else{
+            $siswa = DB::table('data_siswa')
+            ->where('nis','like',"%".$cari."%")
+            ->orWhere('nama','like',"%".$cari."%")
+            ->orWhere('nik','like',"%".$cari."%")
+            ->orWhere('kelas','like',"%".$cari."%")->get();
+        }
+        $pdf = PDF::loadView('siswa/cetak_data_siswa',compact('siswa','tahun'));
+        $pdf->setPaper('A4','potrait');
+        return $pdf->stream('cetak_siswa.pdf');
+    }
+
+    public function destroy_data_siswa($id){
+        $siswa = DataSiswa::find($id);
+        $siswa->delete();
+        toast('Berhasil menghapus data','success');
+        return redirect('siswa/data_siswa');
     }
 }

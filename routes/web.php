@@ -67,7 +67,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 //guru
 Route::get('data_guru/guru', [GuruController::class,'index'])->name('guru/guru');//menampilkan data guru
-Route::get('data_guru/tambah_guru', [GuruController::class,'crefotoate'])->name('guru/tambah_guru');//menampilkan tambah data guru
+Route::get('data_guru/tambah_guru', [GuruController::class,'create'])->name('guru/tambah_guru');//menampilkan tambah data guru
 Route::post('data_guru/tambah_guru',[GuruController::class, 'store'])->name('guru.store');//proses tambah data guru
 Route::get('data_guru/edit/{id}',[GuruController::class, 'edit'])->name('guru/edit');//menampilkan edit data guru
 Route::post('ubahguru/{id}',[GuruController::class, 'update'])->name('ubahguru');//proses update guru
@@ -77,6 +77,11 @@ Route::get('data_guru/hapus_guru/{id}&{id_user}',[GuruController::class, 'destro
 Route::get('profil/profil/{id}',[GuruController::class,'profil'])->name('profil/profil');//menampilkan data profil
 
 //siswa
+Route::get('/siswa/export_excel',[SiswaController::class,'export_excel'])->name('/siswa/export_excel');//eksport excel
+Route::post('/siswa/import_excel', [SiswaController::class,'import_excel'])->name('/siswa/import_excel');//import excel
+Route::get('siswa/data_siswa',[SiswaController::class, 'data_siswa'])->name('siswa/data_siswa');//menampilkan data siswa
+Route::get('siswa/hapus_data_siswa/{id}',[SiswaController::class, 'destroy_data_siswa'])->name('hapus_data_siswa');//hapus data siswa
+
 Route::get('siswa/siswa',[SiswaController::class, 'index'])->name('siswa/siswa');//menampilkan data siswa
 Route::get('siswa/tambah_siswa',[SiswaController::class, 'create'])->name('siswa/tambah_siswa');//input siswa
 Route::post('siswa/tambah_siswa',[SiswaController::class, 'store'])->name('siswa.store');//proses tambah data siswa
@@ -188,6 +193,7 @@ Route::get('jurnal/hapus_jurnal/{id}',[JurnalController::class, 'destroy'])->nam
 
 //cetak
 Route::get('siswa/cetak', [SiswaController::class, 'cetak_siswa'])->name('siswa/cetak');//cetak siswa
+Route::get('siswa/cetak_data_siswa', [SiswaController::class, 'cetak_data_siswa'])->name('siswa/cetak_data_siswa');//cetak data siswa
 Route::get('data_guru/cetak', [GuruController::class, 'cetak_guru'])->name('guru/cetak');//cetak guru
 Route::get('absensi/cetak_guru', [AbsenController::class, 'cetak_guru'])->name('absensi/cetak_guru');//cetak guru
 Route::get('absensi/cetak_presensi/id={id}&mapel={mapel}', [PresensiController::class, 'cetak'])->name('absensi/cetak_presensi');//cetak presesnsi 

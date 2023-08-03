@@ -150,8 +150,15 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ url('siswa/data_siswa') }}"
+                            class="{{ request()->is('siswa/data_siswa')?'active' :'' }}">
+                            <span class="fa-solid fa-person"></span>
+                            <span>Data Siswa</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ url('siswa/siswa') }}"
-                            class="{{ request()->is('siswa/*')?'active' :'' }}">
+                            class="{{ request()->is('siswa/siswa*','siswa/edit_siswa*','siswa/tambah_siswa*')?'active' :'' }}">
                             <span class="fa-solid fa-person"></span>
                             <span>Siswa</span>
                         </a>

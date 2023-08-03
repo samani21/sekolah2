@@ -1,15 +1,9 @@
 @extends('layouts.sidebar')
 
 @section('content')
-<?php
-if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin" || Auth::user()->level == "Guru" || Auth::user()->level == "Tata_usaha")
- {
-    ?>
     <div class="container">
-        <div class="row">
-            @if (Auth::user()->level =="Guru" ||Auth::user()->level =="Guru"|| Auth::user()->level =="Tata_usaha" ||Auth::user()->level =="Super_admin")
-            <div class="col-8">
-                <form action="{{route('siswa/cetak')}}" method="GET">
+        <div class="row"><div class="col-8">
+                <form action="{{route('siswa/cetak_data_siswa')}}" method="GET">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="input-group mb-3">
@@ -30,7 +24,6 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
                     </div>
                 </form>
             </div>
-            @endif
         </div>
         <div class="row">
             <div class="col-8">
@@ -41,10 +34,39 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
                       </div>
                 </form>
             </div>
-            <div class="col-4">
-                <a href="/siswa/export_excel" class="btn btn-success">EXPORT EXCEL</a>
-            </div>
         </div>
+        {{-- notifikasi form validasi --}}
+		@if ($errors->has('file'))
+		<span class="invalid-feedback" role="alert">
+			<strong>{{ $errors->first('file') }}</strong>
+		</span>
+		@endif
+ 
+		{{-- notifikasi sukses --}}
+		@if ($sukses = Session::get('sukses'))
+		<div class="alert alert-success alert-block">
+			<button type="button" class="close" data-dismiss="alert">×</button> 
+			<strong>{{ $sukses }}</strong>
+		</div>
+		@endif
+        <form method="post" action="/siswa/import_excel" enctype="multipart/form-data">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Import Excel</h5>
+                </div>
+                {{ csrf_field() }}
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <input type="file" name="file" required="required">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </div>
+                </div>
+            </div>
+        </form>
             <hr>
             <div>
                 <table class="table table-secondary table-striped" id="no-more-tables">
@@ -58,10 +80,7 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
                         <th scope="col">JK</th>
                         <th scope="col">Alamat</th>
                         <th scope="col">Kelas</th>
-                        @if (Auth::user()->level == "Guru" || Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
-                            <th scope="col">Point</th>
-                            <th scope="col">Aksi</th>
-                        @endif
+                        <th scope="col">Aksi</th>
                     </thead>
                     <tbody>
                         @foreach ($siswa as $index=>$sis)
@@ -75,16 +94,9 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
                                 <td data-title="Jenis Kelamin">{{$sis->jk}}</td>
                                 <td data-title="Alamat">{{$sis->alamat}}</td>
                                 <td data-title="Kelas">{{$sis->kelas}}</td>
-                                @if (Auth::user()->level == "Guru" || Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
-                                <td data-title="Point">{{$sis->poin}}</td>
-                                <td>
-                                    <a href="edit_siswa/{{$sis->id}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
-                                    <a href="hapus_siswa/{{$sis->id}}" class="btn btn-danger" onclick="javascript: return confirm('Konfirmasi data akan dihapus');"><i class="fa-solid fa-trash"></i> Hapus</a>
-                                    @if ($g->wakel == "-" || $g->wakel == "BK" )
-                                    <a href="/poin/tambah_point/{{$sis->id}}" class="btn btn-secondary" ><i class="fa-solid fa-plus"></i> Point</a>
-                                    @endif
+                                <td data-title="Aksi">
+                                    <a href="hapus_data_siswa/{{$sis->id}}" class="btn btn-danger" onclick="javascript: return confirm('Konfirmasi data akan dihapus');"><i class="fa-solid fa-trash"></i> Hapus</a>
                                 </td>
-                                @endif
                             </tr>
                         @endforeach
                     </tbody>
@@ -93,27 +105,4 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
             </div>
         </div>
 	</div>
-    <?php
-}else{
-    ?>
-    <div class="container">
-        <form action="{{url('updateke',$user->id)}}" method="POST">
-            @csrf
-            <div>
-                <label for="">Kelas</label>
-                <select name="kelas" class="form-control" required>
-                    <option value="">--pilih--</option>
-                    @foreach ($kelas1 as $kel)
-                        <option value="{{$kel->nm_kelas}}">{{$kel->nm_kelas}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <hr>
-            <button type="submit" class="btn btn-success">Simpan</button>
-            <button type="reset" class="btn btn-danger">Reset</button>
-        </form>
-    </div>
-    <?php
-}
-?>
 @endsection
