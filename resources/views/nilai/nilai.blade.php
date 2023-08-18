@@ -3,7 +3,7 @@
 @section('content')
 
     <?php
-    if (Auth::user()->tahun == $tahun->tahun) {
+    if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha") {
         ?>
         <div class="container">
             <div class="row">
@@ -38,6 +38,9 @@
                         <thead>
                             <tr>
                                 <th scope="col">No</th>
+                                @if (Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
+                                <th scope="col">Nama</th>
+                                @endif
                                 <th scope="col">Mapel</th>
                                 <th scope="col">Kelas</th>
                                 <th scope="col">Tanggal</th>
@@ -52,6 +55,9 @@
                             <tr>
                                 <td data-title="No">{{ $index + $presensi->firstItem() }}</td>
                                 {{-- <td data-title="Nama Guru" >{{$pre->nama}}</td> --}}
+                                @if (Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
+                                <td data-title="Nama" >{{$pre->nama}}</td>
+                                @endif
                                 <td data-title="Mapel" >{{$pre->mapel}}</td>
                                 <td data-title="Kelas" >{{$pre->kelas}}</td>
                                 <td data-title="Tanggal" >{{$pre->tgl}}</td>

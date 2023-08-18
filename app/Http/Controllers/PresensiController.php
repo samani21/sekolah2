@@ -98,13 +98,13 @@ class PresensiController extends Controller
         ];
         $edit->update($data);
         Alert()->success('SuccessAlert','Update presensi Kelas berhasil');
-        return redirect()->route('absensi/presensi');
+        return redirect('absensi/presensi?cari='.date('Y-m-d').'');
     }
     public function destroy($id){
         $per = Presensi::find($id);
         $per->delete();
         toast('Berhasil menghapus data','success');
-        return redirect('absensi/presensi');
+        return redirect('absensi/presensi?cari='.date('Y-m-d').'');
     }
 
     public function lihat(Request $request,$id,$mapel){

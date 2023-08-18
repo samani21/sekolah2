@@ -180,8 +180,8 @@
                     <li>
                         <a href="{{ url('absensi/presensi?cari='.date('Y-m-d').'') }}"
                             class="{{ request()->is('absensi/presensi*','absensi/lihat_presensi*')?'active' :'' }}">
-                            <span class="fa-solid fa-clipboard-list"></span>
-                            <span>Presensi Siswa</span>
+                            <span class="fa-solid fa-star"></span>
+                            <span>Absen & Nilai</span>
                         </a>
                     </li>
                     <li>
@@ -203,6 +203,13 @@
                             class="{{ request()->is('harian/harian*','harian/siswa*')?'active' :'' }}">
                             <span class="fa-solid fa-clipboard-list"></span>
                             <span>Absen siswa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('nilai/nilai?cari='.date('Y-m-d').'') }}"
+                            class="{{ request()->is('nilai/*')?'active' :'' }}">
+                            <span class="fa-solid fa-star"></span>
+                            <span>Nilai Siswa</span>
                         </a>
                     </li>
                     <li>
@@ -325,7 +332,7 @@
                             <li>
                                 <a href="{{ url('jurnal/jurnal') }}"
                                     class="{{ request()->is('jurnal/*')?'active' :'' }}">
-                                    <span class="fa-solid fa-triangle-exclamation"></span>
+                                    <span class="fa-solid fa-book"></span>
                                     <span>Jurnal Mengajar</span>
                                 </a>
                             </li>
@@ -562,9 +569,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ url('nilai/nilai') }}"
+                        <a href="{{ url('nilai/nilai?cari='.date('Y-m-d').'') }}"
                             class="{{ request()->is('nilai/*')?'active' :'' }}">
-                            <span class="fa-solid fa-triangle-exclamation"></span>
+                            <span class="fa-solid fa-star"></span>
                             <span>Nilai</span>
                         </a>
                     </li>

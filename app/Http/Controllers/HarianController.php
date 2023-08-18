@@ -20,10 +20,11 @@ class HarianController extends Controller
         $it = 1;
         $id_tahun = Tahun::findorfail($it);
         $siswa = DB::table('tb_siswa')->join('users','users.id','=','tb_siswa.id_user')
-            ->select('nik','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis','tb_siswa.tahun','tgl_harian')
+            ->select('tb_siswa.updated_at','nik','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis','tb_siswa.tahun','tgl_harian')
         ->where('nama','like',"%".$cari."%")
         ->orWhere('nik','like',"%".$cari."%")
         ->orWhere('tb_siswa.tahun','like',"%".$cari."%")
+        ->orderBy('updated_at','desc')
         // ->where('id_user','=',''.$id_user.'')
         
         ->paginate(10);
@@ -34,7 +35,7 @@ class HarianController extends Controller
     public function siswa(Request $request){
         $cari = $request->cari;
         $it = 1;
-        $id_tahun = Tahun::findorfail($it);
+        $tahun = Tahun::findorfail($it);
         if(Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha"){
             $siswa = DB::table('abs_harian')->join('tb_siswa','tb_siswa.id','=','abs_harian.id_siswa')
             ->join('users','users.id','=','abs_harian.id_user')
@@ -46,11 +47,12 @@ class HarianController extends Controller
             ->join('users','users.id','=','abs_harian.id_user')
             ->select('abs_harian.tgl','nama','abs_harian.kelas','abs_harian.tahun','abs_harian.jam')
             ->where('abs_harian.id_user','=',''.Auth::user()->id.'')
+            ->where('abs_harian.tahun','=',''.$tahun->tahun.'')
             ->where('abs_harian.tgl','like',"%".$cari."%")
             ->paginate(10);
         }
         $data['title']= "Absen siswa harian";
-        return view('harian/siswa',['siswa'=>$siswa,'tahun'=>$id_tahun],$data);
+        return view('harian/siswa',['siswa'=>$siswa],$data);
     }
 
 

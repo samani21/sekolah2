@@ -25,19 +25,33 @@ class NilaiController extends Controller
         $kelas = Auth::user()->kelas;
 
         $siswa = Auth::user()->id;
-
-        $d_siswa = DB::table('tb_siswa')->where('id_user','=',''.$siswa.'')->get();
-        foreach ($d_siswa as $sis)
+        if(Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha"){
+            $presensi = DB::table('absen_siswa')
+        ->join('presensi','presensi.id','=','absen_siswa.id_presensi')
+        ->join('tb_siswa','.tb_siswa.id','=','id_siswa')
+        ->select('mapel','kelas','presensi.tgl','jam','presensi.tahun','presensi.id','absen_siswa.semester','nilai','nama','absen_siswa.id as id_siswa')
+        ->where('presensi.tahun','=',''.$tah.'')
+        ->where('absen_siswa.status','not like','0')
+        ->where('presensi.tgl','like',"%".$cari."%")
+        ->orderBy('id','desc')
+        ->paginate(10);
+        }
+        else{
+            $d_siswa = DB::table('tb_siswa')->where('id_user','=',''.$siswa.'')->get();
+            foreach ($d_siswa as $sis)
         $presensi = DB::table('absen_siswa')
         ->join('presensi','presensi.id','=','absen_siswa.id_presensi')
         ->select('mapel','kelas','presensi.tgl','jam','presensi.tahun','presensi.id','absen_siswa.semester','nilai')
         ->where('id_siswa','=',''.$sis->id.'')
         ->where('kelas','=',''.$kelas.'')
+        ->where('absen_siswa.status','not like','0')
         ->where('presensi.tahun','=',''.$tah.'')
         ->where('presensi.tgl','like',"%".$cari."%")
         ->orderBy('id','desc')
         ->paginate(10);
+        }
 
+        
         $tahun = Tahun::findorfail(1);
         // $d_siswa = DB::table('tb_siswa')->where('id_user','=',''.$siswa.'')->get();
         // foreach ($d_siswa as $sis)

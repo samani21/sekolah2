@@ -103,6 +103,7 @@ class SiswaController extends Controller
             'nis' => $request->nis,
             'tahun' => $id_tahun->tahun,
             'presensi' => "0",
+            'foto' => $filename,
             'poin' => 100,
             
         ]);
@@ -291,6 +292,8 @@ class SiswaController extends Controller
         ->groupBy('tahun')
         ->get();
         $siswa = DB::table('data_siswa')
+        ->select('nis','nik','nama','tgl','tempat','agama','jk','kelas','tahun','alamat')
+        ->groupBy('nis','nik','nama','tgl','tempat','agama','jk','kelas','tahun','alamat')
         ->where('nama','like',"%".$cari."%")
         ->orWhere('nik','like',"%".$cari."%")
         ->orWhere('tahun','like',"%".$cari."%")
@@ -312,7 +315,7 @@ class SiswaController extends Controller
             ->orWhere('nik','like',"%".$cari."%")
             ->orWhere('kelas','like',"%".$cari."%")->get();
         }
-        $pdf = PDF::loadView('siswa/cetak_data_siswa',compact('siswa','tahun'));
+        $pdf = PDF::loadView('siswa/cetak',compact('siswa','tahun'));
         $pdf->setPaper('A4','potrait');
         return $pdf->stream('cetak_siswa.pdf');
     }

@@ -12,7 +12,6 @@
                         </div>
                         <div class="col-4">
                             <select class="form-select" name="tahun" aria-label="Default select example">
-                                <option value="">--Tahun ajaran</option>
                                 @foreach ($ta as $t)
                                     <option value="{{$t->tahun}}">{{$t->tahun}}</option>
                                 @endforeach
@@ -80,7 +79,7 @@
                         <th scope="col">JK</th>
                         <th scope="col">Alamat</th>
                         <th scope="col">Kelas</th>
-                        <th scope="col">Aksi</th>
+                        <th scope="col">Tahun</th>
                     </thead>
                     <tbody>
                         @foreach ($siswa as $index=>$sis)
@@ -94,9 +93,7 @@
                                 <td data-title="Jenis Kelamin">{{$sis->jk}}</td>
                                 <td data-title="Alamat">{{$sis->alamat}}</td>
                                 <td data-title="Kelas">{{$sis->kelas}}</td>
-                                <td data-title="Aksi">
-                                    <a href="hapus_data_siswa/{{$sis->id}}" class="btn btn-danger" onclick="javascript: return confirm('Konfirmasi data akan dihapus');"><i class="fa-solid fa-trash"></i> Hapus</a>
-                                </td>
+                                <td data-title="Tahun">{{$sis->tahun}}</td>
                             </tr>
                         @endforeach
                     </tbody>
