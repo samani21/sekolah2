@@ -78,6 +78,7 @@ if (Auth::user()->tahun == $tahun->tahun || Auth::user()->level == "Super_admin"
                                     <td>
                                         <a href="edit/{{$po->id}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
                                         <a href="hapus_poin/{{$po->id}}" class="btn btn-danger" onclick="javascript: return confirm('Konfirmasi data akan dihapus');"><i class="fa-solid fa-trash"></i> Hapus</a>
+                                        <a href="surat/{{$po->id}}" class="btn btn-success" ><i class="fa-solid fa-print"></i> Surat</a>
                                     </td>
                                     @endif
                                 @endif

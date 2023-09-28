@@ -209,3 +209,4 @@ Route::get('jurnal/cetak',[JurnalController::class, 'cetak'])->name('jurnal/ceta
 Route::get('nilai/cetak_nilai/id={id}',[NilaiController::class, 'cetak'])->name('nilai/cetak_nilai');//hapus prestas guru
 Route::get('nilai/cetak_siswa',[NilaiController::class, 'cetak_siswa'])->name('nilai/cetak_siswa');//cetak nilai siswa
 Route::get('poin/cetak', [PoinController::class, 'cetak_poin'])->name('poin/cetak');//cetak siswa
+Route::get('poin/surat/{id}', [PoinController::class, 'cetak_surat'])->name('poin/surat');//cetak surat panggailan 

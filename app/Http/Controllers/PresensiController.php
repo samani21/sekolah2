@@ -171,24 +171,23 @@ class PresensiController extends Controller
                 $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
                 ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
                 ->whereBetween('presensi.tgl',[$dari,$sampai])
-                ->paginate(10);
+                ->get();
             }else{
                 $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
                 ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
                 ->where('presensi.tgl','like',"%".$cari."%")
                 ->orWhere('mapel','like',"%".$cari."%")
                 ->orWhere('nama','like',"%".$cari."%")
-                ->paginate(10);
+                ->get();
             }
         }else{
             if($cari == ""){
                 $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
-                ->join('absen_siswa','absen_siswa.id_presensi','=','presensi.id')
                 ->select('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
-                ->where('id_guru','=',''.$gur.'')
                 ->whereBetween('presensi.tgl',[$dari,$sampai])
+                ->where('id_guru','=',''.$gur.'')
                 ->groupBy('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
-                ->paginate(10);
+                ->get();
             }else{
                 $presensi = DB::table('presensi')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
                 ->join('absen_siswa','absen_siswa.id_presensi','=','presensi.id')
@@ -197,7 +196,7 @@ class PresensiController extends Controller
                 ->where('presensi.tgl','like',"%".$cari."%")
                 ->orWhere('mapel','like',"%".$cari."%")
                 ->groupBy('mapel','kelas','presensi.tgl','jam_mulai','jam_selesai','presensi.tahun','nama','presensi.id')
-                ->paginate(10);
+                ->get();
             }
         }
         

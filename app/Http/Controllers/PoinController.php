@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Poin;
 use App\Models\Siswa;
+use App\Models\Surat;
 use App\Models\Tahun;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PDF;
+use Twilio\Rest\Client;
 
 class PoinController extends Controller
 {
@@ -81,7 +83,7 @@ class PoinController extends Controller
     }
 
     public function store(Request $request){
-        $point = new Poin([
+        $point = Poin::create([
             'id_siswa' => $request->id_siswa,
             'id_user' => $request->id_user,
             'poin' => $request->poin,
@@ -90,9 +92,21 @@ class PoinController extends Controller
             'tahun' => $request->tahun,
             'kelas' => $request->kelas,
         ]);
-        $point->save();
-        Alert()->success('SuccessAlert','Tambah data Siswa berhasil');
-        return redirect()->route('siswa/siswa');
+        $surat = Surat::create([
+            'id_poin' => $point->id,
+            'hari' => $request->hari,
+            'tgl' => $request->tgl_surat,
+            'jam' => $request->jam,
+            'tempat' => $request->tempat,
+        ]);
+        $id = $request->id_siswa;
+        $kelas = $request->kelas;
+        $siswa = Siswa::findorfail($id);
+        $surat = Surat::findorfail($surat->id);
+        $this->whatsappNotification($siswa->id,$surat->id);
+        $pdf = PDF::loadView('poin/surat',compact('siswa','kelas','surat'));
+        $pdf->setPaper('A4','potrait');
+        return $pdf->stream('surat_panggilan.pdf');
     }
 
     public function edit($id){
@@ -200,5 +214,30 @@ class PoinController extends Controller
         $pdf = PDF::loadView('poin/cetak',compact('poin','tahun'));
         $pdf->setPaper('A4','potrait');
         return $pdf->stream('cetak_poin.pdf');
+    }
+    
+    public function cetak_surat($id){
+        $poin = Poin::findorfail($id);
+        $kelas = $poin->kelas;
+        $siswa = Siswa::findorfail($poin->id_siswa);
+        $surat1 = DB::table('surat')->where("id_poin","=","".$id."")->get();
+        foreach ($surat1 as $surat)
+        $pdf = PDF::loadView('poin/surat',compact('siswa','kelas','surat'));
+        $pdf->setPaper('A4','potrait');
+        return $pdf->stream('surat_panggilan.pdf');
+    }
+
+    private function whatsappNotification(string $recipient,string $recipient1)
+    {
+        $siswa = Siswa::findorfail($recipient);
+        $surat = Surat::findorfail($recipient1);
+        $sid    = getenv("TWILIO_AUTH_SID");
+        $token  = getenv("TWILIO_AUTH_TOKEN");
+        $wa_from= getenv("TWILIO_WHATSAPP_FROM");
+        $twilio = new Client($sid, $token);
+        
+        $body = "Assalamu'alaikum. Yang terhormat Bapak/Ibu Wali siswa yang bernama {$siswa->nama} untuk berhadir kesekolahan pada hari {$surat->hari},jam {$surat->jam}, tanggal {$surat->tgl}, bertempatkan di {$surat->tempat}";
+
+        return $twilio->messages->create("whatsapp:$siswa->phone",["from" => "whatsapp:$wa_from", "body" => $body]);
     }
 }

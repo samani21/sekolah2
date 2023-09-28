@@ -192,6 +192,13 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ url('poin/poin') }}"
+                            class="{{ request()->is('poin/*')?'active' :'' }}">
+                            <span class="fa-solid fa-triangle-exclamation"></span>
+                            <span>Point Disiplin</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ url('prestasi/guru') }}"
                             class="{{ request()->is('prestasi/guru*','prestasi/edit_guru*','prestasi/tambah_guru*')?'active' :'' }}">
                             <span class="fa-solid fa-award"></span>

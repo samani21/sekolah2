@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('tgl_absen','20');
             $table->string('tgl_harian','20');
             $table->string('tempat','50');
+            $table->string('wali','50');
+            $table->string('phone','50');
             $table->string('agama','10');
             $table->string('jk','10');
             $table->string('tahun','20');
