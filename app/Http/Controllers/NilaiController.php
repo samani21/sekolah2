@@ -74,7 +74,7 @@ class NilaiController extends Controller
         $cari = $request->cari;
         $presensi = DB::table('absen_siswa') ->join('presensi','presensi.id','=','absen_siswa.id_presensi')
         ->join('tb_siswa','tb_siswa.id','=','absen_siswa.id_siswa')->join('tb_guru','tb_guru.id','=','presensi.id_guru')
-        ->select('mapel','kelas','presensi.tgl','nis','absen_siswa.id as absen','tb_siswa.nama','presensi.tahun','absen_siswa.jam','presensi.id','tb_siswa.id as siswa','presensi.semester','absen_siswa.status','nilai','tb_guru.id as guru')
+        ->select('mapel','kelas','uts','uas','s_nilai','presensi.tgl','nis','absen_siswa.id as absen','tb_siswa.nama','presensi.tahun','absen_siswa.jam','presensi.id','tb_siswa.id as siswa','presensi.semester','absen_siswa.status','nilai','tb_guru.id as guru')
         ->where('id_presensi','=',''.$id.'')
         ->where('tb_siswa.nama','like',"%".$cari."%")
         ->paginate(10);
@@ -85,15 +85,92 @@ class NilaiController extends Controller
     public function store(Request $request,$id){
         $id_presensi = $request->id_presensi;
         $mapel = $request->mapel;
-
+        $status = $request->s_nilai;
+        // if($status == 1){
+        //     $presensi = new Nilai([
+        //         'id_guru' => $request->guru,
+        //         'id_presensi' => $request->id_presensi,
+        //         'id_siswa' => $request->siswa,
+        //         'tgl' => $request->tgl,
+        //         'mapel' => $request->mapel,
+        //         'kelas' => $request->kelas,
+        //         'nilai' => $request->nilai,
+        //         'tahun' => $request->tahun,
+        //         'semester' => $request->semester,
+        //         'status' => 0,
+        //         'uts' => 0,
+        //         'uas' => 0,
+        //     ]);
+        //     $presensi->save();
+    
+        //     $edit = AbsenSiswa::findorfail($id);
+        //     $data = [
+        //         'status'=>1,
+        //         'nilai'=>$request->nilai,
+        //     ];
+        //     $edit->update($data);
+        // }
+        // if($status == 2){
+        //     $presensi = new Nilai([
+        //         'id_guru' => $request->guru,
+        //         'id_presensi' => $request->id_presensi,
+        //         'id_siswa' => $request->siswa,
+        //         'tgl' => $request->tgl,
+        //         'mapel' => $request->mapel,
+        //         'kelas' => $request->kelas,
+        //         'nilai' => 0,
+        //         'tahun' => $request->tahun,
+        //         'semester' => $request->semester,
+        //         'status' => 0,
+        //         'uts' => $request->nilai,
+        //         'uas' => 0,
+        //     ]);
+        //     $presensi->save();
+    
+        //     $edit = AbsenSiswa::findorfail($id);
+        //     $data = [
+        //         'status'=>1,
+        //         'nilai'=>$request->nilai,
+        //     ];
+        //     $edit->update($data);
+        // }
+        // if($status == 3){
+        //     $presensi = new Nilai([
+        //         'id_guru' => $request->guru,
+        //         'id_presensi' => $request->id_presensi,
+        //         'id_siswa' => $request->siswa,
+        //         'tgl' => $request->tgl,
+        //         'mapel' => $request->mapel,
+        //         'kelas' => $request->kelas,
+        //         'nilai' => 0,
+        //         'tahun' => $request->tahun,
+        //         'semester' => $request->semester,
+        //         'status' => 0,
+        //         'uts' => 0,
+        //         'uas' => $request->nilai,
+        //     ]);
+        //     $presensi->save();
+    
+        //     $edit = AbsenSiswa::findorfail($id);
+        //     $data = [
+        //         'status'=>1,
+        //         'nilai'=>$request->nilai,
+        //     ];
+        //     $edit->update($data);
+        // }
         $presensi = new Nilai([
             'id_guru' => $request->guru,
             'id_presensi' => $request->id_presensi,
             'id_siswa' => $request->siswa,
             'tgl' => $request->tgl,
+            'mapel' => $request->mapel,
+            'kelas' => $request->kelas,
             'nilai' => $request->nilai,
             'tahun' => $request->tahun,
             'semester' => $request->semester,
+            'status' => 0,
+            'uts' => $request->uts,
+            'uas' => $request->uas,
         ]);
         $presensi->save();
 
@@ -101,6 +178,8 @@ class NilaiController extends Controller
         $data = [
             'status'=>1,
             'nilai'=>$request->nilai,
+            'uts'=>$request->uts,
+            'uas'=>$request->uas,
         ];
         $edit->update($data);
         Alert()->success('SuccessAlert','Tambah presensi siswa berhasil');
@@ -118,13 +197,17 @@ class NilaiController extends Controller
         $edit = Nilai::findorfail($nilai->id);
         $data = [
             'nilai'=>$request->nilai,
+            'uts'=>$request->uts,
+            'uas'=>$request->uas,
         ];
         $edit->update($data);
 
         $edit = AbsenSiswa::findorfail($id);
         $data = [
             'status'=>1,
-            'nilai'=>$request->nilai,
+            'nilai'=>$request->nilai, 
+            'uts'=>$request->uts,
+            'uas'=>$request->uas,
         ];
         $edit->update($data);
         Alert()->success('SuccessAlert','Tambah presensi siswa berhasil');

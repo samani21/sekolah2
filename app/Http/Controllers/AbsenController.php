@@ -213,6 +213,8 @@ class AbsenController extends Controller
             'tahun'=> stripslashes($tahun['tahun']),
             'semester'=> $tahun['sem'],
             'nilai'=> 0,
+            'uts'=> 0,
+            'uas'=> 0,
             'status'=> 0,
         ]);
         $absen->save();

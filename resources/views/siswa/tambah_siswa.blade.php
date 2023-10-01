@@ -54,6 +54,14 @@
                     <label for="">Alamat</label>
                     <input class="form-control" type="text" name="alamat" placeholder="Masukkan alamat" aria-label="default input example" required>
                 </div>
+                <div>
+                    <label for="">Wali</label>
+                    <input class="form-control" type="text" name="wali" placeholder="Masukkan alamat" aria-label="default input example" required>
+                </div>
+                <div>
+                    <label for="">Wa</label>
+                    <input class="form-control" type="text" name="phone" placeholder="Masukkan alamat" aria-label="default input example" required>
+                </div>
                 <div class="col-md-6">
                     <label for="">Masukkan Gambar</label>
                     <input type="file" class="form-control" name="images_portfolio" required>

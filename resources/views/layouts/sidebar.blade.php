@@ -226,6 +226,13 @@
                             <span>Jurnal Mengajar</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ url('semester/pilihan') }}"
+                            class="{{ request()->is('semester/pilihan')?'active' :'' }}">
+                            <span class="fa-solid fa-book"></span>
+                            <span>Nilai Tugas</span>
+                        </a>
+                    </li>
                     @endif
                     @endif
 
@@ -341,6 +348,13 @@
                                     class="{{ request()->is('jurnal/*')?'active' :'' }}">
                                     <span class="fa-solid fa-book"></span>
                                     <span>Jurnal Mengajar</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('semester/pilihan') }}"
+                                    class="{{ request()->is('semester/pilihan')?'active' :'' }}">
+                                    <span class="fa-solid fa-book"></span>
+                                    <span>Nilai Tugas</span>
                                 </a>
                             </li>
                         @endif
@@ -470,6 +484,13 @@
                             <span>Absen siswa</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ url('semester/pilihan') }}"
+                            class="{{ request()->is('semester/pilihan')?'active' :'' }}">
+                            <span class="fa-solid fa-book"></span>
+                            <span>Nilai Tugas</span>
+                        </a>
+                    </li>
                     @endif
                     @endif
                     @if(Auth::user()->level =='Siswa')
@@ -580,6 +601,13 @@
                             class="{{ request()->is('nilai/*')?'active' :'' }}">
                             <span class="fa-solid fa-star"></span>
                             <span>Nilai</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('akhir/pilih') }}"
+                            class="{{ request()->is('akhir/*')?'active' :'' }}">
+                            <span class="fa-solid fa-star"></span>
+                            <span>Rapot</span>
                         </a>
                     </li>
                     @endif

@@ -49,6 +49,8 @@
                     <option value="">--pilih--</option>
                         <option value="0">Absen</option>
                         <option value="1">Nilai tugas dan absen</option>
+                        <option value="2">Nilai UTS dan absen</option>
+                        <option value="3">Nilai UAS dan absen</option>
                 </select>
             </div>
             <input class="form-control" type="hidden" name="semester" value="{{$tahun->sem}}" aria-label="default input example" readonly required>

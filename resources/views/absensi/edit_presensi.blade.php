@@ -53,10 +53,22 @@
                                    Absen
                                <?php
                             }
+                            if ($presensi->s_nilai == 2) {
+                                ?>
+                                   Nilai UTS dan absen
+                               <?php
+                            }
+                            if ($presensi->s_nilai == 3) {
+                               ?>
+                                   Nilai UAS dan absen
+                               <?php
+                            }
                         ?>
                     </option>
                         <option value="0">Absen</option>
                         <option value="1">Nilai tugas dan absen</option>
+                        <option value="2">Nilai UTS dan absen</option>
+                        <option value="3">Nilai UAS dan absen</option>
                 </select>
             </div>
             <input type="hidden" value="{{$presensi->id_guru}}" name="id_guru">

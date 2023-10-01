@@ -57,6 +57,7 @@
                             <th scope="col">Jam mulai</th>
                             <th scope="col">Jam selesai</th>
                             <th scope="col">Tahun ajaran</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Aksi</th>
                         </tr>
                     </thead>
@@ -71,6 +72,28 @@
                                 <td data-title="Jam mulai" >{{$pre->jam_mulai}}</td>
                                 <td data-title="Jam selesai" >{{$pre->jam_selesai}}</td>
                                 <td data-title="Tahun" >{{$pre->tahun}}</td>
+                                <td data-title="Status" >    
+                                    <?php if ($pre->s_nilai == 1) {
+                                    ?>
+                                       Tugas
+                                    <?php
+                                 }
+                                 if ($pre->s_nilai == 0) {
+                                    ?>
+                                        Absen
+                                    <?php
+                                 }
+                                 if ($pre->s_nilai == 2) {
+                                     ?>
+                                        UTS
+                                    <?php
+                                 }
+                                 if ($pre->s_nilai == 3) {
+                                    ?>
+                                        UAS
+                                    <?php
+                                 }
+                             ?></td>
                                 <td>
                                     <a href="edit_presensi/{{$pre->id}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
                                     <a href="hapus_presensi/{{$pre->id}}" class="btn btn-danger" onclick="javascript: return confirm('Konfirmasi data akan dihapus');"><i class="fa-solid fa-trash"></i> Hapus</a>
@@ -83,12 +106,27 @@
                                         }
                                     ?>
                                     <?php
+                                    if ($pre->s_nilai == 2) {
+                                        ?>
+                                        <a href="/nilai/lihat_nilai/{{$pre->id}}/{{$pre->mapel}}" class="btn btn-secondary"><i class="fa-solid fa-plus"></i>Nilai</a>
+                                        <?php
+                                    }
+                                    ?>
+                                    <?php
+                                    if ($pre->s_nilai == 3) {
+                                        ?>
+                                        <a href="/nilai/lihat_nilai/{{$pre->id}}/{{$pre->mapel}}" class="btn btn-secondary"><i class="fa-solid fa-plus"></i>Nilai</a>
+                                        <?php
+                                    }
+                                    ?>
+                                    <?php
                                     if ($pre->s_jurnal == 0) {
                                         ?>
                                         <a href="/jurnal/tambah_jurnal/{{$pre->id}}" class="btn btn-success"><i class="fa-solid fa-plus"></i>Jurnal</a>
                                         <?php
                                         }
                                     ?>
+                                    
                                 </td>
                             </tr>
                         @endforeach

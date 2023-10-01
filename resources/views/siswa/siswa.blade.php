@@ -63,6 +63,7 @@
                             @if (Auth::user()->level == "Guru" || Auth::user()->level == "Super_admin" || Auth::user()->level == "Tata_usaha")
                                 <th scope="col">Point</th>
                                 <th scope="col">Aksi</th>
+                                <th scope="col">Rapot</th>
                             @endif
                         </thead>
                         <tbody>
@@ -85,6 +86,20 @@
                                         @if ($g->wakel == "-" || $g->wakel == "BK" )
                                         <a href="/poin/tambah_point/{{$sis->id}}" class="btn btn-secondary" ><i class="fa-solid fa-plus"></i> Point</a>
                                         @endif
+                                    </td>
+                                    <td>
+                                        <?php
+                                            if ($tahun->sem == 1) {
+                                                ?>
+                                                <a href="/akhir/cetak/{{$sis->id_user}}?kelas={{$sis->kelas}}&tahun={{$tahun->tahun}}&semester=1" class="btn btn-danger"><i class="fa-solid fa-print"></i> Sem1</a>
+                                                <?php
+                                            }else {
+                                                ?>
+                                                <a href="/akhir/cetak/{{$sis->id_user}}?kelas={{$sis->kelas}}&tahun={{$tahun->tahun}}&semester=1" class="btn btn-danger"><i class="fa-solid fa-print"></i> Sem1</a>
+                                                <a href="/akhir/cetak/{{$sis->id_user}}?kelas={{$sis->kelas}}&tahun={{$tahun->tahun}}&semester=2" class="btn btn-danger"><i class="fa-solid fa-print"></i> Sem2</a>
+                                                <?php
+                                            }
+                                        ?>
                                     </td>
                                     @endif
                                 </tr>

@@ -67,17 +67,68 @@
                                          <form action="{{route('tambah_nilai',$pre->absen)}}" method="post">
                                             @csrf
                                             <input type="hidden" class="form-control" name="mapel" value="{{$pre->mapel}}">
+                                            <input type="hidden" class="form-control" name="s_nilai" value="{{$pre->s_nilai}}">
                                             <input type="hidden" class="form-control" name="id_presensi" value="{{$pre->id}}">
                                             <input type="hidden" class="form-control" name="guru" value="{{$pre->guru}}">
                                             <input type="hidden" class="form-control" name="siswa" value="{{$pre->siswa}}">
                                             <input type="hidden" class="form-control" name="tgl" value="{{date('Y-m-d')}}">
                                             <input type="hidden" class="form-control" name="tahun" value="{{$pre->tahun}}">
+                                            <input type="hidden" class="form-control" name="kelas" value="{{$pre->kelas}}">
+                                            <input type="hidden" class="form-control" name="mapel" value="{{$pre->mapel}}">
                                             <input type="hidden" class="form-control" name="semester" value="{{$pre->semester}}">
                                             <div class="row">
-                                                <div class="col-6">
-                                                    <input type="text" class="form-control" name="nilai">
-                                                </div>
-                                                <div class="col-6">
+                                                
+                                                <?php
+                                                    if ($pre->s_nilai == 1) {
+                                                        ?>
+                                                        <div class="col-2">
+                                                            <input type="hidden" class="form-control" name="uts" value="{{$pre->uts}}" required>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="hidden" class="form-control" name="uas" value="{{$pre->uas}}" required>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="text" class="form-control" name="nilai" required >
+                                                        </div>
+                                                        <?php
+                                                    }
+                                                    if ($pre->s_nilai == 2) {
+                                                        ?>
+                                                        <div class="col-2">
+                                                            <label for="">Nilai UTS</label>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="text" class="form-control" name="uts" required>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="hidden" class="form-control" name="uas" value="{{$pre->uas}}" required>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="hidden" class="form-control" name="nilai" value="{{$pre->nilai}}" required>
+                                                        </div>
+                                                        <?php
+                                                    }
+                                                    if ($pre->s_nilai == 3) {
+                                                        ?>
+                                                        <div class="col-2">
+                                                            <input type="hidden" class="form-control" name="uts" value="{{$pre->uts}}" required>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <label for="">Nilai UAS</label>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="text" class="form-control" name="uas" required>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <label for="">Nilai Tambahan</label>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="text" class="form-control" name="nilai" value="{{$pre->nilai}}" required>
+                                                        </div>
+                                                        <?php
+                                                    }
+                                                ?>
+                                                <div class="col-2">
                                                     <button type="submit" class="btn btn-primary">Simpan</button>
                                                 </div>
                                             </div>
@@ -92,10 +143,57 @@
                                             <input type="hidden" class="form-control" name="siswa" value="{{$pre->siswa}}">
                                             <input type="hidden" class="form-control" name="siswa" value="{{$pre->siswa}}">
                                             <div class="row">
-                                                <div class="col-6">
-                                                    <input type="text" class="form-control" name="nilai" value="{{$pre->nilai}}">
-                                                </div>
-                                                <div class="col-6">
+                                                <?php
+                                                if ($pre->s_nilai == 1) {
+                                                    ?>
+                                                    <div class="col-2">
+                                                        <input type="hidden" class="form-control" name="uts" value="{{$pre->uts}}" required>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="hidden" class="form-control" name="uas" value="{{$pre->uas}}" required>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="text" class="form-control" name="nilai" value="{{$pre->nilai}}" required >
+                                                    </div>
+                                                    <?php
+                                                }
+                                                if ($pre->s_nilai == 2) {
+                                                    ?>
+                                                    <div class="col-2">
+                                                        <label for="">Nilai UTS</label>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="text" class="form-control" name="uts" value="{{$pre->uts}}" required>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="hidden" class="form-control" name="uas" value="{{$pre->uas}}" required>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="hidden" class="form-control" name="nilai" value="{{$pre->nilai}}" required>
+                                                    </div>
+                                                    <?php
+                                                }
+                                                if ($pre->s_nilai == 3) {
+                                                    ?>
+                                                    <div class="col-2">
+                                                        <input type="hidden" class="form-control" name="uts" value="{{$pre->uts}}" required>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <label for="">Nilai UAS</label>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="text" class="form-control" name="uas" value="{{$pre->uas}}" required>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <label for="">Nilai Tambahan</label>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="text" class="form-control" name="nilai" value="{{$pre->nilai}}" required>
+                                                    </div>
+                                                    <?php
+                                                }
+                                            ?>
+                                                <div class="col-2">
                                                     <button type="submit" class="btn btn-warning">Edit</button>
                                                 </div>
                                             </div>

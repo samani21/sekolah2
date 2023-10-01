@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AbsenController;
+use App\Http\Controllers\AkhirController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\HarianController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\PoinController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\PrestasiController;
+use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TahunController;
 use App\Http\Controllers\UrlController;
@@ -190,6 +192,17 @@ Route::get('jurnal/edit_jurnal/{id}',[JurnalController::class, 'edit'])->name('j
 Route::post('updatejurnal/{id}',[JurnalController::class, 'update'])->name('updatejurnal');//proeses Update jurnal
 Route::get('jurnal/hapus_jurnal/{id}',[JurnalController::class, 'destroy'])->name('hapus_jurnal');//hapus prestas guru
 
+//semester1
+Route::get('semester/pilihan',[SemesterController::class, 'pilih'])->name('semester/pilihan');
+Route::get('semester/semester1',[SemesterController::class, 'index1'])->name('semester/semester1');
+Route::get('semester/tambah/{id}/{nilai}/{kelas}/{mapel}',[SemesterController::class,'nilai'])->name('semester/tambah');
+Route::get('semester/edit/{id}/{mapel}/{kelas}',[SemesterController::class,'edit'])->name('semester/edit');
+Route::post('tambah_uts',[SemesterController::class,'store1'])->name('tambah_uts');
+Route::post('update_uts/{id}',[SemesterController::class, 'update1'])->name('update_uts');//Tambah nilai
+
+//akhir
+Route::get('akhir/pilih',[AkhirController::class, 'pilih'])->name('akhir/pilih');
+Route::get('akhir/rapot',[AkhirController::class, 'raport'])->name('akhir/rapot');
 
 //cetak
 Route::get('siswa/cetak', [SiswaController::class, 'cetak_siswa'])->name('siswa/cetak');//cetak siswa
@@ -210,3 +223,5 @@ Route::get('nilai/cetak_nilai/id={id}',[NilaiController::class, 'cetak'])->name(
 Route::get('nilai/cetak_siswa',[NilaiController::class, 'cetak_siswa'])->name('nilai/cetak_siswa');//cetak nilai siswa
 Route::get('poin/cetak', [PoinController::class, 'cetak_poin'])->name('poin/cetak');//cetak siswa
 Route::get('poin/surat/{id}', [PoinController::class, 'cetak_surat'])->name('poin/surat');//cetak surat panggailan 
+Route::get('semester/cetak',[SemesterController::class,'cetak1'])->name('semester/cetak');
+Route::get('akhir/cetak/{id}',[AkhirController::class,'cetak'])->name('akhir/cetak');

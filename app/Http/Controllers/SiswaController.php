@@ -40,7 +40,7 @@ class SiswaController extends Controller
 
             if($g->wakel == "-" || $g->wakel == "BK" || Auth::user()->level == "Tata_usaha"){
                 $siswa = DB::table('tb_siswa')->join('users','users.id','=','tb_siswa.id_user')
-                ->select('nik','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis','poin','tb_siswa.tahun')
+                ->select('nik','id_user','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis','poin','tb_siswa.tahun')
                 ->where('nama','like',"%".$cari."%")
                 ->orWhere('nik','like',"%".$cari."%")
                 ->orWhere('tb_siswa.tahun','like',"%".$cari."%")
@@ -49,7 +49,7 @@ class SiswaController extends Controller
             }else{
                 $siswa = DB::table('tb_siswa')->join('users','users.id','=','tb_siswa.id_user')
                 ->where('kelas','=',''.$g->wakel.'')
-                ->select('nik','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis','poin')
+                ->select('nik','id_user','nama','tgl','tempat','agama','jk','users.kelas','alamat','tb_siswa.id','nis','poin')
                 ->paginate(10);
             }
         }
@@ -104,6 +104,8 @@ class SiswaController extends Controller
             'tahun' => $id_tahun->tahun,
             'presensi' => "0",
             'foto' => $filename,
+            'wali' => $request->wali,
+            'phone' => $request->phone,
             'poin' => 100,
             
         ]);
