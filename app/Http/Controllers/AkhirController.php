@@ -58,7 +58,18 @@ class AkhirController extends Controller
         ->groupBy('nilai.mapel','nilai.kelas','nilai.tahun','nilai.semester','nilai.id_siswa')
         ->having(DB::raw("COUNT(presensi.mapel)-1"),'>',0)
         ->get();
-        $pdf = PDF::loadView('akhir/cetak',compact('nilai','sis','kelas','tahun','semester'));
+        $nilai1 = DB::table('nilai')
+        ->join('presensi','presensi.id','=','nilai.id_presensi')
+        ->select(DB::raw("((SUM(nilai.nilai)/(COUNT(presensi.mapel)-1))+SUM(uts)+SUM(uas))/3 AS hasil"),DB::raw("COUNT(presensi.mapel)-1 AS aa"),'nilai.mapel','nilai.kelas','nilai.tahun','nilai.semester','nilai.id_siswa')
+        ->where('nilai.id_siswa','=',''.$sis->id.'')
+        ->where('nilai.tahun','like',"%".$tahun."%")
+        ->where('nilai.kelas','like',"%".$kelas."%")
+        ->where('nilai.semester','like',"%".$semester."%")
+        ->groupBy('nilai.mapel','nilai.kelas','nilai.tahun','nilai.semester','nilai.id_siswa')
+        ->having('hasil','<','80')
+        // ->having(DB::raw("((SUM(nilai.nilai)/(COUNT(presensi.mapel)-1))+SUM(uts)+SUM(uas))/3 AS hasil"),'<','80')
+        ->count();
+        $pdf = PDF::loadView('akhir/cetak',compact('nilai','sis','kelas','tahun','semester','nilai1'));
         $pdf->setPaper('A4','potrait');
         return $pdf->stream('cetak_nilai.pdf');
     }

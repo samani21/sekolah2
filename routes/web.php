@@ -10,6 +10,7 @@ use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\NilaiController;
+use App\Http\Controllers\PelanggaranController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\PoinController;
 use App\Http\Controllers\PresensiController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TahunController;
 use App\Http\Controllers\UrlController;
+use App\Models\Pelanggaran;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -204,6 +206,14 @@ Route::post('update_uts/{id}',[SemesterController::class, 'update1'])->name('upd
 Route::get('akhir/pilih',[AkhirController::class, 'pilih'])->name('akhir/pilih');
 Route::get('akhir/rapot',[AkhirController::class, 'raport'])->name('akhir/rapot');
 
+//pelanggaran
+Route::get('pelanggaran/pelanggaran',[PelanggaranController::class,'index'])->name('pelanggaran/pelanggaran');
+Route::get('pelanggaran/tambah',[PelanggaranController::class,'tambah'])->name('pelanggaran/tambah');
+Route::post('pelanggaran/tambah',[PelanggaranController::class,'store'])->name('pelanggaraan.store');
+Route::get('pelanggaran/edit/{id}',[PelanggaranController::class,'edit'])->name('pelanggaran/tambah');
+Route::post('update/{id}',[PelanggaranController::class,'update'])->name('update');
+Route::get('pelanggaran/hapus/{id}',[PelanggaranController::class,'destroy'])->name('hapus');
+
 //cetak
 Route::get('siswa/cetak', [SiswaController::class, 'cetak_siswa'])->name('siswa/cetak');//cetak siswa
 Route::get('siswa/cetak_data_siswa', [SiswaController::class, 'cetak_data_siswa'])->name('siswa/cetak_data_siswa');//cetak data siswa
@@ -225,3 +235,4 @@ Route::get('poin/cetak', [PoinController::class, 'cetak_poin'])->name('poin/ceta
 Route::get('poin/surat/{id}', [PoinController::class, 'cetak_surat'])->name('poin/surat');//cetak surat panggailan 
 Route::get('semester/cetak',[SemesterController::class,'cetak1'])->name('semester/cetak');
 Route::get('akhir/cetak/{id}',[AkhirController::class,'cetak'])->name('akhir/cetak');
+Route::get('pelanggaran/cetak',[PelanggaranController::class,'cetak'])->name('pelanggaran/cetak');

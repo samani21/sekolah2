@@ -44,7 +44,8 @@ Semester : {{$semester}}
                     <th width="70">Nilai</th>
                     <th width="90">Kelas</th>
                     <th width="100">Tahun</th>
-                    <th width="100">Semester</th>
+                    <th width="70">Semester</th>
+                    <th width="50">Huruf</th>
                 </tr>
             </thead>
             @php
@@ -53,16 +54,46 @@ Semester : {{$semester}}
             <tbody>
                 @foreach ($nilai as $nil)
                     <tr>
-                        <td data-title="No">{{ $no++ }}</td>
-                        <td data-title="Mapel">{{ $nil->mapel }}</td>
-                        <td data-title="Nilai">{{ substr($nil->hasil,0,5) }}</td>
-                        <td data-title="Kelas">{{ $nil->kelas }}</td>
-                        <td data-title="Tahun">{{ $nil->tahun }}</td>
-                        <td data-title="Semester">{{ $nil->semester }}</td>
+                        <td >{{ $no++ }}</td>
+                        <td >{{ $nil->mapel }}</td>
+                        <td >{{ substr($nil->hasil,0,5) }}</td>
+                        <td >{{ $nil->kelas }}</td>
+                        <td >{{ $nil->tahun }}</td>
+                        <td >Semester {{ $nil->semester }}</td>
+                        <td >
+                            <?php
+                                if ($nil->hasil < 65 ) {
+                                    echo "C";
+                                }
+                                if ($nil->hasil >= 65 AND $nil->hasil <75) {
+                                    echo "B";
+                                }
+                                if ($nil->hasil >= 75 AND $nil->hasil <=100) {
+                                    echo "B";
+                                }
+                            ?>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+        @if ($semester == 2)
+            <?php
+                if($nilai1 >= 4){
+                    ?>
+                    <p align="center">
+                        <del>Naik</del> / Tetap di kelas
+                       </p>
+                    <?php
+                }else {
+                    ?>
+                    <p align="center">
+                        Naik / <del>Tetap di</del> kelas
+                       </p>
+                    <?php
+                }
+            ?>
+        @endif
         <div>
             <pre align="right">
                                                 Banjarmasin,<?php echo date('d-m-Y'); ?>

@@ -18,7 +18,6 @@ class NilaiController extends Controller
         $id = Auth::user()->id;
         $user = User::findorfail($id);
         $kelas1 = DB::table('kelas')->get();
-
         $id_tahun = "1";
         $tahun = Tahun::find($id_tahun);
         $tah = $tahun->tahun;
@@ -39,16 +38,16 @@ class NilaiController extends Controller
         else{
             $d_siswa = DB::table('tb_siswa')->where('id_user','=',''.$siswa.'')->get();
             foreach ($d_siswa as $sis)
-        $presensi = DB::table('absen_siswa')
-        ->join('presensi','presensi.id','=','absen_siswa.id_presensi')
-        ->select('mapel','kelas','presensi.tgl','jam','presensi.tahun','presensi.id','absen_siswa.semester','nilai')
-        ->where('id_siswa','=',''.$sis->id.'')
-        ->where('kelas','=',''.$kelas.'')
-        ->where('absen_siswa.status','not like','0')
-        ->where('presensi.tahun','=',''.$tah.'')
-        ->where('presensi.tgl','like',"%".$cari."%")
-        ->orderBy('id','desc')
-        ->paginate(10);
+            $presensi = DB::table('absen_siswa')
+            ->join('presensi','presensi.id','=','absen_siswa.id_presensi')
+            ->select('mapel','id_siswa','kelas','presensi.tgl','jam','presensi.tahun','presensi.id','absen_siswa.semester','nilai')
+            ->where('id_siswa','=',''.$sis->id.'')
+            ->where('kelas','=',''.$kelas.'')
+            ->where('absen_siswa.status','not like','0')
+            ->where('presensi.tahun','=',''.$tah.'')
+            ->where('presensi.tgl','like',"%".$cari."%")
+            ->orderBy('id','desc')
+            ->paginate(10);
         }
 
         

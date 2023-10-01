@@ -233,6 +233,13 @@
                             <span>Nilai Tugas</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ url('pelanggaran/pelanggaran') }}"
+                            class="{{ request()->is('pelanggaran/*')?'active' :'' }}">
+                            <span class="fa-solid fa-book"></span>
+                            <span>Pelanggaran</span>
+                        </a>
+                    </li>
                     @endif
                     @endif
 
@@ -489,6 +496,13 @@
                             class="{{ request()->is('semester/pilihan')?'active' :'' }}">
                             <span class="fa-solid fa-book"></span>
                             <span>Nilai Tugas</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('pelanggaran/pelanggaran') }}"
+                            class="{{ request()->is('pelanggaran/*')?'active' :'' }}">
+                            <span class="fa-solid fa-book"></span>
+                            <span>Pelanggaran</span>
                         </a>
                     </li>
                     @endif
