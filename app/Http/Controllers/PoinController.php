@@ -71,6 +71,7 @@ class PoinController extends Controller
     }
     
     public function create($id){
+        $poin = DB::table('pelanggaran')->get();
         $siswaa = DB::table('tb_siswa')
         ->join('users','users.id','=','tb_siswa.id_user')
         ->select('tb_siswa.id','kelas','tb_siswa.id_user','nama')
@@ -79,14 +80,15 @@ class PoinController extends Controller
         foreach ($siswaa as $siswa)
         $tahun = Tahun::findorfail(1);
         $data['title'] =  "Tambah Poin";
-        return view('poin/tambah_point',compact('siswa','tahun'), $data);
+        return view('poin/tambah_point',compact('siswa','tahun','poin'), $data);
     }
 
     public function store(Request $request){
+        $poin = substr($request->poin,6,3);
         $point = Poin::create([
             'id_siswa' => $request->id_siswa,
             'id_user' => $request->id_user,
-            'poin' => $request->poin,
+            'poin' => $poin,
             'tgl' => $request->tgl,
             'ket' => $request->ket,
             'tahun' => $request->tahun,
@@ -111,20 +113,21 @@ class PoinController extends Controller
 
     public function edit($id){
         $poin = Poin::findorfail($id);
-
+        $poin1 = DB::table('pelanggaran')->get();
         $tahun = Tahun::findorfail(1);
 
         $id_siswaa = $poin->id_siswa;
         $siswa = Siswa::findorfail($id_siswaa);
 
         $data['title'] =  "Edit Poin";
-        return view('poin/edit',compact('siswa','tahun','poin'), $data);
+        return view('poin/edit',compact('siswa','tahun','poin','poin1'), $data);
     }
 
     public function update(Request $request,$id){
+        $poin1 = substr($request->poin,6,3);
         $edit = Poin::findorfail($id);
         $data = [
-           'poin'=>$request->poin,
+           'poin'=>$poin1,
            'tgl'=>$request->tgl,
            'ket'=>$request->ket,
 

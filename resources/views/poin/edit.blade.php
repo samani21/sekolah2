@@ -14,7 +14,21 @@
             </div>
             <div>
                 <label for="">Poin</label>
-                <input class="form-control" type="number" name="poin" value="{{$poin->poin}}" aria-label="default input example" autofocus required>
+                <input class="form-control" type="text" name="poin" list="poin" autocomplete="off" value="{{$poin->poin}}" placeholder="Masukkan pengurangan poin" aria-label="default input example" autofocus required>
+                <datalist id="poin">
+                    @foreach ($poin1 as $po)
+                        <option <?php 
+                            if ($po->bobot <= 9) {
+                                ?>
+                                value="Poin :0{{$po->bobot}} Keterangan: {{$po->pelanggaran}}"
+                                <?php
+                            }else {
+                                ?>
+                                value="Poin :{{$po->bobot}} Keterangan: {{$po->pelanggaran}}"
+                                <?php
+                            }
+                        ?>></option>
+                    @endforeach
             </div>
             <div>
                 <label for="">Tanggal</label>
