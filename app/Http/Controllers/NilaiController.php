@@ -31,6 +31,7 @@ class NilaiController extends Controller
         ->select('mapel','kelas','presensi.tgl','jam','presensi.tahun','presensi.id','absen_siswa.semester','nilai','nama','absen_siswa.id as id_siswa')
         ->where('presensi.tahun','=',''.$tah.'')
         ->where('absen_siswa.status','not like','0')
+        ->where('nilai','not like','0')
         ->where('presensi.tgl','like',"%".$cari."%")
         ->orderBy('id','desc')
         ->paginate(10);
@@ -44,6 +45,7 @@ class NilaiController extends Controller
             ->where('id_siswa','=',''.$sis->id.'')
             ->where('kelas','=',''.$kelas.'')
             ->where('absen_siswa.status','not like','0')
+            ->where('nilai','not like','0')
             ->where('presensi.tahun','=',''.$tah.'')
             ->where('presensi.tgl','like',"%".$cari."%")
             ->orderBy('id','desc')

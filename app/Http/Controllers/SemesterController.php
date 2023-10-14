@@ -7,6 +7,7 @@ use App\Models\Siswa;
 use App\Models\Tahun;
 use App\Models\Ujian;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Sum;
 use PDF;
@@ -49,7 +50,23 @@ class SemesterController extends Controller
     }
 
     public function pilih(){
-        $kelas = DB::table('kelas')->get();
+        if(Auth::user()->level == "Siswa"){
+            $siswa = DB::table('tb_siswa')->where('id_user','=',''.Auth::user()->id.'')->get();
+            dd(Auth::user()->id);
+            $kelas = DB::table('nilai')
+            ->select('kelas')
+            ->groupBy('kelas')
+            ->get();
+        }else{
+            $kelas = DB::table('nilai')
+            ->select('kelas')
+            ->groupBy('kelas')
+            ->get();
+        }
+        $kelas = DB::table('nilai')
+        ->select('kelas')
+        ->groupBy('kelas')
+        ->get();
         $mapel = DB::table('mapel')->get();
         $nilai = DB::table('nilai')
         ->select('tahun')
@@ -137,7 +154,7 @@ class SemesterController extends Controller
         foreach($bagi as $b)
         $nilai = DB::table('nilai')
         ->join('tb_siswa','tb_siswa.id','=','nilai.id_siswa')
-        ->select(DB::raw("((SUM(nilai)/".$b->m.")+SUM(uts)+SUM(uas))/3 as hasil"),'mapel','s_akhir','kelas','id_siswa','nama','semester','nilai.tahun','nis','nilai.status')
+        ->select(DB::raw("SUM(nilai)/".$b->m." as hasil"),'mapel','s_akhir','kelas','id_siswa','nama','semester','nilai.tahun','nis','nilai.status')
         ->where("kelas",'like',"%".$kelas."%")
         ->where("mapel",'like',"%".$mapel."%")
         ->where("nilai.tahun",'like',"%".$tahun."%")
